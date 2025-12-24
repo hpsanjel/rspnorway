@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Facebook, Instagram, Menu, Search, X, ChevronDown, User, LogOut } from "lucide-react";
 import Image from "next/image";
-import useFetchData from "@/hooks/useFetchData";
+// import useFetchData from "@/hooks/useFetchData";
 import Link from "next/link";
 import SearchModal from "@/components/SearchModal";
 import { usePathname, useRouter } from "next/navigation";
@@ -64,22 +64,22 @@ const NavItem = ({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 };
 
 export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
-	interface Setting {
-		companyLogo?: string;
-		name?: string;
-		about?: string;
-		address?: string;
-		email?: string;
-		phone?: string;
-		mobile?: string;
-		facebook?: string;
-		youtube?: string;
-		instagram?: string;
-		linkedin?: string;
-		businessHoursMF?: string;
-	}
-	const { data } = useFetchData("/api/settings", "settings");
-	const settings = (data ?? []) as Setting[];
+	// interface Setting {
+	// 	companyLogo?: string;
+	// 	name?: string;
+	// 	about?: string;
+	// 	address?: string;
+	// 	email?: string;
+	// 	phone?: string;
+	// 	mobile?: string;
+	// 	facebook?: string;
+	// 	youtube?: string;
+	// 	instagram?: string;
+	// 	linkedin?: string;
+	// 	businessHoursMF?: string;
+	// }
+	// const { data } = useFetchData("/api/settings", "settings");
+	// const settings = (data ?? []) as Setting[];
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
