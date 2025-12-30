@@ -75,7 +75,7 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 			],
 		},
 		{ title: "Gallery", href: "/gallery" },
-		{ title: "Circulars", href: "/notices" },
+		{ title: "Circulars", href: "/circulars" },
 		{ title: "Contact", href: "/contact" },
 	];
 	const mobileNavItems = navItems;
@@ -191,10 +191,10 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 							</div>
 						) : (
 							<div className="flex gap-2">
-								<Link href="/user" className={`hidden sm:block px-4 py-2 rounded-md bg-[#007bbd] text-white font-medium hover:bg-[#0760b9] transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
+								<Link href="/user" className={`hidden sm:block px-4 py-2 rounded-md bg-brand text-white font-medium hover:bg-brand/90 transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
 									Login
 								</Link>
-								<Link href="/membership" className={`px-4 py-2 rounded-md text-[#007bbd] bg-white font-medium hover:bg-white/80 transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
+								<Link href="/membership" className={`px-4 py-2 rounded-md text-[#007bbd] bg-gray-200 font-medium hover:bg-brand hover:text-white transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
 									Become a Member
 								</Link>
 							</div>

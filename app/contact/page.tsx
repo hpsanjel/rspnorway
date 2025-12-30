@@ -1,12 +1,24 @@
 "use client";
 
+import useFetchData from "@/hooks/useFetchData";
+import { Mail, MapPin, Phone } from "lucide-react";
 import React, { useState } from "react";
+
+type Setting = {
+	address?: string;
+	phone?: string;
+	email?: string;
+	// add other fields if needed
+};
 
 export default function ContactPage() {
 	const [form, setForm] = useState({ name: "", email: "", message: "" });
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState("");
 	const [error, setError] = useState("");
+
+	const { data: settings } = useFetchData("/api/settings", "settings");
+	const typedSettings = settings as Setting[] | undefined;
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,7 +37,7 @@ export default function ContactPage() {
 			});
 			const data = await res.json();
 			if (res.ok) {
-				setSuccess("Your message has been sent! We&apos;ll get back to you soon.");
+				setSuccess("Your message has been sent! We will get back to you soon.");
 				setForm({ name: "", email: "", message: "" });
 			} else {
 				setError(data.error || "Failed to send message.");
@@ -41,11 +53,15 @@ export default function ContactPage() {
 	}
 
 	return (
-		<>
-			<div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center py-36">
-				<div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-lg">
-					<h1 className="text-3xl font-bold text-center mb-4 text-blue-400">Contact Us</h1>
-					<p className="text-center text-gray-600 mb-8">We&apos;d love to hear from you! Fill out the form below and we&apos;ll respond as soon as possible.</p>
+		<section className="container min-h-screen mt-24 mx-auto px-4 py-12 md:py-16 mb-16">
+			<h2 className="text-3xl text-center font-bold mb-6">
+				Contact <span className="mx-auto text-[#0094da]">Us</span>
+			</h2>
+			<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
+			<div className="grid grid-cols-3 gap-8 mx-auto max-w-5xl">
+				<div className="bg-white col-span-2 shadow-xl rounded-lg p-8 w-full">
+					<h1 className="text-3xl font-bold text-center mb-4 text-brand">We&apos;d love to hear from you!</h1>
+					<p className="text-center text-gray-600 mb-8"> Fill out the form below and we&apos;ll respond as soon as possible.</p>
 					<form onSubmit={handleSubmit} className="space-y-6">
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Name</label>
@@ -59,14 +75,48 @@ export default function ContactPage() {
 							<label className="block text-sm font-medium text-gray-700">Message</label>
 							<textarea name="message" value={form.message} onChange={handleChange} required rows={5} className="mt-1 block w-full rounded-md border border-gray-300 bg-white/80 shadow focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none px-4 py-2 text-gray-800 placeholder-gray-400" placeholder="Type your message here..." />
 						</div>
-						<button type="submit" disabled={loading} className="w-full py-3 px-6 bg-blue-400 text-white font-semibold rounded-md shadow hover:bg-blue-700 transition-colors">
+						<button type="submit" disabled={loading} className="w-full py-3 px-6 bg-brand text-white font-semibold rounded-md shadow hover:bg-brand/90 transition-colors">
 							{loading ? "Sending..." : "Send Message"}
 						</button>
 						{success && <p className="text-green-600 text-center mt-2">{success}</p>}
 						{error && <p className="text-red-600 text-center mt-2">{error}</p>}
 					</form>
 				</div>
+				<div className="bg-brand/5 rounded-lg p-8 w-full grid">
+					<div className="row-span-1">
+						<h3 className="text-2xl font-bold text-brand">Contact Information</h3>
+					</div>
+
+					<div className="row-span-1 flex items-start gap-4">
+						<MapPin className="w-5 h-5 text-brand flex-shrink-0 mt-1" />
+						<div>
+							<p className="font-semibold text-gray-900 mb-1">Visiting Address</p>
+							{/* <p className="text-gray-700">{settings?.[0]?.address}</p> */}
+							<p className="text-gray-700">{typedSettings?.[0]?.address}</p>
+						</div>
+					</div>
+
+					<div className="row-span-1 flex items-start gap-4">
+						<Phone className="w-5 h-5 text-brand flex-shrink-0 mt-1" />
+						<div>
+							<p className="font-semibold text-gray-900 mb-1">Phone Numbers</p>
+							{/* <p className="text-gray-700">{settings?.[0]?.phone}</p> */}
+							<p className="text-gray-700">{typedSettings?.[0]?.phone}</p>
+						</div>
+					</div>
+
+					<div className="row-span-1 flex items-start gap-4">
+						<Mail className="w-5 h-5 text-brand flex-shrink-0 mt-1" />
+						<div>
+							<p className="font-semibold text-gray-900 mb-1">Email</p>
+							{/* <p className="text-gray-700">{settings?.[0]?.email}</p> */}
+							<p className="text-gray-700 underline">
+								<a href={`mailto:${typedSettings?.[0]?.email}`}>{typedSettings?.[0]?.email}</a>
+							</p>
+						</div>
+					</div>
+				</div>
 			</div>
-		</>
+		</section>
 	);
 }

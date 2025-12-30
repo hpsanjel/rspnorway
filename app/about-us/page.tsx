@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export default function AboutUs() {
 	return (
-		<div className="pt-20 min-h-screen">
+		<div className="mt-24 min-h-screen">
 			<main className="container mx-auto px-4 py-8">
-				<section className="py-16 container mx-auto px-4">
-					<h2 className="text-3xl text-center md:text-4xl font-bold mb-6">
+				<section className="container mx-auto px-4 py-8 mb-16">
+					<h2 className="text-3xl text-center font-bold mb-6">
 						About <span className="mx-auto text-[#0094da]">Us</span>
 					</h2>
 					<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>

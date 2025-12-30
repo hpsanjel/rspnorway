@@ -221,14 +221,14 @@ export default function EventsAndNoticesPage() {
 
 	// Main Page - Events & Notices Grid
 	return (
-		<div className="min-h-screen pt-24 md:pt-32">
-			<div className="container max-w-7xl mx-auto px-4 py-16">
+		<div className="min-h-screen mt-24">
+			<div className="container max-w-7xl mx-auto px-4 py-12 md:py-16">
 				{/* Header */}
 				<div className="text-center mb-12">
-					<h1 className="text-5xl font-bold mb-4">
-						School <span className="text -brand">Life</span>
+					<h1 className="text-3xl font-bold mb-6">
+						Events & <span className="text-brand">Notices</span>
 					</h1>
-					<div className="w-24 h-1 mx-auto mb-6 rounded-full"></div>
+					<div className="w-24 h-1 mx-auto mb-6 bg-brand rounded-full"></div>
 					<p className="text-gray-600 max-w-3xl mx-auto text-lg">Stay connected with our vibrant school community. Explore upcoming events and important announcements.</p>
 				</div>
 

@@ -38,8 +38,12 @@ export default function Gallery() {
 	}, []);
 
 	return (
-		<div className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 p-2 sm:p-8">
-			<h1 className="text-3xl font-bold text-center mb-8">Photo Gallery</h1>
+		// <div className="w-full bg-gradient-to-br from-slate-100 to-slate-300 p-2 sm:p-8">
+		<section className="container mx-auto px-4 py-12 md:py-16 mb-8">
+			<h2 className="text-3xl text-center font-bold mb-6">
+				Photo <span className="mx-auto text-[#0094da]">Gallery</span>
+			</h2>
+			<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
 			<div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 auto-rows-[120px] sm:auto-rows-[180px]" style={{ gridAutoFlow: "dense" }}>
 				{images.map((img, i) => (
 					<div
@@ -69,6 +73,6 @@ export default function Gallery() {
 					buttonNext: undefined,
 				}}
 			/>
-		</div>
+		</section>
 	);
 }

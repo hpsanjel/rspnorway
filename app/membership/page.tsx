@@ -20,6 +20,7 @@ export default function MembershipPage() {
 	});
 
 	const [submitted, setSubmitted] = useState(false);
+	const [emailError, setEmailError] = useState("");
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const target = e.target as HTMLInputElement | HTMLSelectElement;
@@ -39,16 +40,59 @@ export default function MembershipPage() {
 		}
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLButtonElement | HTMLFormElement>) => {
+	const handleEmailBlur = async () => {
+		if (!formData.email) return;
+		try {
+			const res = await fetch(`/api/membership?email=${encodeURIComponent(formData.email)}`);
+			if (res.ok) {
+				const data = await res.json();
+				if (Array.isArray(data) && data.length > 0) {
+					setEmailError("This email is already registered.");
+				} else {
+					setEmailError("");
+				}
+			}
+		} catch {
+			setEmailError("");
+		}
+	};
+
+	const handleSubmit = async (e: React.FormEvent<HTMLButtonElement | HTMLFormElement>) => {
 		e.preventDefault();
-		console.log("Form submitted:", formData);
-		setSubmitted(true);
-		setTimeout(() => setSubmitted(false), 5000);
+		try {
+			const res = await fetch("/api/membership", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(formData),
+			});
+			if (!res.ok) throw new Error("Failed to submit application");
+			setSubmitted(true);
+			setFormData({
+				fullName: "",
+				email: "",
+				phone: "",
+				address: "",
+				city: "",
+				postalCode: "",
+				dateOfBirth: "",
+				gender: "",
+				nepaliOrigin: "",
+				profession: "",
+				membershipType: "general",
+				skills: "",
+				volunteerInterest: [],
+				agreeTerms: false,
+			});
+		} catch (error) {
+			alert("There was an error submitting your application. Please try again." + error);
+		}
 	};
 
 	if (submitted) {
 		return (
-			<div className="min-h-screen mt-24 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+			<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
 				<div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md text-center">
 					<div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
 						<svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,16 +112,16 @@ export default function MembershipPage() {
 	return (
 		<div className="min-h-screen mt-24 bg-gradient-to-br from-blue-50 to-indigo-100">
 			{/* Hero Section */}
-			<div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
+			{/* <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
 				<div className="max-w-6xl mx-auto px-4">
 					<h1 className="text-4xl md:text-5xl font-bold mb-4">Join RSP Norway</h1>
 					<p className="text-xl text-blue-100 max-w-3xl">Be part of the movement to build a progressive, corruption-free Nepal. Your voice matters in shaping future of our nation.</p>
 				</div>
-			</div>
+			</div> */}
 
 			{/* Benefits Section */}
 			<div className="max-w-6xl mx-auto px-4 py-12">
-				<h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Membership Benefits</h2>
+				{/* <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Membership Benefits</h2>
 				<div className="grid md:grid-cols-3 gap-6 mb-12">
 					<BenefitCard
 						icon={
@@ -106,12 +150,12 @@ export default function MembershipPage() {
 						title="Exclusive Events & Updates"
 						description="Access to member-only events, policy discussions, and direct updates from RSP leadership."
 					/>
-				</div>
+				</div> */}
 
 				{/* Membership Form */}
 				<div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-					<h2 className="text-3xl font-bold text-gray-900 mb-2">Membership Application</h2>
-					<p className="text-gray-600 mb-8">Fill out the information below to become a member of RSP Norway</p>
+					<h2 className="text-3xl font-bold text-gray-900 mb-2">Membership Application Form</h2>
+					<p className="text-gray-600 mb-8"> Your voice matters in shaping future of our nation. Fill out the information below to become a member of RSP Norway and be part of the movement to build a progressive, corruption-free Nepal.</p>
 
 					<div className="space-y-6">
 						{/* Personal Information */}
@@ -128,7 +172,8 @@ export default function MembershipPage() {
 									<label className="block text-sm font-medium text-gray-700 mb-2">
 										Email Address <span className="text-red-500">*</span>
 									</label>
-									<input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="your.email@example.com" />
+									<input type="email" name="email" value={formData.email} onChange={handleChange} onBlur={handleEmailBlur} className={`w-full px-4 py-2 border ${emailError ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent`} placeholder="your.email@example.com" />
+									{emailError && <p className="text-red-600 text-sm mt-1">{emailError}</p>}
 								</div>
 								<div>
 									<label className="block text-sm font-medium text-gray-700 mb-2">
@@ -256,7 +301,7 @@ export default function MembershipPage() {
 
 						{/* Submit Button */}
 						<div className="flex gap-4">
-							<button onClick={handleSubmit} className="flex-1 bg-blue-600 text-white py-4 px-8 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
+							<button onClick={handleSubmit} className={`flex-1 bg-brand text-white py-4 px-8 rounded-lg font-semibold hover:bg-brand/90 transition-colors shadow-lg hover:shadow-xl${!formData.agreeTerms ? " opacity-50 cursor-not-allowed" : ""}`} disabled={!formData.agreeTerms}>
 								Submit Application
 							</button>
 							<button
@@ -287,7 +332,7 @@ export default function MembershipPage() {
 				</div>
 
 				{/* Contact Info */}
-				<div className="mt-12 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-8 text-center">
+				<div className="mt-12 bg-gradient-to-r from-blue-400 to-brand text-white rounded-2xl p-8 text-center">
 					<h3 className="text-2xl font-bold mb-4">Need Help?</h3>
 					<p className="mb-6">If you have any questions about membership, feel free to contact us.</p>
 					<div className="flex flex-wrap justify-center gap-4">
@@ -304,12 +349,12 @@ export default function MembershipPage() {
 	);
 }
 
-function BenefitCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-	return (
-		<div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-			<div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600">{icon}</div>
-			<h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-			<p className="text-gray-600">{description}</p>
-		</div>
-	);
-}
+// function BenefitCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+// 	return (
+// 		<div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+// 			<div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600">{icon}</div>
+// 			<h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+// 			<p className="text-gray-600">{description}</p>
+// 		</div>
+// 	);
+// }
