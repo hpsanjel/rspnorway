@@ -26,7 +26,7 @@ export async function POST(request, { params }) {
 				pass: process.env.EMAIL_APP_PASS,
 			},
 		});
-		const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
+		const resetUrl = `/reset-password?token=${resetToken}`;
 		await transporter.sendMail({
 			to: user.email,
 			subject: "Password Reset Request",

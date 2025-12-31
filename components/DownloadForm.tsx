@@ -79,11 +79,12 @@ const DownloadForm: React.FC<DownloadFormProps> = ({ handleCloseModal, downloadT
 				handleCloseModal();
 			}
 		} catch (error: unknown) {
-			let message = "An error occurred";
-			if (error instanceof Error) {
+			let message = "An unknown error occurred.";
+			function hasMessage(e: unknown): e is { message: string } {
+				return typeof e === "object" && e !== null && "message" in e && typeof (e as { message: unknown }).message === "string";
+			}
+			if (hasMessage(error)) {
 				message = error.message;
-			} else if (typeof error === "string") {
-				message = error;
 			}
 			setError(message);
 			console.error(`Error ${downloadToEdit ? "updating" : "creating"} Download:`, error);
@@ -127,7 +128,7 @@ const DownloadForm: React.FC<DownloadFormProps> = ({ handleCloseModal, downloadT
 			</div>
 			<div className="grid grid-cols-2 gap-2">
 				<button type="submit" disabled={submitting} className={`w-full p-1.5 rounded ${submitting ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-brand"} text-slate-200 font-bold`}>
-					{submitting ? `${downloadToEdit ? "Updating" : "Creating"} Download...` : `${downloadToEdit ? "Update" : "Create"} Download`}
+					{submitting ? `${downloadToEdit ? "Updating..." : "Creating..."}` : `${downloadToEdit ? "Update" : "Create"} Download`}
 				</button>
 				<Button variant="outline" onClick={handleCloseModal}>
 					Close

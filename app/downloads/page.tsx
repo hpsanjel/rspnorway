@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Download, Eye, FileText, Calendar, Search } from "lucide-react";
 import Image from "next/image";
 
@@ -17,63 +17,43 @@ export default function DownloadsPage() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("All");
 
-	// Sample documents data
-	const documents: Document[] = [
-		{
-			id: "1",
-			title: "Annual Report 2024",
-			date: "December 15, 2024",
-			fileUrl: "/documents/annual-report-2024.pdf",
-			imageUrl: "/rabi1.webp",
-			category: "Reports",
-		},
-		{
-			id: "2",
-			title: "Course Curriculum Guide",
-			date: "November 28, 2024",
-			fileUrl: "/documents/curriculum-guide.pdf",
-			imageUrl: "/rsp-norway-logo.png",
-			category: "Education",
-		},
-		{
-			id: "3",
-			title: "Membership Benefits Overview",
-			date: "October 10, 2024",
-			fileUrl: "/documents/membership-benefits.pdf",
-			imageUrl: "/rsp-norway-logo.png",
+	const [documents, setDocuments] = useState<Document[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-			category: "Membership",
-		},
-		{
-			id: "4",
-			title: "Event Schedule 2025",
-			date: "September 5, 2024",
-			fileUrl: "/documents/event-schedule-2025.pdf",
-			imageUrl: "/rsp-norway-logo.png",
+	useEffect(() => {
+		const fetchDocuments = async () => {
+			setLoading(true);
+			setError(null);
+			try {
+				const res = await fetch("/api/downloads");
+				const data = await res.json();
+				if (res.ok && data.success && Array.isArray(data.downloads)) {
+					setDocuments(
+						data.downloads.map(
+							(doc: { _id: string; title: string; date: string; fileUrl: string; imageUrl?: string; category: string }): Document => ({
+								id: doc._id,
+								title: doc.title,
+								date: doc.date,
+								fileUrl: doc.fileUrl,
+								imageUrl: doc.imageUrl,
+								category: doc.category,
+							})
+						)
+					);
+				} else {
+					setError(data.error || "Failed to load documents");
+				}
+			} catch (err) {
+				setError("Failed to load documents" + (err instanceof Error ? ": " + err.message : ""));
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchDocuments();
+	}, []);
 
-			category: "Events",
-		},
-		{
-			id: "5",
-			title: "Training Manual",
-			date: "August 22, 2024",
-			fileUrl: "/documents/training-manual.pdf",
-			imageUrl: "/rsp-norway-logo.png",
-
-			category: "Education",
-		},
-		{
-			id: "6",
-			title: "Financial Statement Q3",
-			date: "July 18, 2024",
-			fileUrl: "/documents/financial-q3.pdf",
-			imageUrl: "/rsp-norway-logo.png",
-
-			category: "Reports",
-		},
-	];
-
-	const categories = ["All", "Reports", "Education", "Membership", "Events"];
+	const categories = ["All", ...Array.from(new Set(documents.map((doc) => doc.category)))];
 
 	const handleDownload = (fileUrl: string, title: string) => {
 		const link = document.createElement("a");
@@ -94,6 +74,27 @@ export default function DownloadsPage() {
 		return matchesSearch && matchesCategory;
 	});
 
+	if (loading) {
+		return (
+			<div className="mt-24 min-h-screen flex items-center justify-center">
+				<p className="text-lg text-gray-500">Loading documents...</p>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className="mt-24 min-h-screen flex items-center justify-center">
+				<div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+					<div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
+						<FileText size={40} className="text-red-400" />
+					</div>
+					<h3 className="text-2xl font-bold text-red-600 mb-2">{error}</h3>
+					<p className="text-gray-500">Please try again later.</p>
+				</div>
+			</div>
+		);
+	}
 	return (
 		<div className="mt-24 min-h-screen">
 			<main className="container mx-auto px-4 py-8">
@@ -130,7 +131,7 @@ export default function DownloadsPage() {
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 								{filteredDocuments.map((doc) => (
 									<div key={doc.id} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
-										{doc?.imageUrl ? <Image src={doc.imageUrl} alt={doc.title} width={100} height={100} className="text-white object-cover w-full max-h-48" /> : <FileText size={48} className="text-white" />}
+										{doc?.imageUrl ? <Image src={doc.imageUrl} alt={doc.title} width={350} height={350} className="text-white object-cover w-full max-h-48" /> : <FileText size={48} className="text-white" />}
 
 										{/* Document Info */}
 										<div className="p-6">
