@@ -43,6 +43,10 @@ const DownloadSchema = new mongoose.Schema(
 				message: "Image size should not exceed 1MB",
 			},
 		},
+		downloadCount: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{ timestamps: true }
 );

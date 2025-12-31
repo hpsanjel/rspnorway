@@ -11,6 +11,7 @@ interface Document {
 	fileUrl: string;
 	imageUrl?: string;
 	category: string;
+	downloadCount?: number;
 }
 
 export default function DownloadsPage() {
@@ -31,13 +32,14 @@ export default function DownloadsPage() {
 				if (res.ok && data.success && Array.isArray(data.downloads)) {
 					setDocuments(
 						data.downloads.map(
-							(doc: { _id: string; title: string; date: string; fileUrl: string; imageUrl?: string; category: string }): Document => ({
+							(doc: { _id: string; title: string; date: string; fileUrl: string; imageUrl?: string; category: string; downloadCount?: number }): Document => ({
 								id: doc._id,
 								title: doc.title,
 								date: doc.date,
 								fileUrl: doc.fileUrl,
 								imageUrl: doc.imageUrl,
 								category: doc.category,
+								downloadCount: doc.downloadCount ?? 0,
 							})
 						)
 					);
@@ -55,13 +57,34 @@ export default function DownloadsPage() {
 
 	const categories = ["All", ...Array.from(new Set(documents.map((doc) => doc.category)))];
 
-	const handleDownload = (fileUrl: string, title: string) => {
-		const link = document.createElement("a");
-		link.href = fileUrl;
-		link.download = title;
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
+	const handleDownload = async (fileUrl: string, title: string, id?: string) => {
+		// Try to extract extension from fileUrl, fallback to .pdf
+		let ext = ".pdf";
+		const match = fileUrl.match(/\.([a-zA-Z0-9]+)(?:\?|$)/);
+		if (match && match[1]) {
+			ext = "." + match[1];
+		}
+		// Allow Unicode (Nepali, English, etc.) and spaces, only remove slashes and control chars
+		const safeTitle = title.replace(/[\\/:*?"<>|\r\n]+/g, "_") + ext;
+		try {
+			// Increment download count in backend
+			if (id) {
+				fetch(`/api/downloads/${id}/increment`, { method: "POST" });
+			}
+			const response = await fetch(fileUrl);
+			if (!response.ok) throw new Error("Failed to fetch file");
+			const blob = await response.blob();
+			const url = window.URL.createObjectURL(blob);
+			const link = document.createElement("a");
+			link.href = url;
+			link.setAttribute("download", safeTitle);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			window.URL.revokeObjectURL(url);
+		} catch {
+			alert("Failed to download file.");
+		}
 	};
 
 	const filteredDocuments = documents.filter((doc) => {
@@ -124,11 +147,11 @@ export default function DownloadsPage() {
 
 						{/* Documents Grid */}
 						{filteredDocuments.length > 0 ? (
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
 								{filteredDocuments.map((doc) => (
-									<div key={doc.id} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+									<div key={doc.id} className="flex bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden max-h-[224px] group">
 										{doc.imageUrl && doc.imageUrl.trim() !== "" ? (
-											<Image src={doc.imageUrl} alt={doc.title} width={350} height={350} className="text-white object-cover w-full max-h-48" />
+											<Image src={doc.imageUrl} alt={doc.title} width={350} height={350} className="text-white object-fill w-48 h-full" />
 										) : (
 											<div className="w-full max-h-48 h-[192px] flex items-center justify-center bg-brand">
 												<FileText size={48} className="text-blue-100" />
@@ -136,20 +159,26 @@ export default function DownloadsPage() {
 										)}
 
 										{/* Document Info */}
-										<div className="p-6">
-											<span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-3">{doc.category}</span>
+										<div className="p-6 flex flex-col justify-between flex-1">
+											<span className="px-3 py-1 w-fit bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-3">{doc.category}</span>
 											<h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{doc.title}</h3>
 											<div className="flex items-center text-sm text-gray-500 mb-4">
 												<Calendar size={16} className="mr-2" />
 												{doc.date}
 											</div>
 
-											{/* Action Buttons */}
-											<div className="flex gap-3">
-												<button onClick={() => handleDownload(doc.fileUrl, doc.title)} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium shadow-md">
-													<Download size={18} />
-													Download
-												</button>
+											<div className="flex justify-between items-end">
+												{/* Action Buttons */}
+												<div className="flex gap-3 w-fit">
+													<button onClick={() => handleDownload(doc.fileUrl, doc.title, doc.id)} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium shadow-md">
+														<Download size={18} />
+														Download
+													</button>
+												</div>
+												<div className="flex items-center text-xs text-gray-500 mb-2">
+													<Download size={14} className="mr-1" />
+													{doc.downloadCount ?? 0} downloads
+												</div>
 											</div>
 										</div>
 									</div>
