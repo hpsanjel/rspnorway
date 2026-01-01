@@ -47,7 +47,7 @@ export default function GetInvolvedPage() {
 	}, []);
 
 	return (
-		<div className="min-h-screen mt-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+		<div className="min-h-screen mt-20 md:mt-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
 			{/* Hero Section with Animated Background */}
 			<div className="relative overflow-hidden bg-gradient-to-b from-blue-600 to-brand text-white pt-24 pb-48">
 				<div className="absolute inset-0 opacity-20">
@@ -56,14 +56,14 @@ export default function GetInvolvedPage() {
 				</div>
 
 				<div className="relative max-w-6xl mx-auto px-4 text-center">
-					<h1 className="text-2xl md:text-4xl font-bold mb-6 animate-fade-in">Get Involved</h1>
+					<h1 className="text-3xl md:text-4xl font-bold mb-6 animate-fade-in">Get Involved</h1>
 					<p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">Your participation can transform Nepal. Join thousands of committed individuals working towards a progressive, corruption-free nation.</p>
-					<div className="flex flex-wrap justify-center gap-4">
+					<div className="flex justify-center gap-4">
 						<a href="/opportunities" className="px-8 py-4 bg-white text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg">
-							Explore Opportunities
+							See Opportunities
 						</a>
 						<a href="#volunteer" className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105">
-							Become a Volunteer
+							Volunteering
 						</a>
 					</div>
 				</div>
@@ -71,7 +71,7 @@ export default function GetInvolvedPage() {
 
 			{/* Impact Stats Section */}
 			<div className="max-w-6xl mx-auto px-4 -mt-20 relative z-10">
-				<div className="grid md:grid-cols-4 gap-6">
+				<div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 					<StatCard number="100+" label="Active Members" icon="👥" delay="0s" />
 					<StatCard number="20+" label="Events Organized" icon="📅" delay="0.1s" />
 					<StatCard number="30+" label="Cities Reached" icon="🌍" delay="0.2s" />
@@ -80,8 +80,8 @@ export default function GetInvolvedPage() {
 			</div>
 
 			{/* Ways to Get Involved Section */}
-			<div id="ways" className="max-w-6xl mx-auto px-4 py-20">
-				<h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4">Ways to Make a Difference</h2>
+			<div id="ways" className="max-w-6xl mx-auto px-4 pt-20 pb-4 md:pb-20">
+				<h2 className="text-3xl md:text-5xl font-bold text-gray-900 text-center mb-4">Ways to Make a Difference</h2>
 				<p className="text-xl text-gray-600 text-center mb-16 max-w-3xl mx-auto">Choose how you want to contribute to building a better Nepal</p>
 
 				<div className="grid md:grid-cols-3 gap-8">
@@ -92,13 +92,13 @@ export default function GetInvolvedPage() {
 			</div>
 
 			{/* Volunteer Form Section */}
-			<div id="volunteer" className="bg-blue-200 py-20">
+			<div id="volunteer" className="bg-blue-200 md:py-20 py-4">
 				<div className="max-w-6xl mx-auto px-4">
 					<div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
 						<div className="grid md:grid-cols-2">
 							{/* Left Side - Info */}
 							<div className="bg-brand p-12 text-white">
-								<h2 className="text-4xl font-bold mb-6">Become a Volunteer</h2>
+								<h2 className="text-3xl md:text-4xl font-bold mb-6">Become a Volunteer</h2>
 								<p className="text-blue-100 mb-8 text-lg">Join our dedicated team of volunteers and be the change you want to see in Nepal.</p>
 
 								<div className="space-y-6">
@@ -120,7 +120,7 @@ export default function GetInvolvedPage() {
 
 			{/* Testimonials Section */}
 			<div className="max-w-6xl mx-auto px-4 py-20">
-				<h2 className="text-4xl font-bold text-gray-900 text-center mb-16">Voices of Change</h2>
+				<h2 className="text-3xl font-bold text-gray-900 text-center mb-12 md:mb-16">Voices of Change</h2>
 				<div className="grid md:grid-cols-3 gap-8">
 					{testimonials.map((testimonial, index) => (
 						<TestimonialCard key={index} {...testimonial} />
@@ -131,14 +131,14 @@ export default function GetInvolvedPage() {
 			{/* Call to Action */}
 			<div className="bg-gradient-to-b from-blue-600 to-brand text-white py-20">
 				<div className="max-w-4xl mx-auto px-4 text-center">
-					<h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Make History?</h2>
+					<h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to Make History?</h2>
 					<p className="text-xl text-blue-100 mb-8">Join RSP Norway today and be part of Nepal&apos;s transformation story</p>
-					<div className="flex flex-wrap justify-center gap-4">
+					<div className="flex justify-center gap-4">
 						<a href="/membership" className="px-10 py-4 bg-white text-blue-600 rounded-full font-bold text-lg hover:bg-blue-50 transition-all transform hover:scale-105 shadow-xl">
-							Become a Member
+							Become Member
 						</a>
 						<a href="/contact" className="px-10 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105">
-							Contact Us
+							Contact
 						</a>
 					</div>
 				</div>

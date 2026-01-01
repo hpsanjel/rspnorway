@@ -221,7 +221,7 @@ export default function EventsAndNoticesPage() {
 
 	// Main Page - Events & Notices Grid
 	return (
-		<div className="min-h-screen mt-24">
+		<div className="min-h-screen mt-20 md:mt-24">
 			<div className="container max-w-7xl mx-auto px-4 py-12 md:py-16">
 				{/* Header */}
 				<div className="text-center mb-12">

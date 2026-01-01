@@ -102,7 +102,7 @@ export default function MembershipPage() {
 					<h2 className="text-3xl font-bold text-gray-900 mb-4">Welcome to RSP Norway!</h2>
 					<p className="text-gray-700 mb-6">Your membership application has been received successfully. Our team will review your application and contact you within 48 hours.</p>
 					<button onClick={() => setSubmitted(false)} className="bg-brand text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-						Submit Another Application
+						Submit Another
 					</button>
 				</div>
 			</div>
@@ -110,7 +110,7 @@ export default function MembershipPage() {
 	}
 
 	return (
-		<div className="min-h-screen mt-24 bg-gradient-to-br from-blue-50 to-indigo-100">
+		<div className="min-h-screen mt-12 md:mt-24 bg-gradient-to-br from-blue-50 to-indigo-100">
 			{/* Hero Section */}
 			{/* <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
 				<div className="max-w-6xl mx-auto px-4">
@@ -302,7 +302,7 @@ export default function MembershipPage() {
 						{/* Submit Button */}
 						<div className="flex gap-4">
 							<button onClick={handleSubmit} className={`flex-1 bg-brand text-white py-4 px-8 rounded-lg font-semibold hover:bg-brand/90 transition-colors shadow-lg hover:shadow-xl${!formData.agreeTerms ? " opacity-50 cursor-not-allowed" : ""}`} disabled={!formData.agreeTerms}>
-								Submit Application
+								Submit
 							</button>
 							<button
 								onClick={() =>

@@ -53,14 +53,14 @@ export default function ContactPage() {
 	}
 
 	return (
-		<section className="container min-h-screen mt-24 mx-auto px-4 py-12 md:py-16 mb-16">
+		<section className="container min-h-screen mt-20 md:mt-24 mx-auto px-4 py-12 md:py-16 mb-16">
 			<h2 className="text-3xl text-center font-bold mb-6">
 				Contact <span className="mx-auto text-[#0094da]">Us</span>
 			</h2>
-			<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
-			<div className="grid grid-cols-3 gap-8 mx-auto max-w-5xl">
-				<div className="bg-white col-span-2 shadow-xl rounded-lg p-8 w-full">
-					<h1 className="text-3xl font-bold text-center mb-4 text-brand">We&apos;d love to hear from you!</h1>
+			<div className="w-24 h-1 mx-auto bg-[#0094da] md:mb-12 rounded-full"></div>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-5xl">
+				<div className="bg-white lg:col-span-2 shadow-xl rounded-lg p-8 w-full">
+					<h1 className="text-lg md:text-3xl font-bold text-center mb-2 md:mb-4 text-brand">We&apos;d love to hear from you!</h1>
 					<p className="text-center text-gray-600 mb-8"> Fill out the form below and we&apos;ll respond as soon as possible.</p>
 					<form onSubmit={handleSubmit} className="space-y-6">
 						<div>
@@ -83,11 +83,11 @@ export default function ContactPage() {
 					</form>
 				</div>
 				<div className="bg-brand/5 rounded-lg p-8 w-full grid">
-					<div className="row-span-1">
+					<div className="row-span-1 mb-2 md:mb-0">
 						<h3 className="text-2xl font-bold text-brand">Contact Information</h3>
 					</div>
 
-					<div className="row-span-1 flex items-start gap-4">
+					<div className="row-span-1 mb-2 md:mb-0 flex items-start gap-4">
 						<MapPin className="w-5 h-5 text-brand flex-shrink-0 mt-1" />
 						<div>
 							<p className="font-semibold text-gray-900 mb-1">Visiting Address</p>
@@ -96,7 +96,7 @@ export default function ContactPage() {
 						</div>
 					</div>
 
-					<div className="row-span-1 flex items-start gap-4">
+					<div className="row-span-1 mb-2 md:mb-0 flex items-start gap-4">
 						<Phone className="w-5 h-5 text-brand flex-shrink-0 mt-1" />
 						<div>
 							<p className="font-semibold text-gray-900 mb-1">Phone Numbers</p>

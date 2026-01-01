@@ -121,7 +121,7 @@ export default function Hero() {
 					</motion.p>
 
 					{/* Buttons */}
-					<motion.div className="flex flex-col md:flex-row gap-4 justify-center" key={`buttons-${currentSlide}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
+					<motion.div className="flex gap-4 justify-center" key={`buttons-${currentSlide}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
 						<Link href={currentSlideData.primaryLink}>
 							<Button
 								className={`text-white px-6 py-3 rounded-lg transition-all duration-300`}
