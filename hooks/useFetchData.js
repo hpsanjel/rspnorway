@@ -1,11 +1,12 @@
 "use client";
 
+import { useLoading } from "@/context/LoadingContext";
 import { useEffect, useState, useCallback } from "react";
 
 const useFetchData = (apiEndpoint, responseKey = "data") => {
 	const [data, setData] = useState([]);
 	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const { setLoading } = useLoading();
 
 	const fetchData = useCallback(async () => {
 		setLoading(true);
@@ -35,7 +36,7 @@ const useFetchData = (apiEndpoint, responseKey = "data") => {
 		fetchData();
 	}, [fetchData]);
 
-	return { data, error, loading, mutate };
+	return { data, error, mutate };
 };
 
 export default useFetchData;

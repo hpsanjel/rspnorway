@@ -5,9 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
-	const { data: settings, loading } = useFetchData("/api/settings", "settings");
-
-	if (loading) return <p>Loading...</p>;
+	const { data: settings } = useFetchData("/api/settings", "settings");
 
 	return (
 		<footer className="bg-gradient-to-b to-blue-50 from-transparent text-black py-8">

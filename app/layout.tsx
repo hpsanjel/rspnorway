@@ -5,6 +5,20 @@ import Footer from "@/components/Footer";
 import { useState } from "react";
 import Header from "@/components/Header";
 import ClientLayout from "./ClientLayout";
+import { LoadingProvider } from "@/context/LoadingContext";
+import GlobalLoading from "@/components/GlobalLoading";
+import { useLoading } from "@/context/LoadingContext";
+
+function LoadingWrapper({ children }: { children: React.ReactNode }) {
+	const { isLoading } = useLoading();
+
+	return (
+		<>
+			{isLoading && <GlobalLoading />}
+			{children}
+		</>
+	);
+}
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -25,9 +39,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<ClientLayout>
 					<Header isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-					{children}
+					<LoadingProvider>
+						<LoadingWrapper>{children}</LoadingWrapper>
+						<Footer />
+					</LoadingProvider>
 				</ClientLayout>
-				<Footer />
 			</body>
 		</html>
 	);

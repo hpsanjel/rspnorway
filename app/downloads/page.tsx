@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Download, FileText, Calendar, Search, Filter } from "lucide-react";
 import Image from "next/image";
+import { useLoading } from "@/context/LoadingContext";
 
 interface Document {
 	id: string;
@@ -20,7 +21,7 @@ export default function DownloadsPage() {
 	const [showMobileFilter, setShowMobileFilter] = useState(false);
 
 	const [documents, setDocuments] = useState<Document[]>([]);
-	const [loading, setLoading] = useState(true);
+	const { isLoading, setLoading } = useLoading();
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -94,10 +95,64 @@ export default function DownloadsPage() {
 		return matchesSearch && matchesCategory;
 	});
 
-	if (loading) {
+	if (isLoading) {
 		return (
-			<div className="mt-24 min-h-screen flex items-center justify-center">
-				<p className="text-lg text-gray-500">Loading documents...</p>
+			<div className="mt-16 md:mt-24 min-h-screen">
+				<main className="container mx-auto px-4 py-8">
+					<section className="container mx-auto md:px-4 py-8 mb-16">
+						<h2 className="text-3xl text-center font-bold mb-6">
+							Download <span className="mx-auto text-[#0094da]">Documents</span>
+						</h2>
+						<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
+
+						{/* Main Content */}
+						<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
+							{/* Search and Filter Bar Skeleton */}
+							<div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-8">
+								<div className="flex flex-col md:flex-row gap-2 md:gap-4">
+									<div className="flex items-center w-full md:flex-1 min-w-0 relative">
+										<div className="w-full h-12 bg-gray-200 rounded-xl animate-pulse" />
+										<div className="ml-2 md:hidden w-10 h-10 bg-gray-200 rounded-lg animate-pulse" />
+									</div>
+									<div className="w-full md:w-auto min-w-0">
+										<div className="hidden md:flex gap-2 overflow-x-auto pb-2 md:pb-0">
+											{Array.from({ length: 4 }).map((_, i) => (
+												<div key={i} className="w-24 h-10 bg-gray-200 rounded-lg animate-pulse" />
+											))}
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{/* Documents Grid Skeleton */}
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+								{Array.from({ length: 4 }).map((_, i) => (
+									<div key={i} className="flex bg-white rounded-2xl shadow-md overflow-hidden max-h-[224px] group animate-pulse">
+										<div className="hidden lg:flex w-48 h-full items-center justify-center bg-gray-200" />
+										<div className="lg:hidden w-full max-h-48 h-[192px] flex items-center justify-center bg-gray-200" />
+										<div className="p-6 flex flex-col justify-between flex-1">
+											<div className="px-3 py-2 w-24 bg-gray-200 rounded-full mb-3" />
+											<div className="h-6 w-3/4 bg-gray-200 rounded mb-2" />
+											<div className="flex items-center text-sm text-gray-500 mb-4">
+												<div className="w-4 h-4 bg-gray-200 rounded mr-2" />
+												<div className="h-4 w-24 bg-gray-200 rounded" />
+											</div>
+											<div className="flex justify-between items-end">
+												<div className="flex gap-3 w-fit">
+													<div className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-200 rounded-xl w-32" />
+												</div>
+												<div className="flex items-center text-xs text-gray-500 mb-2">
+													<div className="w-4 h-4 bg-gray-200 rounded mr-1" />
+													<div className="h-4 w-16 bg-gray-200 rounded" />
+												</div>
+											</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					</section>
+				</main>
 			</div>
 		);
 	}
@@ -226,24 +281,6 @@ export default function DownloadsPage() {
 								<p className="text-gray-500">Try adjusting your search or filter to find what you&apos;re looking for.</p>
 							</div>
 						)}
-
-						{/* Stats Footer */}
-						{/* <div className="mt-12 bg-white rounded-2xl shadow-lg p-8">
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-								<div>
-									<div className="text-4xl font-bold text-blue-600 mb-2">{documents.length}</div>
-									<div className="text-gray-600 font-medium">Total Documents</div>
-								</div>
-								<div>
-									<div className="text-4xl font-bold text-blue-600 mb-2">{categories.length - 1}</div>
-									<div className="text-gray-600 font-medium">Categories</div>
-								</div>
-								<div>
-									<div className="text-4xl font-bold text-blue-600 mb-2">{filteredDocuments.length}</div>
-									<div className="text-gray-600 font-medium">Showing Results</div>
-								</div>
-							</div>
-						</div> */}
 					</div>
 				</section>
 			</main>

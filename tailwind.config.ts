@@ -60,9 +60,15 @@ export default {
 					"0%": { transform: "translateX(0)" },
 					"100%": { transform: "translateX(-100%)" },
 				},
+				"spin-reverse": {
+					from: { transform: "rotate(360deg)" },
+					to: { transform: "rotate(0deg)" },
+				},
 			},
 			animation: {
 				scroll: "scroll 20s linear infinite",
+				"spin-slow": "spin 2s linear infinite",
+				"spin-reverse": "spin-reverse 1s linear infinite",
 			},
 		},
 	},

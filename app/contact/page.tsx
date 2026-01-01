@@ -1,5 +1,6 @@
 "use client";
 
+import { useLoading } from "@/context/LoadingContext";
 import useFetchData from "@/hooks/useFetchData";
 import { Mail, MapPin, Phone } from "lucide-react";
 import React, { useState } from "react";
@@ -13,7 +14,7 @@ type Setting = {
 
 export default function ContactPage() {
 	const [form, setForm] = useState({ name: "", email: "", message: "" });
-	const [loading, setLoading] = useState(false);
+	const { isLoading, setLoading } = useLoading();
 	const [success, setSuccess] = useState("");
 	const [error, setError] = useState("");
 
@@ -75,8 +76,8 @@ export default function ContactPage() {
 							<label className="block text-sm font-medium text-gray-700">Message</label>
 							<textarea name="message" value={form.message} onChange={handleChange} required rows={5} className="mt-1 block w-full rounded-md border border-gray-300 bg-white/80 shadow focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:outline-none px-4 py-2 text-gray-800 placeholder-gray-400" placeholder="Type your message here..." />
 						</div>
-						<button type="submit" disabled={loading} className="w-full py-3 px-6 bg-brand text-white font-semibold rounded-md shadow hover:bg-brand/90 transition-colors">
-							{loading ? "Sending..." : "Send Message"}
+						<button type="submit" disabled={isLoading} className="w-full py-3 px-6 bg-brand text-white font-semibold rounded-md shadow hover:bg-brand/90 transition-colors">
+							{isLoading ? "Sending..." : "Send Message"}
 						</button>
 						{success && <p className="text-green-600 text-center mt-2">{success}</p>}
 						{error && <p className="text-red-600 text-center mt-2">{error}</p>}

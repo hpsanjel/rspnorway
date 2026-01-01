@@ -4,6 +4,7 @@ import GalleryForm from "@/components/GalleryForm";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useLoading } from "@/context/LoadingContext";
 
 type GalleryItem = {
 	_id: string;
@@ -17,7 +18,7 @@ export default function Page() {
 	const [gallery, setGallery] = useState<GalleryItem[]>([]);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [galleryToEdit, setGalleryToEdit] = useState<GalleryItem | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
+	const { setLoading } = useLoading();
 	const [error, setError] = useState<string>("");
 
 	const fetchGallery = async (): Promise<GalleryItem[]> => {
@@ -28,7 +29,6 @@ export default function Page() {
 
 	const loadGallery = async () => {
 		setLoading(true);
-		setError("");
 		try {
 			const data = await fetchGallery();
 			setGallery(data);
@@ -87,32 +87,29 @@ export default function Page() {
 					Add New
 				</button>
 			</div>
-			{loading ? (
-				<div>Loading...</div>
-			) : error ? (
-				<div className="text-red-600">{error}</div>
-			) : (
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-					{gallery.map((item) => (
-						<div key={item._id} className="bg-white rounded shadow p-3 flex flex-col gap-2">
-							<div className="flex flex-wrap gap-2">
-								{(item.media || []).map((src, i) => (
-									<Image key={i} src={src} alt={item.alt || "Gallery image"} width={80} height={80} className="w-20 h-20 object-cover rounded" />
-								))}
-							</div>
-							<div className="font-semibold">{item.category || item.classLabel}</div>
-							<div className="flex gap-2 mt-2">
-								<button className="bg-brand text-white px-3 py-1 rounded hover:bg-blue-700" onClick={() => handleEdit(item)}>
-									Edit
-								</button>
-								<button className="bg-red-600 text-white px-3 py-1 rounded hover:bg-brand" onClick={() => handleDelete(item._id)}>
-									Delete
-								</button>
-							</div>
+
+			{error && <div className="mb-4 p-4 bg-red-100 text-red-700 rounded text-center font-semibold">{error}</div>}
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+				{gallery.map((item) => (
+					<div key={item._id} className="bg-white rounded shadow p-3 flex flex-col gap-2">
+						<div className="flex flex-wrap gap-2">
+							{(item.media || []).map((src, i) => (
+								<Image key={i} src={src} alt={item.alt || "Gallery image"} width={80} height={80} className="w-20 h-20 object-cover rounded" />
+							))}
 						</div>
-					))}
-				</div>
-			)}
+						<div className="font-semibold">{item.category || item.classLabel}</div>
+						<div className="flex gap-2 mt-2">
+							<button className="bg-brand text-white px-3 py-1 rounded hover:bg-blue-700" onClick={() => handleEdit(item)}>
+								Edit
+							</button>
+							<button className="bg-red-600 text-white px-3 py-1 rounded hover:bg-brand" onClick={() => handleDelete(item._id)}>
+								Delete
+							</button>
+						</div>
+					</div>
+				))}
+			</div>
+
 			{openModal && (
 				<div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
 					<div className="bg-white p-4 rounded shadow-lg w-full max-w-lg mx-2">

@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useLoading } from "@/context/LoadingContext";
 
 export default function ResetPasswordPage() {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState("");
-	const [loading, setLoading] = useState(false);
+	const { isLoading, setLoading } = useLoading();
 
 	function TokenField() {
 		const searchParams = useSearchParams();
@@ -67,8 +68,8 @@ export default function ResetPasswordPage() {
 				</div>
 				{error && <p className="text-red-600">{error}</p>}
 				{message && <p className="text-[#0094da]">{message}</p>}
-				<button type="submit" className="w-full bg-[#0094da] text-white py-2 rounded font-bold mt-4" disabled={loading}>
-					{loading ? "Resetting..." : "Reset Password"}
+				<button type="submit" className="w-full bg-[#0094da] text-white py-2 rounded font-bold mt-4" disabled={isLoading}>
+					{isLoading ? "Resetting..." : "Reset Password"}
 				</button>
 			</form>
 		</div>

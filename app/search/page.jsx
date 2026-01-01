@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Search, Calendar, BookOpen, Image as ImageIcon, Newspaper, User } from "lucide-react";
+import { useLoading } from "@/context/LoadingContext";
 
 function SearchContent() {
 	const searchParams = useSearchParams();
@@ -17,7 +18,7 @@ function SearchContent() {
 		pages: [],
 		users: [],
 	});
-	const [loading, setLoading] = useState(true);
+	const { setLoading } = useLoading();
 
 	useEffect(() => {
 		if (query) {
