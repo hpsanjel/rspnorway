@@ -1,8 +1,9 @@
 "use client";
-import { Facebook, Instagram, MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import useFetchData from "@/hooks/useFetchData";
 import Link from "next/link";
 import Image from "next/image";
+import SocialMediaLinks from "./SocialMediaLinks";
 
 export default function Footer() {
 	const { data: settings } = useFetchData("/api/settings", "settings");
@@ -28,17 +29,10 @@ export default function Footer() {
 						<p className="leading-relaxed">राष्ट्रिय स्वतन्त्र पार्टी (रास्वपा) सबै नेपालीको समतामूलक उन्नतिप्रति कटिवद्ध सामाजिक न्यायसहितको उदार अर्थतन्त्रमा विश्वास गर्ने बहुलवादी लोकतान्त्रिक पार्टी हो। यसको ध्येय वैयक्तिक स्वतन्त्रता र मौलिक हकको प्रत्याभूतिपूर्वक पूर्ण लोकतान्त्रिक गणतन्त्रात्मक शासन प्रणाली भित्र विधिमा आधारित जवाफदेहीपूर्ण असल शासन मार्फत समन्यायिक समावेशी समाज निर्माण गर्नु हो।</p>
 					</div>
 
-					{/* Social Links Column */}
+					{/* Social Media Links Column */}
 					<div className="space-y-4">
 						<h3 className="text-xl font-semibold relative pb-2 after:absolute after:bottom-0 after:left-0 after:w-12 after:h-0.5 after:bg-[#0094da]">Follow Us</h3>
-						<div className="flex space-x-3">
-							<a href={settings?.[0]?.facebook} target="_blank" className="bg-gray-100 hover:bg-brand w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300">
-								<Facebook className="h-5 w-5" />
-							</a>
-							<a href={settings?.[0]?.instagram} target="_blank" className="bg-gray-100 hover:bg-purple-600 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300">
-								<Instagram className="h-5 w-5" />
-							</a>
-						</div>
+						<SocialMediaLinks />
 					</div>
 
 					{/* Contact Column */}

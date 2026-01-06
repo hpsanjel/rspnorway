@@ -26,7 +26,7 @@ function SearchContent() {
 		} else {
 			setLoading(false);
 		}
-	}, [query, setLoading, searchContent]);
+	}, [query, setLoading]);
 
 	const searchContent = async (searchQuery) => {
 		setLoading(true);

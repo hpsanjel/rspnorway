@@ -12,14 +12,10 @@ export function middleware(request: NextRequest) {
 	if (pathname === "/") {
 		return NextResponse.redirect(new URL("/en", request.url));
 	}
-	// Never redirect /en, /no, /ne or their subpaths
-	if (/^\/(en|no|ne)(\/|$)/.test(pathname)) {
-		return intlMiddleware(request);
-	}
-	// For all other paths, just run the intl middleware
+	// For locale-prefixed paths, run the intl middleware
 	return intlMiddleware(request);
 }
 
 export const config = {
-	matcher: ["/(en|no|ne)/:path*"],
+	matcher: ["/", "/(en|no|ne)(/.*)?"],
 };

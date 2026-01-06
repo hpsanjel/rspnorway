@@ -1,6 +1,13 @@
 {
-	"home": {
-		"title": "Hus",
-		"welcome_message": "Velkommen til vår nettside!"
+	"navigation": {
+		"home": "Hjem",
+		"about": "Om Oss",
+		"notices": "Meldinger",
+		"gallery": "Galleri",
+		"circulars": "Sirkulærer",
+		"downloads": "Nedlastinger",
+		"contact": "Kontakt",
+		"login": "Logg Inn",
+		"become_a_member": "Bli Medlem"
 	}
 }

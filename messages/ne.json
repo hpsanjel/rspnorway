@@ -1,6 +1,14 @@
 {
-	"home": {
-		"title": "Ghar",
-		"welcome_message": "Swagat cha!"
+	"navigation": {
+		"home": "गृहपृष्ठ",
+		"about": "हाम्रो बारेमा",
+		"contact": "सम्पर्क",
+		"downloads": "डाउनलोडहरू",
+		"notices": "सूचनाहरू",
+		"gallery": "ग्यालेरी",
+		"login": "लगइन",
+		"membership": "सदस्यता",
+		"circulars": "परिपत्रहरू",
+		"become_a_member": "सदस्य बन्नुहोस्"
 	}
 }

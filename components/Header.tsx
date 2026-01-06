@@ -4,10 +4,18 @@ import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Facebook, Instagram, Menu, Search, X, ChevronDown, LogOut, Settings, User } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import SearchModal from "@/components/SearchModal";
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import Flag from "@/components/ui/Flag";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import SocialMediaLinks from "./SocialMediaLinks";
+
+const LANGUAGES = [
+	{ code: "ne", flag: "np", label: "नेपाली" },
+	{ code: "no", flag: "no", label: "Norsk" },
+	{ code: "en", flag: "gb", label: "English" },
+];
 
 interface NavItemProps {
 	title: string;
@@ -19,16 +27,10 @@ interface NavItemProps {
 	setActiveDropdown: (dropdown: string | null) => void;
 }
 
-type HeaderProps = {
-	isMenuOpen: boolean;
-	toggleMenu: () => void;
-};
-
-const NavItem = ({ title, href, isScrolled, pathname, dropdownItems, activeDropdown, setActiveDropdown }: NavItemProps) => {
+function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropdown, setActiveDropdown }: NavItemProps) {
 	const isActive = pathname === href;
 	const hasDropdown = Array.isArray(dropdownItems) && dropdownItems.length > 0;
 	const isDropdownOpen = activeDropdown === href;
-
 	const handleDropdownClick = (e: React.MouseEvent) => {
 		e.stopPropagation();
 		if (isDropdownOpen) {
@@ -37,7 +39,6 @@ const NavItem = ({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 			setActiveDropdown(href);
 		}
 	};
-
 	return (
 		<div className="relative">
 			{hasDropdown ? (
@@ -50,7 +51,6 @@ const NavItem = ({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 					{title}
 				</Link>
 			)}
-
 			{hasDropdown && isDropdownOpen && (
 				<div className="absolute z-50 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1">
 					{dropdownItems!.map((item) => (
@@ -62,36 +62,39 @@ const NavItem = ({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 			)}
 		</div>
 	);
-};
+}
 
-export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
+export default function MenuHeader() {
+	const router = useRouter();
+	const pathname = usePathname(); // This returns pathname WITHOUT locale prefix
+	const locale = useLocale(); // This is the proper way to get current locale with next-intl
+
+	const [showLangDropdown, setShowLangDropdown] = useState(false);
+	const langDropdownRef = useRef<HTMLDivElement>(null);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const toggleMenu = () => setIsMenuOpen((v) => !v);
 	const { data: session } = useSession();
 	const user = session?.user;
-	const avatarInitial = user?.email ? user.email.charAt(0).toUpperCase() : "U";
-	const navItems = [
-		{ title: "Home", href: "/" },
-		{ title: "About Us", href: "/about-us" },
-		{
-			title: "Events",
-			href: "/events-notices",
-			dropdownItems: [
-				{ title: "Upcoming Events", href: "/events-notices" },
-				{ title: "Past Events", href: "/events-notices/past" },
-			],
-		},
-		{ title: "Gallery", href: "/gallery" },
-		{ title: "Circulars", href: "/circulars" },
-		{ title: "Downloads", href: "/downloads" },
-		{ title: "Contact", href: "/contact" },
-	];
-	const mobileNavItems = navItems;
+	const avatarInitial = typeof user?.email === "string" && user.email ? user.email.charAt(0).toUpperCase() : "U";
+	const t = useTranslations("navigation");
 
+	// Build navItems WITHOUT locale prefix - next-intl Link component handles this automatically
+	const navItems = [
+		{ title: t("about"), href: "/about-us" },
+		{ title: t("notices"), href: "/notices" },
+		{ title: t("gallery"), href: "/gallery" },
+		{ title: t("downloads"), href: "/downloads" },
+		{ title: t("contact"), href: "/contact" },
+	];
+
+	const mobileNavItems = navItems;
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 	const [showUserDropdown, setShowUserDropdown] = useState(false);
 	const userDropdownRef = useRef<HTMLDivElement>(null);
-	// Collapse user dropdown when clicking outside
+	const headerRef = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		if (!showUserDropdown) return;
 		function handleClickOutside(event: MouseEvent) {
@@ -104,26 +107,6 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [showUserDropdown]);
-	const pathname = usePathname();
-	const headerRef = useRef<HTMLDivElement>(null);
-
-	const t = useTranslations("home");
-
-	function handleSignOut() {
-		signOut({ callbackUrl: "/" });
-	}
-
-	function openModal() {
-		setIsModalOpen(true);
-	}
-	function closeModal() {
-		setIsModalOpen(false);
-	}
-
-	function handleHeaderClick() {
-		setActiveDropdown(null);
-		setShowUserDropdown(false);
-	}
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -133,13 +116,145 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
+	useEffect(() => {
+		if (!showLangDropdown) return;
+		function handleClickOutside(event: MouseEvent) {
+			if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+				setShowLangDropdown(false);
+			}
+		}
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [showLangDropdown]);
+
+	function handleSignOut() {
+		signOut({ callbackUrl: "/" });
+	}
+
+	function openModal() {
+		setIsModalOpen(true);
+	}
+
+	function closeModal() {
+		setIsModalOpen(false);
+	}
+
+	function handleHeaderClick() {
+		setActiveDropdown(null);
+		setShowUserDropdown(false);
+		setShowLangDropdown(false);
+	}
+
+	// Fixed locale change function - use next-intl's router properly
+	const handleLocaleChange = (code: string) => {
+		if (code === locale) return;
+
+		// Store in localStorage
+		if (typeof window !== "undefined") {
+			localStorage.setItem("locale", code);
+		}
+
+		setShowLangDropdown(false);
+
+		// Use next-intl router's replace with locale option
+		// pathname is already without locale prefix, so just pass it directly
+		router.replace(pathname, { locale: code });
+	};
+
 	return (
 		<>
+			<section className={`w-full h-10 p-[5px] border-b border-gray-300 shadow-sm fixed top-0 left-0 z-50 transition-colors duration-500 will-change-[background-color] ${isScrolled ? "bg-[#0094da]" : "bg-gradient-to-r from-gray-50 to-gray-100"}`}>
+				<div className="container mx-auto px-4">
+					<div className="flex justify-between items-center">
+						{/* Left Section - Contact Info */}
+						<div className="flex items-center gap-4 md:gap-6">
+							<a href="tel:+4796800984" className="flex items-center gap-2 text-gray-700 hover:text-brand transition-colors group">
+								<svg className={`w-4 h-4 ${isScrolled ? "text-white" : "text-brand"} group-hover:scale-110 transition-transform`} fill="currentColor" viewBox="0 0 20 20">
+									<path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+								</svg>
+								<span className={`hidden sm:inline text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>96800984 | 45921449 | 47734203</span>
+								<span className={`sm:hidden text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>Call Us</span>
+							</a>
+
+							<a href="mailto:info@rspnorway.org" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-brand transition-colors group">
+								<svg className={`w-4 h-4 ${isScrolled ? "text-white" : "text-brand"} group-hover:scale-110 transition-transform`} fill="currentColor" viewBox="0 0 20 20">
+									<path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+									<path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+								</svg>
+								<span className={`text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>info@rspnorway.org</span>
+							</a>
+						</div>
+
+						{/* Right Section - Social & Language */}
+						<div className="flex items-center gap-3 md:gap-4">
+							{/* Social Media Links */}
+							<SocialMediaLinks />
+
+							{/* Divider */}
+							<div className="h-6 w-px bg-gray-300 hidden sm:block"></div>
+
+							{/* Language Switcher Dropdown */}
+							<div className="relative select-none" ref={langDropdownRef}>
+								<button
+									onClick={(e) => {
+										e.stopPropagation();
+										setShowLangDropdown((v) => !v);
+									}}
+									className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1 hover:border-brand hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all duration-200"
+									aria-label="Change language"
+								>
+									{(() => {
+										const flagCode = LANGUAGES.find((l) => l.code === locale)?.flag;
+										return <Flag country={flagCode as "no" | "np" | "gb"} size={20} />;
+									})()}
+									<span className="hidden sm:inline text-sm font-medium text-gray-700">{LANGUAGES.find((l) => l.code === locale)?.label}</span>
+									<ChevronDown size={16} className={`text-gray-500 transition-transform duration-200 ${showLangDropdown ? "rotate-180" : ""}`} />
+								</button>
+
+								{showLangDropdown && (
+									<>
+										{/* Backdrop for mobile */}
+										<div className="fixed inset-0 z-40 md:hidden" onClick={() => setShowLangDropdown(false)} />
+
+										{/* Dropdown Menu */}
+										<div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+											<div className="py-1">
+												{LANGUAGES.map((lang) => (
+													<button
+														key={lang.code}
+														onClick={(e) => {
+															e.stopPropagation();
+															handleLocaleChange(lang.code);
+														}}
+														className={`flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors ${locale === lang.code ? "bg-brand/10 text-brand font-semibold" : "text-gray-700 hover:bg-gray-50"}`}
+													>
+														<Flag country={lang.flag as "no" | "np" | "gb"} size={20} />
+														<span className="text-sm">{lang.label}</span>
+														{locale === lang.code && (
+															<svg className="ml-auto w-4 h-4 text-brand" fill="currentColor" viewBox="0 0 20 20">
+																<path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+															</svg>
+														)}
+													</button>
+												))}
+											</div>
+										</div>
+									</>
+								)}
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
 			{/* Push-down search bar */}
 			<div className={`w-full transition-all duration-300 ${isModalOpen ? "h-auto" : "h-0 overflow-hidden"}`} style={{ zIndex: 60, position: "relative" }}>
 				{isModalOpen && <SearchModal closeModal={closeModal} />}
 			</div>
-			<motion.header ref={headerRef} className={`fixed w-full z-50 transition-colors duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-[#0094da]"}`} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} onClick={handleHeaderClick}>
+
+			<motion.header ref={headerRef} className={`fixed w-full z-40 transition-colors duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-[#0094da]"}`} style={{ top: "40px" }} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} onClick={handleHeaderClick}>
 				<div className="container mx-auto p-4 flex justify-between items-center">
 					<Link href="/" className="flex items-center space-x-4 cursor-pointer group">
 						<Image src="/rsp-norway-logo.png" alt="RSP Norway Logo" width={200} height={200} className="w-auto h-12 md:h-16 rounded-md" />
@@ -171,10 +286,12 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 								<Search />
 							</span>
 						</button>
-						<Link href="https://www.facebook.com/Magicchalk2023" className={`hidden sm:block border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Facebook" onClick={() => setActiveDropdown(null)}>
+
+						<Link href="https://www.facebook.com/profile.php?id=61577689933528" className={`hidden sm:block border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Facebook" onClick={() => setActiveDropdown(null)}>
 							<Facebook />
 						</Link>
-						<Link href="https://www.instagram.com/magic_chalk_edu/" className={`hidden sm:block border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Instagram" onClick={() => setActiveDropdown(null)}>
+
+						<Link href="#" className={`hidden sm:block border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Instagram" onClick={() => setActiveDropdown(null)}>
 							<Instagram />
 						</Link>
 
@@ -227,16 +344,17 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 												<Settings size={18} className="text-gray-400" />
 												<span>Settings</span>
 											</button>
-											<button
+
+											<Link
+												href="/membership"
 												onClick={() => {
 													setShowUserDropdown(false);
-													// Navigate to settings
 												}}
 												className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
 											>
 												<User size={18} className="text-gray-400" />
 												<span>Become a Member</span>
-											</button>
+											</Link>
 										</div>
 
 										{/* Divider */}
@@ -261,14 +379,14 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 						) : (
 							<div className="flex gap-2">
 								<Link href="/login" className={`hidden sm:block px-4 py-2 rounded-md bg-brand text-white font-medium hover:bg-brand/90 transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
-									Login
+									{t("login")}
 								</Link>
 								<Link href="/membership" className={`px-4 py-2 rounded-md text-[#007bbd] bg-gray-200 font-medium hover:bg-brand hover:text-white transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
-									{/* Become a Member */}
-									{t("welcome_message")}
+									{t("become_a_member")}
 								</Link>
 							</div>
 						)}
+
 						<div
 							className="md:hidden cursor-pointer ml-4"
 							onClick={(e) => {
@@ -288,19 +406,19 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 							<div className="fixed right-0 w-full h-full bg-[#0094da]">
 								<nav className="flex flex-col items-center text-xl font-semibold py-24">
 									{mobileNavItems.map((item) => (
-										<NavLink key={item.href} href={item.href} onClick={toggleMenu}>
+										<Link key={item.href} href={item.href} className="text-gray-300 hover:bg-slate-100 w-full text-center hover:text-red-600 transition-colors duration-300 py-2" onClick={toggleMenu}>
 											{item.title}
-										</NavLink>
+										</Link>
 									))}
 									<div className="mt-12 text-slate-300 text-center">
 										<p className="text-md underline">For Enquiry</p>
 										<p>Send us a message</p>
 									</div>
 									<div className="mt-8 flex gap-2">
-										<Link href="https://www.facebook.com/Magicchalk2023" className={`border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Facebook" onClick={() => setActiveDropdown(null)}>
+										<Link href="https://www.facebook.com/profile.php?id=61577689933528" className={`border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 text-white hover:text-slate-100`} aria-label="Facebook" onClick={() => setActiveDropdown(null)}>
 											<Facebook />
 										</Link>
-										<Link href="https://www.instagram.com/magic_chalk_edu/" className={`border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Instagram" onClick={() => setActiveDropdown(null)}>
+										<Link href="#" className={`border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 text-white hover:text-slate-100`} aria-label="Instagram" onClick={() => setActiveDropdown(null)}>
 											<Instagram />
 										</Link>
 									</div>
@@ -311,13 +429,5 @@ export default function Header({ isMenuOpen, toggleMenu }: HeaderProps) {
 				</AnimatePresence>
 			</motion.header>
 		</>
-	);
-}
-
-function NavLink({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) {
-	return (
-		<a href={href} className="text-gray-300 hover:bg-slate-100 w-full text-center hover:text-red-600 transition-colors duration-300 py-2" onClick={onClick}>
-			{children}
-		</a>
 	);
 }

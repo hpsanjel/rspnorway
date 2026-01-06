@@ -4,11 +4,8 @@ import Footer from "@/components/Footer";
 import ClientLayout from "./ClientLayout";
 import { LoadingProvider } from "@/context/LoadingContext";
 import { NextIntlClientProvider } from "next-intl";
-import MenuHeader from "@/components/MenuHeader";
-import { hasLocale } from "next-intl";
-import { routing } from "@/i18n/routing";
-import { notFound } from "next/navigation";
 import LoadingWrapperClient from "./LoadingWrapper.client";
+import Header from "@/components/Header";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -21,19 +18,14 @@ const geistMono = localFont({
 	weight: "100 900",
 });
 
-export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
-	const { locale } = await params;
-
-	if (!hasLocale(routing.locales, locale)) {
-		notFound();
-	}
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<ClientLayout>
 					<NextIntlClientProvider>
-						<MenuHeader />
 						<LoadingProvider>
+							<Header />
 							<LoadingWrapperClient>{children}</LoadingWrapperClient>
 							<Footer />
 						</LoadingProvider>

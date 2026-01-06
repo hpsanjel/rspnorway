@@ -1,6 +1,12 @@
 {
-	"home": {
-		"title": "Home",
-		"welcome_message": "Welcome to our website!"
+	"navigation": {
+		"home": "Home",
+		"about": "About Us",
+		"notices": "Notices",
+		"gallery": "Gallery",
+		"downloads": "Downloads",
+		"contact": "Contact",
+		"login": "Login",
+		"become_a_member": "Become a Member"
 	}
 }
