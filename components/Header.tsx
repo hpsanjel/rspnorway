@@ -403,7 +403,7 @@ export default function MenuHeader() {
 				<AnimatePresence>
 					{isMenuOpen && (
 						<motion.div className="md:hidden" initial={{ opacity: 0, x: 300 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 300 }} transition={{ duration: 0.3 }}>
-							<div className="fixed right-0 w-full h-full bg-brand">
+							<div className="fixed right-0 w-[60%] h-full bg-brand/90 backdrop-blur-sm shadow-lg z-50">
 								<nav className="flex flex-col items-center text-xl font-semibold py-24">
 									{mobileNavItems.map((item) => (
 										<Link key={item.href} href={item.href} className="text-gray-300 hover:bg-slate-100 w-full text-center hover:text-red-600 transition-colors duration-300 py-2" onClick={toggleMenu}>
