@@ -1,24 +1,24 @@
 import { MessageCirclePlusIcon } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function AboutUs() {
+	const t = useTranslations("about-us");
 	return (
-		<div className="mt-24 md:mt-32 min-h-screen">
+		<div className="mt-24 md:mt-32 md:mb-12 min-h-screen">
 			<main className="container mx-auto px-4 py-8">
 				<section className="container mx-auto px-4 py-8 mb:6 md:mb-8">
 					<h2 className="text-3xl text-center font-bold mb-6">
-						About <span className="mx-auto text-brand">Us</span>
+						{t("title").split(" ")[0]} <span className="mx-auto text-brand">{t("title").split(" ")[1]}</span>
 					</h2>
 					<div className="w-24 h-1 mx-auto bg-brand  md:mb-12 rounded-full"></div>
 					<div className="flex flex-col md:flex-row gap-12 items-center">
 						{/* Text Content Column */}
 						<div className="md:w-1/2">
 							<div className="space-y-6 text-gray-800 text-lg">
-								<p>Welcome to RSP Norway, a place where learning meets laughter and every child’s potential is nurtured with care. We are dedicated to providing a safe, stimulating, and loving environment where children embark on their journey of discovery through play-based learning and structured activities.</p>
-
-								<p>At RSP Norway, we believe that early childhood education is the foundation for a bright future. Our experienced educators create a warm and engaging atmosphere, encouraging curiosity, creativity, and social development. Through a blend of interactive lessons, creative arts, music, and hands-on activities, we help young learners build essential skills while having fun.</p>
-
-								<p>Join us at RSP Norway, where we turn everyday moments into magical learning experiences! 🌟</p>
+								<p>{t("about_description_1")}</p>
+								<p>{t("about_description_2")}</p>
+								<p>{t("about_description_3")}</p>
 							</div>
 						</div>
 
@@ -36,9 +36,9 @@ export default function AboutUs() {
 						<MessageCirclePlusIcon className="w-8 h-8 text-brand mr-4 flex-shrink-0" />
 						<div>
 							<h2 className="text-xl md:text-2xl font-bold mb-4">
-								Our <span className="text-brand leading-tight">Mission</span>
+								{t("mission_title").split(" ")[0]} <span className="text-brand leading-tight">{t("mission_title").split(" ")[1]}</span>
 							</h2>
-							<p className="text-lg mb-4">At RSP Norway, our mission is to provide a safe, nurturing, and stimulating environment where young minds flourish through play-based learning. We are committed to fostering creativity, curiosity, and confidence in every child, ensuring a strong foundation for their future growth.</p>
+							<p className="text-lg mb-4">{t("mission_description")}</p>
 						</div>
 					</div>
 					<div className="flex text-black p-8 lg:px-24 bg-brand/10 rounded-3xl mx-6 my-6 md:my-0">
@@ -46,9 +46,9 @@ export default function AboutUs() {
 
 						<div>
 							<h2 className="text-xl md:text-2xl font-bold mb-4">
-								Our <span className="text-brand leading-tight">Vision</span>
+								{t("vision_title").split(" ")[0]} <span className="text-brand leading-tight">{t("vision_title").split(" ")[1]}</span>
 							</h2>
-							<p className="text-lg mb-4">Our vision is to be a leading early childhood education center, recognized for its holistic approach to learning and care. We aspire to create a home away from home where children feel loved, valued, and empowered to explore their world.</p>
+							<p className="text-lg mb-4">{t("vision_description")}</p>
 						</div>
 					</div>
 				</section>

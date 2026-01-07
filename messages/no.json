@@ -1,4 +1,32 @@
 {
+	"footer": {
+		"about_us": "Om oss",
+		"about_description": "Rastriya Swatantra Party (RSP) er et pluralistisk demokratisk parti som tror på sosial rettferdighet og en liberal økonomi for likestilt fremgang for alle nepalesere. Målet er å bygge et rettferdig og inkluderende samfunn gjennom ansvarlig styring innenfor et fullt demokratisk republikansk system, med garanti for individuell frihet og grunnleggende rettigheter.",
+		"logo_head": "RSP Norge",
+		"logo_alt": "Arrangementserfaring",
+		"tagline": "Sammen kan vi",
+		"contact_details": "Kontaktinformasjon",
+		"facebook": "/rspnorway",
+		"instagram": "/rsp_norway",
+		"terms": "Vilkår og betingelser",
+		"privacy": "Personvernregler",
+		"copyright": "© {year} PNSBN Norge.",
+		"developed_by": "Utviklet av",
+		"developer": "Hari Prasad Sanjel",
+		"address": "Oslo, Norge",
+		"phone": "96800984, 45921449, 47734203"
+	},
+
+	"slider": {
+		"title_1": "Velkommen til RSP Norway",
+		"subtitle_1": "Bli med i bevegelsen for endring. RSP Norway knytter den nepalske diasporaen i Norge til visjonen om et progressivt, korrupsjonsfritt Nepal bygget på pluralistisk demokrati og god styring.",
+		"become_a_member": "Bli Medlem",
+		"explore_rsp": "Utforsk RSP",
+		"title_2": "Din stemme betyr noe fra Norge",
+		"subtitle_2": "Diasporaen er nøkkelen til Nepals transformasjon. Knytt kontakt med andre nepalesere i Norge, delta i våre initiativer, og hjelp til med å forme politikk som betyr noe. Sammen bygger vi det Nepal vi drømmer om.",
+		"get_involved": "Bli Involvert",
+		"contact_us": "Kontakt Oss"
+	},
 	"navigation": {
 		"home": "Hjem",
 		"about": "Om Oss",
@@ -8,6 +36,91 @@
 		"downloads": "Nedlastinger",
 		"contact": "Kontakt",
 		"login": "Logg Inn",
-		"become_a_member": "Bli Medlem"
+		"become_a_member": "Bli Medlem",
+		"rsp": "RSP",
+		"norway": "Norge",
+		"phone_numbers": "96800984 | 45921449 | 47734203",
+		"search_placeholder": "Søk..."
+	},
+	"contact": {
+		"title": "Kontakt oss",
+		"subtitle": "Vi vil gjerne høre fra deg!",
+		"description": "Fyll ut skjemaet nedenfor, så svarer vi så snart som mulig.",
+		"form": {
+			"name": "Navn",
+			"email": "E-post",
+			"message": "Melding",
+			"name_placeholder": "Ditt navn",
+			"email_placeholder": "you@email.com",
+			"message_placeholder": "Skriv din melding her...",
+			"sending": "Sender...",
+			"send": "Send melding"
+		},
+		"success": "Din melding er sendt! Vi tar kontakt snart.",
+		"error": "Kunne ikke sende melding.",
+		"info": {
+			"title": "Kontaktinformasjon",
+			"address": "Besøksadresse",
+			"phone": "Telefonnummer",
+			"email": "E-post"
+		}
+	},
+	"notices": {
+		"back": "Tilbake til arrangementer og meldinger",
+		"other_events": "Andre arrangementer",
+		"venue": "Sted",
+		"other_notices": "Andre meldinger",
+		"title": "Arrangementer og meldinger",
+		"description": "Hold deg oppdatert med vårt levende skolemiljø. Utforsk kommende arrangementer og viktige kunngjøringer.",
+		"events_tab": "Arrangementer",
+		"notices_tab": "Meldinger",
+		"learn_more": "Les mer",
+		"no_events": "Ingen arrangementer planlagt",
+		"no_events_desc": "Kom tilbake snart for kommende arrangementer!",
+		"read_more": "Les mer",
+		"no_notices": "Ingen meldinger tilgjengelig",
+		"no_notices_desc": "Kom tilbake senere for oppdateringer og kunngjøringer."
+	},
+	"gallery": {
+		"title": "Foto Galleri",
+		"description": "Utforsk vårt galleri fylt med minner fra våre arrangementer og aktiviteter.",
+		"load_more": "Last inn mer",
+		"zoom_in": "Zoom inn"
+	},
+	"downloads": {
+		"title": "Nedlastinger",
+		"subtitle": "Last ned dokumenter",
+		"search_placeholder": "Søk i dokumenter...",
+		"show_filter": "Vis filterkategorier",
+		"all": "Alle",
+		"download": "Last ned",
+		"downloads_count": "nedlastinger",
+		"no_documents": "Ingen dokumenter funnet",
+		"no_documents_desc": "Prøv å endre søket eller filteret for å finne det du leter etter.",
+		"error": "Vennligst prøv igjen senere.",
+		"failed": "Kunne ikke laste dokumenter"
+	},
+	"about-us": {
+		"title": "Om Oss",
+		"about_description_1": "RSP Norway er en dedikert organisasjon som jobber for å styrke det nepalske samfunnet som bor i Norge sosialt, kulturelt og utdanningsmessig. Vi er forpliktet til å tilby våre medlemmer støtte, veiledning og muligheter slik at de kan nå sitt fulle potensial.",
+		"about_description_2": "Vi streber etter å skape et velkommende og inkluderende miljø hvor hver enkelt føler seg verdsatt og inspirert til å bidra til samfunnets vekst og velvære.",
+		"about_description_3": "Vår forpliktelse strekker seg utover individuell styrking, og fremmer et sterkt, integrert samfunn som feirer sin arv og omfavner fremtiden.",
+		"mission_title": "Vår Misjon",
+		"mission_description": "RSP Norways misjon er å styrke det nepalske samfunnet som bor i Norge sosialt, kulturelt og utdanningsmessig. Vi er forpliktet til å tilby våre medlemmer støtte, veiledning og muligheter slik at de kan nå sitt fulle potensial.",
+		"vision_title": "Vår Visjon",
+		"vision_description": "Vi forestiller oss et inkluderende og styrket nepalsk samfunn som trives i Norge, hvor våre medlemmer er sosialt aktive, feirer sin kulturelle arv med stolthet, og vokser både personlig og kollektivt. Vår visjon er et samfunn hvor hver enkelt blir respektert, støttet og lykkes."
+	},
+	"about": {
+		"title": "Velkommen til RSP Norway",
+		"description": "RSP Norway er en dedikert organisasjon som jobber for å styrke det nepalske samfunnet som bor i Norge sosialt, kulturelt og utdanningsmessig. Vi er forpliktet til å tilby våre medlemmer støtte, veiledning og muligheter slik at de kan nå sitt fulle potensial.",
+		"read_more": "Les Mer"
+	},
+	"circulars": {
+		"circulars_title": "Sirkulærer",
+		"notices_title": "Meldinger",
+		"view_all": "Se Alle",
+		"loading": "Laster inn...",
+		"no_circulars": "Ingen sirkulærer funnet",
+		"no_notices": "Ingen meldinger funnet"
 	}
 }

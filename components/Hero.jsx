@@ -6,20 +6,21 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function Hero() {
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [isAnimating, setIsAnimating] = useState(false);
-
+	const t = useTranslations("slider");
 	// Define your slides with unique content for each
 	const slides = [
 		{
 			image: "/rabi1.webp",
-			title: "Welcome to RSP Norway",
-			description: "Join the movement for change. RSP Norway connects the Nepali diaspora in Norway with the vision of a progressive, corruption-free Nepal built on pluralistic democracy and good governance.",
-			primaryButton: "Become a Member",
+			title: t("title_1"),
+			description: t("subtitle_1"),
+			primaryButton: t("become_a_member"),
 			primaryLink: "/membership",
-			secondaryButton: "Explore RSP",
+			secondaryButton: t("explore_rsp"),
 			secondaryLink: "/about-us",
 			primaryColor: "#0094da",
 			primaryHover: "#0093dd",
@@ -37,11 +38,11 @@ export default function Hero() {
 		// },
 		{
 			image: "/rabi3.webp",
-			title: "Your Voice Matters From Norway",
-			description: "The diaspora is key to Nepal's transformation. Connect with fellow Nepalis in Norway, participate in our initiatives, and help shape policies that matter. Together we build the Nepal we dream of.",
-			primaryButton: "Get Involved",
+			title: t("title_2"),
+			description: t("subtitle_2"),
+			primaryButton: t("get_involved"),
 			primaryLink: "/get-involved",
-			secondaryButton: "Contact Us",
+			secondaryButton: t("contact_us"),
 			secondaryLink: "/contact",
 			primaryColor: "#0094da",
 			primaryHover: "#0075b1",

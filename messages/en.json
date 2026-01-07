@@ -1,4 +1,32 @@
 {
+	"footer": {
+		"about_us": "About Us",
+		"about_description": "राष्ट्रिय स्वतन्त्र पार्टी (रास्वपा) सबै नेपालीको समतामूलक उन्नतिप्रति कटिवद्ध सामाजिक न्यायसहितको उदार अर्थतन्त्रमा विश्वास गर्ने बहुलवादी लोकतान्त्रिक पार्टी हो। यसको ध्येय वैयक्तिक स्वतन्त्रता र मौलिक हकको प्रत्याभूतिपूर्वक पूर्ण लोकतान्त्रिक गणतन्त्रात्मक शासन प्रणाली भित्र विधिमा आधारित जवाफदेहीपूर्ण असल शासन मार्फत समन्यायिक समावेशी समाज निर्माण गर्नु हो।",
+		"logo_head": "RSP Norway",
+		"logo_alt": "Event Experience",
+		"tagline": "Together we can",
+		"contact_details": "Contact Details",
+		"facebook": "/rspnorway",
+		"instagram": "/rsp_norway",
+		"terms": "Terms And Conditions",
+		"privacy": "Privacy Policy",
+		"copyright": "© {year} PNSBN – Norway",
+		"developed_by": "Developed by",
+		"developer": "Hari Prasad Sanjel",
+		"address": "Oslo, Norway",
+		"phone": "96800984, 45921449, 47734203"
+	},
+
+	"slider": {
+		"title_1": "Welcome to RSP Norway",
+		"subtitle_1": "Join the movement for change. RSP Norway connects the Nepali diaspora in Norway with the vision of a progressive, corruption-free Nepal built on pluralistic democracy and good governance.",
+		"become_a_member": "Become a Member",
+		"explore_rsp": "Explore RSP",
+		"title_2": "Your Voice Matters From Norway",
+		"subtitle_2": "The diaspora is key to Nepal's transformation. Connect with fellow Nepalis in Norway, participate in our initiatives, and help shape policies that matter. Together we build the Nepal we dream of.",
+		"get_involved": "Get Involved",
+		"contact_us": "Contact Us"
+	},
 	"navigation": {
 		"home": "Home",
 		"about": "About Us",
@@ -7,6 +35,91 @@
 		"downloads": "Downloads",
 		"contact": "Contact",
 		"login": "Login",
-		"become_a_member": "Become a Member"
+		"become_a_member": "Become a Member",
+		"rsp": "RSP",
+		"norway": "Norway",
+		"phone_numbers": "96800984 | 45921449 | 47734203",
+		"search_placeholder": "Search..."
+	},
+	"contact": {
+		"title": "Contact Us",
+		"subtitle": "We'd love to hear from you!",
+		"description": "Fill out the form below and we'll respond as soon as possible.",
+		"form": {
+			"name": "Name",
+			"email": "Email",
+			"message": "Message",
+			"name_placeholder": "Your Name",
+			"email_placeholder": "you@email.com",
+			"message_placeholder": "Type your message here...",
+			"sending": "Sending...",
+			"send": "Send Message"
+		},
+		"success": "Your message has been sent! We will get back to you soon.",
+		"error": "Failed to send message.",
+		"info": {
+			"title": "Contact Information",
+			"address": "Visiting Address",
+			"phone": "Phone Numbers",
+			"email": "Email"
+		}
+	},
+	"notices": {
+		"back": "Back to Events & Notices",
+		"other_events": "Other Events",
+		"venue": "Venue",
+		"other_notices": "Other Notices",
+		"title": "Events & Notices",
+		"description": "Stay connected with our vibrant school community. Explore upcoming events and important announcements.",
+		"events_tab": "Events",
+		"notices_tab": "Notices",
+		"learn_more": "Learn more",
+		"no_events": "No Events Scheduled",
+		"no_events_desc": "Check back soon for upcoming events!",
+		"read_more": "Read more",
+		"no_notices": "No Notices Available",
+		"no_notices_desc": "Check back later for updates and announcements."
+	},
+	"gallery": {
+		"title": "Photo Gallery",
+		"description": "Explore our gallery filled with memories from our events and activities.",
+		"load_more": "Load More",
+		"zoom_in": "Zoom In"
+	},
+	"downloads": {
+		"title": "Downloads",
+		"subtitle": "Download Documents",
+		"search_placeholder": "Search documents...",
+		"show_filter": "Show filter categories",
+		"all": "All",
+		"download": "Download",
+		"downloads_count": "downloads",
+		"no_documents": "No documents found",
+		"no_documents_desc": "Try adjusting your search or filter to find what you're looking for.",
+		"error": "Please try again later.",
+		"failed": "Failed to load documents"
+	},
+	"about-us": {
+		"title": "About Us",
+		"about_description_1": "RSP Norway is dedicated to empowering the Nepali community residing in Norway socially, culturally, and educationally. We are committed to providing our members with support, guidance, and opportunities to help them reach their full potential.",
+		"about_description_2": "We strive to create a welcoming and inclusive environment where every individual feels valued and inspired to contribute to the community's growth and well-being.",
+		"about_description_3": "Our commitment extends beyond individual empowerment to fostering a strong, united community that celebrates its heritage while embracing the future.",
+		"mission_title": "Our Mission",
+		"mission_description": "To provide quality education and foster a nurturing environment for students to thrive academically and personally.",
+		"vision_title": "Our Vision",
+		"vision_description": "To be a leading educational institution recognized for excellence in teaching, innovation, and community engagement."
+	},
+	"about": {
+		"title": "Welcome to RSP Norway",
+		"description": "RSP Norway is dedicated to empowering the Nepali community residing in Norway socially, culturally, and educationally. We are committed to providing our members with support, guidance, and opportunities to help them reach their full potential.",
+		"read_more": "Read More"
+	},
+	"circulars": {
+		"circulars_title": "Circulars",
+		"notices_title": "Notices",
+		"view_all": "View All",
+		"loading": "Loading...",
+		"no_circulars": "No circulars found",
+		"no_notices": "No notices found"
 	}
 }

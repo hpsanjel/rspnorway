@@ -5,19 +5,21 @@ import useFetchData from "@/hooks/useFetchData";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function Circulars() {
 	const { data: blogs, loading } = useFetchData("/api/blogs", "blogs");
 	const pathname = usePathname();
 	const router = useRouter();
 	const [navLoading, setNavLoading] = useState(false);
+	const t = useTranslations("circulars");
 
 	if (loading) {
 		return (
 			<section id="circulars" className="bg-white">
 				<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
 					<h2 className="text-3xl font-bold text-center mb-6">
-						Circulars & <span className="text-brand">Notices</span>
+						{t("circulars_title")} / <span className="text-brand">{t("notices_title")}</span>
 					</h2>
 					<div className="w-24 h-1 bg-brand mx-auto mb-6 md:mb-12 rounded-full"></div>
 					<div className="mx-auto px-4 py-12">
@@ -50,7 +52,7 @@ export default function Circulars() {
 		<section id="blog" className="bg-gradient-to-br from-brand-100 to-gray-100">
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 				<h2 className="text-3xl font-bold text-center mb-6">
-					Circulars & <span className="text-brand">Notices</span>
+					{t("circulars_title")} / <span className="text-brand">{t("notices_title")}</span>
 				</h2>
 				<div className="w-24 h-1 bg-brand mx-auto mb-4 md:mb-8 rounded-full"></div>
 
@@ -62,7 +64,7 @@ export default function Circulars() {
 								<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
 								<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
 							</svg>
-							<span className="text-brand font-semibold">Loading...</span>
+							<span className="text-brand font-semibold">{t("loading")}</span>
 						</div>
 					</div>
 				)}
@@ -103,7 +105,7 @@ export default function Circulars() {
 				{pathname !== "/circulars" && (
 					<div className="flex justify-center mt-6">
 						<Link href="/circulars" className="inline-flex items-center px-5 py-2.5 font-medium text-sm rounded-lg bg-brand text-white hover:bg-brand transition-colors duration-200">
-							View All
+							{t("view_all")}
 							<svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
 								<path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
 							</svg>

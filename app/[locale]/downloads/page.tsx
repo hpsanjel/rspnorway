@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Download, FileText, Calendar, Search, Filter } from "lucide-react";
 import Image from "next/image";
 import { useLoading } from "@/context/LoadingContext";
+import { useTranslations } from "next-intl";
 
 interface Document {
 	id: string;
@@ -16,8 +17,9 @@ interface Document {
 }
 
 export default function DownloadsPage() {
+	const t = useTranslations("downloads");
 	const [searchQuery, setSearchQuery] = useState("");
-	const [selectedCategory, setSelectedCategory] = useState("All");
+	const [selectedCategory, setSelectedCategory] = useState(t("all"));
 	const [showMobileFilter, setShowMobileFilter] = useState(false);
 
 	const [documents, setDocuments] = useState<Document[]>([]);
@@ -58,7 +60,7 @@ export default function DownloadsPage() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const categories = ["All", ...Array.from(new Set(documents.map((doc) => doc.category)))];
+	const categories = [t("all"), ...Array.from(new Set(documents.map((doc) => doc.category)))];
 
 	const handleDownload = async (fileUrl: string, title: string, id?: string) => {
 		// Try to extract extension from fileUrl, fallback to .pdf
@@ -92,7 +94,7 @@ export default function DownloadsPage() {
 
 	const filteredDocuments = documents.filter((doc) => {
 		const matchesSearch = doc.title.toLowerCase().includes(searchQuery.toLowerCase());
-		const matchesCategory = selectedCategory === "All" || doc.category === selectedCategory;
+		const matchesCategory = selectedCategory === t("all") || doc.category === selectedCategory;
 		return matchesSearch && matchesCategory;
 	});
 
@@ -102,7 +104,7 @@ export default function DownloadsPage() {
 				<main className="container mx-auto px-4 py-8">
 					<section className="container mx-auto md:px-4 py-8 mb-16">
 						<h2 className="text-3xl text-center font-bold mb-6">
-							Download <span className="mx-auto text-brand">Documents</span>
+							{t("title")} <span className="mx-auto text-brand"></span>
 						</h2>
 						<div className="w-24 h-1 mx-auto bg-brand mb-6 md:mb-12 rounded-full"></div>
 
@@ -166,7 +168,7 @@ export default function DownloadsPage() {
 						<FileText size={40} className="text-red-400" />
 					</div>
 					<h3 className="text-2xl font-bold text-red-600 mb-2">{error}</h3>
-					<p className="text-gray-500">Please try again later.</p>
+					<p className="text-gray-500">{t("error")}</p>
 				</div>
 			</div>
 		);
@@ -176,7 +178,7 @@ export default function DownloadsPage() {
 			<main className="container mx-auto px-4 py-8">
 				<section className="container mx-auto md:px-4 py-8 mb-16">
 					<h2 className="text-3xl text-center font-bold mb-6">
-						Download <span className="mx-auto text-brand">Documents</span>
+						{t("title")} <span className="mx-auto text-brand"></span>
 					</h2>
 					<div className="w-24 h-1 mx-auto bg-brand mb-6 md:mb-12 rounded-full"></div>
 
@@ -188,7 +190,7 @@ export default function DownloadsPage() {
 								{/* Search Input + Filter Icon for mobile */}
 								<div className="flex items-center w-full md:flex-1 min-w-0 relative">
 									<Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-									<input type="text" placeholder="Search documents..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+									<input type="text" placeholder={t("search_placeholder")} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 									{/* Filter icon for mobile */}
 									<button type="button" className="ml-2 md:hidden flex items-center justify-center p-2 rounded-lg bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Show filter categories" onClick={() => setShowMobileFilter((v) => !v)}>
 										<Filter size={22} className="text-gray-500" />
@@ -261,12 +263,12 @@ export default function DownloadsPage() {
 												<div className="flex gap-3 w-fit">
 													<button onClick={() => handleDownload(doc.fileUrl, doc.title, doc.id)} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium shadow-md">
 														<Download size={18} />
-														Download
+														{t("download")}
 													</button>
 												</div>
 												<div className="flex items-center text-xs text-gray-500 mb-2">
 													<Download size={14} className="mr-1" />
-													{doc.downloadCount ?? 0} downloads
+													{doc.downloadCount ?? 0} {t("downloads_count")}
 												</div>
 											</div>
 										</div>
@@ -278,8 +280,8 @@ export default function DownloadsPage() {
 								<div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-4">
 									<FileText size={40} className="text-gray-400" />
 								</div>
-								<h3 className="text-2xl font-bold text-gray-900 mb-2">No documents found</h3>
-								<p className="text-gray-500">Try adjusting your search or filter to find what you&apos;re looking for.</p>
+								<h3 className="text-2xl font-bold text-gray-900 mb-2">{t("no_documents")}</h3>
+								<p className="text-gray-500">{t("no_documents_desc")}</p>
 							</div>
 						)}
 					</div>

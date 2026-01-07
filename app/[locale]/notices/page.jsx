@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
 import { Calendar, MapPin, Clock, Bell } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function EventsAndNoticesPage() {
 	const { data: events } = useFetchData("/api/events", "events");
@@ -11,6 +12,8 @@ export default function EventsAndNoticesPage() {
 	const [activeTab, setActiveTab] = useState("events"); // 'events' or 'notices'
 	const [selectedEvent, setSelectedEvent] = useState(null);
 	const [selectedNotice, setSelectedNotice] = useState(null);
+
+	const t = useTranslations("notices");
 
 	const sortedEvents = events?.sort((a, b) => new Date(b.eventdate).getTime() - new Date(a.eventdate).getTime()) || [];
 	const sortedNotices = notices?.sort((a, b) => new Date(b.noticedate).getTime() - new Date(a.noticedate).getTime()) || [];
@@ -50,7 +53,7 @@ export default function EventsAndNoticesPage() {
 						<svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
 						</svg>
-						Back to Events & Notices
+						{t("back")}
 					</button>
 
 					<div className="grid lg:grid-cols-3 gap-8">
@@ -102,7 +105,7 @@ export default function EventsAndNoticesPage() {
 									<div className="grid md:grid-cols-2 gap-6 mt-8 p-6 bg-yellow-50 rounded-lg">
 										{selectedEvent.eventvenue && (
 											<div>
-												<h3 className="text-sm font-semibold text-gray-500 mb-1">Venue</h3>
+												<h3 className="text-sm font-semibold text-gray-500 mb-1">{t("venue")}</h3>
 												<p className="text-gray-800">{selectedEvent.eventvenue}</p>
 											</div>
 										)}
@@ -115,7 +118,7 @@ export default function EventsAndNoticesPage() {
 						<div>
 							<h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
 								<Calendar className="w-6 h-6 mr-2" />
-								Other Events
+								{t("other_events")}
 							</h3>
 							<div className="space-y-4">
 								{sortedEvents
@@ -156,7 +159,7 @@ export default function EventsAndNoticesPage() {
 						<svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
 						</svg>
-						Back to Events & Notices
+						{t("back")}
 					</button>
 
 					<div className="grid lg:grid-cols-3 gap-8">
@@ -192,7 +195,7 @@ export default function EventsAndNoticesPage() {
 						<div>
 							<h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
 								<Bell className="w-6 h-6 text -brand mr-2" />
-								Other Notices
+								{t("other_notices")}
 							</h3>
 							<div className="space-y-4">
 								{sortedNotices
@@ -221,15 +224,15 @@ export default function EventsAndNoticesPage() {
 
 	// Main Page - Events & Notices Grid
 	return (
-		<div className="min-h-screen mt-20 md:mt-24">
-			<div className="container max-w-7xl mx-auto px-4 py-12 md:py-16">
+		<div className="min-h-screen mt-32 md:mt-32">
+			<div className="container max-w-7xl mx-auto px-4 py-12">
 				{/* Header */}
 				<div className="text-center mb-12">
 					<h1 className="text-3xl font-bold mb-6">
-						Events & <span className="text-brand">Notices</span>
+						{t("title").split(" ")[0]} / <span className="text-brand">{t("title").split(" ")[2]}</span>
 					</h1>
 					<div className="w-24 h-1 mx-auto mb-6 bg-brand rounded-full"></div>
-					<p className="text-gray-600 max-w-3xl mx-auto text-lg">Stay connected with our vibrant school community. Explore upcoming events and important announcements.</p>
+					<p className="text-gray-600 max-w-3xl mx-auto text-lg">{t("description")}</p>
 				</div>
 
 				{/* Tabs */}
@@ -237,11 +240,11 @@ export default function EventsAndNoticesPage() {
 					<div className="inline-flex rounded-lg bg-gray-100 p-1">
 						<button onClick={() => setActiveTab("events")} className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === "events" ? "bg-gradient-to-r from-blue-400 to-brand  text-white shadow-lg" : "text-gray-600 hover:text-gray-800"}`}>
 							<Calendar className="w-5 h-5 inline mr-2" />
-							Events
+							{t("events_tab")}
 						</button>
 						<button onClick={() => setActiveTab("notices")} className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === "notices" ? "bg-gradient-to-r from-brand to-blue-400  text-white shadow-lg" : "text-gray-600 hover:text-gray-800"}`}>
 							<Bell className="w-5 h-5 inline mr-2" />
-							Notices
+							{t("notices_tab")}
 						</button>
 					</div>
 				</div>
@@ -296,7 +299,7 @@ export default function EventsAndNoticesPage() {
 
 												<div className="mt-6 pt-4 border-t border-gray-100">
 													<span className="text -brand font-medium text-sm group-hover:text -brand inline-flex items-center">
-														Learn more
+														{t("learn_more")}
 														<svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
 														</svg>
@@ -310,8 +313,8 @@ export default function EventsAndNoticesPage() {
 						) : (
 							<div className="text-center py-20">
 								<Calendar className="w-24 h-24 text-gray-300 mx-auto mb-4" />
-								<h3 className="text-2xl font-medium text-gray-500 mb-2">No Events Scheduled</h3>
-								<p className="text-gray-400">Check back soon for upcoming events!</p>
+								<h3 className="text-2xl font-medium text-gray-500 mb-2">{t("no_events")}</h3>
+								<p className="text-gray-400">{t("no_events_desc")}</p>
 							</div>
 						)}
 					</div>
@@ -347,7 +350,7 @@ export default function EventsAndNoticesPage() {
 
 											<div className="mt-6 pt-4 border-t border-gray-100">
 												<span className="text -brand font-medium text-sm group-hover:text -brand inline-flex items-center">
-													Read more
+													{t("read_more")}
 													<svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 														<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
 													</svg>
@@ -360,8 +363,8 @@ export default function EventsAndNoticesPage() {
 						) : (
 							<div className="text-center py-20">
 								<Bell className="w-24 h-24 text-gray-300 mx-auto mb-4" />
-								<h3 className="text-2xl font-medium text-gray-500 mb-2">No Notices Available</h3>
-								<p className="text-gray-400">Check back later for updates and announcements.</p>
+								<h3 className="text-2xl font-medium text-gray-500 mb-2">{t("no_notices")}</h3>
+								<p className="text-gray-400">{t("no_notices_desc")}</p>
 							</div>
 						)}
 					</div>

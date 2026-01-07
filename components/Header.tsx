@@ -174,8 +174,7 @@ export default function MenuHeader() {
 								<svg className={`w-4 h-4 ${isScrolled ? "text-white" : "text-brand"} group-hover:scale-110 transition-transform`} fill="currentColor" viewBox="0 0 20 20">
 									<path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
 								</svg>
-								<span className={`hidden sm:inline text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>96800984 | 45921449 | 47734203</span>
-								<span className={`sm:hidden text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>Call Us</span>
+								<span className={`inline text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>{t("phone_numbers")}</span>
 							</a>
 
 							<a href="mailto:info@rspnorway.org" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-brand transition-colors group">
@@ -251,7 +250,7 @@ export default function MenuHeader() {
 
 			{/* Push-down search bar */}
 			<div className={`w-full transition-all duration-300 ${isModalOpen ? "h-auto" : "h-0 overflow-hidden"}`} style={{ zIndex: 60, position: "relative" }}>
-				{isModalOpen && <SearchModal closeModal={closeModal} />}
+				{isModalOpen && <SearchModal closeModal={closeModal} placeholder={t("search_placeholder")} />}
 			</div>
 
 			<motion.header ref={headerRef} className={`fixed w-full z-40 transition-colors duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-brand"}`} style={{ top: "40px" }} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} onClick={handleHeaderClick}>
@@ -259,9 +258,9 @@ export default function MenuHeader() {
 					<Link href="/" className="flex items-center space-x-4 cursor-pointer group">
 						<Image src="/rsp-norway-logo.png" alt="RSP Norway Logo" width={200} height={200} className="w-auto h-12 md:h-16 rounded-md" />
 						<span className={`hidden md:block leading-3 text-2xl font-bold ${isScrolled ? "text-black" : "text-white group-hover:text-slate-100"} transition-colors duration-200`}>
-							<span className="text-2xl font-bold">RSP </span>
+							<span className="text-2xl font-bold">{t("rsp")} </span>
 							<br />
-							<span className="text-md font-thin">Norway </span>
+							<span className="text-md font-thin">{t("norway")} </span>
 						</span>
 					</Link>
 
@@ -280,20 +279,12 @@ export default function MenuHeader() {
 								openModal();
 							}}
 							className="border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200"
-							aria-label="Search"
+							aria-label={t("search_placeholder")}
 						>
 							<span className={`border-b border-transparent hover:border-b hover:border-b-red-700 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`}>
 								<Search />
 							</span>
 						</button>
-
-						<Link href="https://www.facebook.com/profile.php?id=61577689933528" className={`hidden sm:block border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Facebook" onClick={() => setActiveDropdown(null)}>
-							<Facebook />
-						</Link>
-
-						<Link href="#" className={`hidden sm:block border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`} aria-label="Instagram" onClick={() => setActiveDropdown(null)}>
-							<Instagram />
-						</Link>
 
 						{user ? (
 							<div className="relative" ref={userDropdownRef}>
@@ -350,7 +341,7 @@ export default function MenuHeader() {
 												onClick={() => {
 													setShowUserDropdown(false);
 												}}
-												className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+												className={`flex items-center gap-3 w-full px-4 py-2.5 text-sm  hover:bg-gray-50 ${isScrolled ? "text-white bg-brand" : "text-gray-700"} transition-colors`}
 											>
 												<User size={18} className="text-gray-400" />
 												<span>Become a Member</span>
