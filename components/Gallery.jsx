@@ -19,11 +19,11 @@ export default async function Gallery() {
 	// Import GalleryWrapper as a client component
 	const GalleryWrapper = (await import("./GalleryWrapper")).default;
 	return (
-		<section className="container mx-auto px-4 py-12 md:py-16 mb-8">
+		<section className="container mx-auto px-4 py-8 md:py-12">
 			<h2 className="text-3xl text-center font-bold mb-6">
-				Photo <span className="mx-auto text-[#0094da]">Gallery</span>
+				Photo <span className="mx-auto text-brand">Gallery</span>
 			</h2>
-			<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
+			<div className="w-24 h-1 mx-auto bg-brand mb-6 md:mb-12 rounded-full"></div>
 			<GalleryWrapper images={images} />
 		</section>
 	);

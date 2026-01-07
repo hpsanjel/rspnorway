@@ -128,14 +128,14 @@ function SearchContent() {
 					<h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Search Results</h1>
 					{query && (
 						<p className="text-gray-600 text-lg">
-							Found <span className="font-semibold text-[#0094da]">{totalResults}</span> results for &quot;<span className="font-semibold">{query}</span>&quot;
+							Found <span className="font-semibold text-brand">{totalResults}</span> results for &quot;<span className="font-semibold">{query}</span>&quot;
 						</p>
 					)}
 				</div>
 
 				{loading ? (
 					<div className="flex justify-center items-center py-20">
-						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0094da]"></div>
+						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand"></div>
 					</div>
 				) : totalResults === 0 ? (
 					<div className="text-center py-20">
@@ -149,7 +149,7 @@ function SearchContent() {
 						{results.users.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<User className="text-[#0094da]" />
+									<User className="text-brand" />
 									Users ({results.users.length})
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -168,7 +168,7 @@ function SearchContent() {
 						{results.blogs.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<Newspaper className="text-[#0094da]" />
+									<Newspaper className="text-brand" />
 									Blogs ({results.blogs.length})
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -194,7 +194,7 @@ function SearchContent() {
 						{results.events.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<Calendar className="text-[#0094da]" />
+									<Calendar className="text-brand" />
 									Events ({results.events.length})
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -219,7 +219,7 @@ function SearchContent() {
 						{results.gallery.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<ImageIcon className="text-[#0094da]" />
+									<ImageIcon className="text-brand" />
 									Gallery ({results.gallery.length})
 								</h2>
 								<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -239,7 +239,7 @@ function SearchContent() {
 						{results.notices.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<Newspaper className="text-[#0094da]" />
+									<Newspaper className="text-brand" />
 									Notices ({results.notices.length})
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -263,7 +263,7 @@ function SearchContent() {
 						{results.testimonials.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<User className="text-[#0094da]" />
+									<User className="text-brand" />
 									Testimonials ({results.testimonials.length})
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -284,13 +284,13 @@ function SearchContent() {
 						{results.pages.length > 0 && (
 							<section>
 								<h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-									<BookOpen className="text-[#0094da]" />
+									<BookOpen className="text-brand" />
 									Pages ({results.pages.length})
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 									{results.pages.map((page, index) => (
 										<Link key={index} href={page.href} className="block bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
-											<h3 className="font-bold text-xl text-[#0094da] mb-2">{page.title}</h3>
+											<h3 className="font-bold text-xl text-brand mb-2">{page.title}</h3>
 											<p className="text-gray-600">Visit this page for more information</p>
 										</Link>
 									))}

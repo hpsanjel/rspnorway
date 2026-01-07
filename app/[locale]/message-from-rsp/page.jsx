@@ -10,7 +10,7 @@ export default function WelcomeMessage() {
 				{/* Section Header */}
 				<div className="text-center mb-16">
 					<h2 className="text-3xl font-bold text-gray-900 mb-4">
-						स्वागत <span className="text-[#0094da] mt-1"> मन्तव्य</span>
+						स्वागत <span className="text-brand mt-1"> मन्तव्य</span>
 					</h2>
 					<div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mx-auto rounded-full"></div>
 				</div>

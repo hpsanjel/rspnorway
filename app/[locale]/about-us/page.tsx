@@ -6,9 +6,9 @@ export default function AboutUs() {
 			<main className="container mx-auto px-4 py-8">
 				<section className="container mx-auto px-4 py-8 mb-16">
 					<h2 className="text-3xl text-center font-bold mb-6">
-						About <span className="mx-auto text-[#0094da]">Us</span>
+						About <span className="mx-auto text-brand">Us</span>
 					</h2>
-					<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
+					<div className="w-24 h-1 mx-auto bg-brand mb-6 md:mb-12 rounded-full"></div>
 					<div className="flex flex-col md:flex-row gap-12 items-center">
 						{/* Text Content Column */}
 						<div className="md:w-1/2">
@@ -39,7 +39,7 @@ export default function AboutUs() {
 					</div>
 					<div className=" text-black p-8 lg:px-32">
 						<h2 className="text-2xl md:text-4xl font-bold mb-4">
-							Our <span className="text-[#0094da] leading-tight">Vision</span>
+							Our <span className="text-brand leading-tight">Vision</span>
 						</h2>
 						<p className="text-lg mb-4">Our vision is to be a leading early childhood education center, recognized for its holistic approach to learning and care. We aspire to create a home away from home where children feel loved, valued, and empowered to explore their world. By nurturing lifelong learners, we aim to shape a future where every child reaches their full potential with confidence, kindness, and creativity.</p>
 					</div>

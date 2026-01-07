@@ -170,7 +170,7 @@ export default function EmployeeForm({ settingdata }) {
 					</button>
 				</div>
 				{error && <p className="text-red-500 mt-4 text-right">{error}</p>}
-				{message && <p className="text-[#0094da] mt-4 text-right">{message}</p>}
+				{message && <p className="text-brand mt-4 text-right">{message}</p>}
 			</div>
 		</form>
 	);

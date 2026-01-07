@@ -107,13 +107,13 @@ function AuthFormContent() {
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
 			<Card className="w-full max-w-md mx-auto">
-				<CardHeader className="bg-[#0094da] text-slate-200 rounded-t-lg text-center">
+				<CardHeader className="bg-brand text-slate-200 rounded-t-lg text-center">
 					<CardTitle className="text-2xl font-bold">{hasInvite ? "Set Password" : "Login"}</CardTitle>
 				</CardHeader>
 				<CardContent className="mt-6">
 					{error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 					{success && (
-						<p className="mb-4 flex items-center justify-center gap-2 text-[#0094da] text-sm">
+						<p className="mb-4 flex items-center justify-center gap-2 text-brand text-sm">
 							<CheckCircle2 className="h-4 w-4" /> {success}
 						</p>
 					)}
@@ -141,7 +141,7 @@ function AuthFormContent() {
 								<Button type="button" variant="outline" onClick={handleCancel}>
 									Cancel
 								</Button>
-								<Button type="submit" className="bg-[#0094da] hover:bg-orange-400" disabled={submitting}>
+								<Button type="submit" className="bg-brand hover:bg-orange-400" disabled={submitting}>
 									{submitting ? "Saving..." : "Set password"}
 								</Button>
 							</div>
@@ -170,7 +170,7 @@ function AuthFormContent() {
 										<Button type="button" variant="outline" onClick={handleCancel}>
 											Cancel
 										</Button>
-										<Button type="submit" className="bg-[#0094da] hover:bg-orange-400" disabled={submitting}>
+										<Button type="submit" className="bg-brand hover:bg-orange-400" disabled={submitting}>
 											{submitting ? "Logging in..." : "Login"}
 										</Button>
 									</div>

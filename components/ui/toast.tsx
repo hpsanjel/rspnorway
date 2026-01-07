@@ -17,7 +17,7 @@ const toastVariants = cva("group pointer-events-auto relative flex w-full items-
 		variant: {
 			default: "border bg-background text-foreground",
 			destructive: "destructive group border-destructive bg-destructive text-destructive-foreground",
-			success: "group border-[#0094da] bg-[#0094da] text-[#0094da] dark:border-[#0094da] dark:bg-green-950 dark:text-[#0094da]",
+			success: "group border-brand bg-brand text-brand dark:border-brand dark:bg-green-950 dark:text-brand",
 		},
 	},
 	defaultVariants: {

@@ -126,7 +126,7 @@ export default function UsersPage() {
 						<option value="admin">Admin</option>
 						<option value="user">User</option>
 					</select>
-					<button className="bg-[#0094da] text-white px-3 py-1 rounded disabled:opacity-50" onClick={handleBulkRoleChange} disabled={selectedUserIds.length === 0 || !bulkRole}>
+					<button className="bg-brand text-white px-3 py-1 rounded disabled:opacity-50" onClick={handleBulkRoleChange} disabled={selectedUserIds.length === 0 || !bulkRole}>
 						Apply Role
 					</button>
 				</div>
@@ -205,7 +205,7 @@ export default function UsersPage() {
 			{editUser && (
 				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
 					<div className="bg-white p-6 rounded-lg shadow-lg w-96">
-						<h2 className="text-lg font-bold text-slate-200 bg-[#0094da] p-4 mb-6 text-center">Edit User</h2>
+						<h2 className="text-lg font-bold text-slate-200 bg-brand p-4 mb-6 text-center">Edit User</h2>
 						{/* <EditUserForm user={editUser} onClose={() => setEditUser(null)} onSuccess={mutate} /> */}
 					</div>
 				</div>

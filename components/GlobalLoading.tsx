@@ -1,4 +1,5 @@
 "use client";
+import Ghanti from "@/components/Ghanti";
 
 export default function GlobalLoading() {
 	return (
@@ -15,11 +16,12 @@ export default function GlobalLoading() {
 				</div>
 
 				{/* Logo Container */}
-				<div className="relative w-32 h-32 flex items-center justify-center">
+				<Ghanti />
+				{/* <div className="relative w-32 h-32 flex items-center justify-center">
 					<div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
 						<img src="/ghanti.png" alt="Logo" width={48} height={48} className="object-contain" />
 					</div>
-				</div>
+				</div> */}
 			</div>
 
 			{/* Optional Loading Text */}

@@ -42,12 +42,12 @@ function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 	return (
 		<div className="relative">
 			{hasDropdown ? (
-				<button onClick={handleDropdownClick} className={`flex items-center gap-1 border-b border-transparent hover:border-b hover:border-b-yellow-400 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"} ${isActive ? "border-b-2 border-[#0094da]" : ""}`}>
+				<button onClick={handleDropdownClick} className={`flex items-center gap-1 border-b border-transparent hover:border-b hover:border-b-yellow-400 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"} ${isActive ? "border-b-2 border-brand" : ""}`}>
 					{title}
 					<ChevronDown size={16} className={isDropdownOpen ? "transform rotate-180 transition-transform" : "transition-transform"} />
 				</button>
 			) : (
-				<Link href={href} className={`border-b border-transparent hover:border-b hover:border-b-yellow-400 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"} ${isActive ? "border-b-2 border-[#0094da]" : ""}`} onClick={() => setActiveDropdown(null)}>
+				<Link href={href} className={`border-b border-transparent hover:border-b hover:border-b-yellow-400 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"} ${isActive ? "border-b-2 border-brand" : ""}`} onClick={() => setActiveDropdown(null)}>
 					{title}
 				</Link>
 			)}
@@ -165,7 +165,7 @@ export default function MenuHeader() {
 
 	return (
 		<>
-			<section className={`w-full h-10 p-[5px] border-b border-gray-300 shadow-sm fixed top-0 left-0 z-50 transition-colors duration-500 will-change-[background-color] ${isScrolled ? "bg-[#0094da]" : "bg-gradient-to-r from-gray-50 to-gray-100"}`}>
+			<section className={`w-full h-10 p-[5px] border-b border-gray-300 shadow-sm fixed top-0 left-0 z-50 transition-colors duration-500 will-change-[background-color] ${isScrolled ? "bg-brand" : "bg-gradient-to-r from-gray-50 to-gray-100"}`}>
 				<div className="container mx-auto px-4">
 					<div className="flex justify-between items-center">
 						{/* Left Section - Contact Info */}
@@ -254,7 +254,7 @@ export default function MenuHeader() {
 				{isModalOpen && <SearchModal closeModal={closeModal} />}
 			</div>
 
-			<motion.header ref={headerRef} className={`fixed w-full z-40 transition-colors duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-[#0094da]"}`} style={{ top: "40px" }} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} onClick={handleHeaderClick}>
+			<motion.header ref={headerRef} className={`fixed w-full z-40 transition-colors duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-brand"}`} style={{ top: "40px" }} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} onClick={handleHeaderClick}>
 				<div className="container mx-auto p-4 flex justify-between items-center">
 					<Link href="/" className="flex items-center space-x-4 cursor-pointer group">
 						<Image src="/rsp-norway-logo.png" alt="RSP Norway Logo" width={200} height={200} className="w-auto h-12 md:h-16 rounded-md" />
@@ -303,7 +303,7 @@ export default function MenuHeader() {
 										setShowUserDropdown(!showUserDropdown);
 										setActiveDropdown(null);
 									}}
-									className={`flex items-center gap-2 p-1 rounded-full ${isScrolled ? "bg-[#0094da] text-black hover:bg-[#0094da]" : "bg-white/20 text-white hover:bg-white/30"} transition-colors duration-200`}
+									className={`flex items-center gap-2 p-1 rounded-full ${isScrolled ? "bg-brand text-black hover:bg-brand" : "bg-white/20 text-white hover:bg-white/30"} transition-colors duration-200`}
 								>
 									<div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-brand flex items-center justify-center text-white font-semibold shadow-sm">{avatarInitial}</div>
 								</button>
@@ -378,10 +378,10 @@ export default function MenuHeader() {
 							</div>
 						) : (
 							<div className="flex gap-2">
-								<Link href="/login" className={`hidden sm:block px-4 py-2 rounded-md bg-brand text-white font-medium hover:bg-brand/90 transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
+								<Link href="/login" className={`hidden sm:block px-4 py-2 rounded-md bg-gray-700 text-white font-medium hover:bg-gray-900  transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
 									{t("login")}
 								</Link>
-								<Link href="/membership" className={`px-4 py-2 rounded-md text-[#007bbd] bg-gray-200 font-medium hover:bg-brand hover:text-white transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
+								<Link href="/membership" className={`px-4 py-2 rounded-md text-brand bg-gray-100 font-medium hover:bg-white transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
 									{t("become_a_member")}
 								</Link>
 							</div>
@@ -403,7 +403,7 @@ export default function MenuHeader() {
 				<AnimatePresence>
 					{isMenuOpen && (
 						<motion.div className="md:hidden" initial={{ opacity: 0, x: 300 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 300 }} transition={{ duration: 0.3 }}>
-							<div className="fixed right-0 w-full h-full bg-[#0094da]">
+							<div className="fixed right-0 w-full h-full bg-brand">
 								<nav className="flex flex-col items-center text-xl font-semibold py-24">
 									{mobileNavItems.map((item) => (
 										<Link key={item.href} href={item.href} className="text-gray-300 hover:bg-slate-100 w-full text-center hover:text-red-600 transition-colors duration-300 py-2" onClick={toggleMenu}>

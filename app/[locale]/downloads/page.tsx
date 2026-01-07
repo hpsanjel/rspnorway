@@ -55,7 +55,8 @@ export default function DownloadsPage() {
 			}
 		};
 		fetchDocuments();
-	}, [setLoading]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const categories = ["All", ...Array.from(new Set(documents.map((doc) => doc.category)))];
 
@@ -101,9 +102,9 @@ export default function DownloadsPage() {
 				<main className="container mx-auto px-4 py-8">
 					<section className="container mx-auto md:px-4 py-8 mb-16">
 						<h2 className="text-3xl text-center font-bold mb-6">
-							Download <span className="mx-auto text-[#0094da]">Documents</span>
+							Download <span className="mx-auto text-brand">Documents</span>
 						</h2>
-						<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
+						<div className="w-24 h-1 mx-auto bg-brand mb-6 md:mb-12 rounded-full"></div>
 
 						{/* Main Content */}
 						<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
@@ -175,9 +176,9 @@ export default function DownloadsPage() {
 			<main className="container mx-auto px-4 py-8">
 				<section className="container mx-auto md:px-4 py-8 mb-16">
 					<h2 className="text-3xl text-center font-bold mb-6">
-						Download <span className="mx-auto text-[#0094da]">Documents</span>
+						Download <span className="mx-auto text-brand">Documents</span>
 					</h2>
-					<div className="w-24 h-1 mx-auto bg-[#0094da] mb-6 md:mb-12 rounded-full"></div>
+					<div className="w-24 h-1 mx-auto bg-brand mb-6 md:mb-12 rounded-full"></div>
 
 					{/* Main Content */}
 					<div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">

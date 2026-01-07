@@ -51,7 +51,7 @@
 		"components/Testimonials.jsx",
 		"components/testimonials-masonry.jsx",
 		"components/testimonials-alt.jsx",
-		"components/Blog.jsx",
+		"components/Circulars.jsx",
 		"components/TestimonialCard.jsx",
 		"i18n.js",
 		"models/Membership.Model.js",

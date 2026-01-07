@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Blog from "@/components/Blog";
+import Circulars from "@/components/Circulars";
 import Gallery from "@/components/Gallery";
 // import Post from "@/components/Post";
 
@@ -11,7 +11,7 @@ export default function LandingPage() {
 				<Hero />
 				{/* <Post /> */}
 				<About />
-				<Blog />
+				<Circulars />
 				<Gallery />
 			</main>
 		</div>

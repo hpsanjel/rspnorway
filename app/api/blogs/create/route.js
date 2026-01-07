@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Blog from "@/models/Blog.Model";
+import Circulars from "@/models/Blog.Model";
 import { uploadToCloudinary } from "@/utils/saveFileToCloudinaryUtils";
 
 export const config = {
