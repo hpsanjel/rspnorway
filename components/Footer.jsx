@@ -72,8 +72,8 @@ export default function Footer() {
 				</div>
 
 				{/* Links Row */}
-				<nav className=" flex flex-col md:flex-row md:justify-between items-center border-t border-gray-200 pt-1">
-					<ul className="flex space-x-4 justify-center">
+				<nav className=" flex flex-col md:flex-row md:justify-between border-t border-gray-200 pt-1">
+					<ul className="flex space-x-4 justify-between mb-4 md:mb-0">
 						<li className="text-gray-500 hover:text-black transition-colors text-sm">
 							<Link href="/terms-and-conditions">{t("terms")}</Link>
 						</li>
@@ -83,8 +83,8 @@ export default function Footer() {
 					</ul>
 					<div className=" text-gray-500 text-sm">{t("copyright", { year: new Date().getFullYear() })}</div>
 					<div className="text-gray-500 text-sm">
-						{t("developed_by")}
-						<a href="https://harisanjel.com.np" target="_blank" rel="noopener noreferrer" className="font-bold ml-1">
+						<span>{t("developed_by")}</span>
+						<a href="https://harisanjel.com.np" target="_blank" rel="noopener noreferrer" className="font-semibold ml-1">
 							{t("developer")}
 						</a>
 					</div>

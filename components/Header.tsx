@@ -77,6 +77,7 @@ export default function MenuHeader() {
 	const user = session?.user;
 	const avatarInitial = typeof user?.email === "string" && user.email ? user.email.charAt(0).toUpperCase() : "U";
 	const t = useTranslations("navigation");
+	const tr = useTranslations("footer");
 
 	// Build navItems WITHOUT locale prefix - next-intl Link component handles this automatically
 	const navItems = [
@@ -174,7 +175,7 @@ export default function MenuHeader() {
 								<svg className={`w-4 h-4 ${isScrolled ? "text-white" : "text-brand"} group-hover:scale-110 transition-transform`} fill="currentColor" viewBox="0 0 20 20">
 									<path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
 								</svg>
-								<span className={`inline text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>{t("phone_numbers")}</span>
+								<span className={`inline text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>{tr("phone_small_device")}</span>
 							</a>
 
 							<a href="mailto:info@rspnorway.org" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-brand transition-colors group">

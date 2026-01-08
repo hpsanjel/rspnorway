@@ -14,7 +14,8 @@
 		"developed_by": "Developed by",
 		"developer": "Hari Prasad Sanjel",
 		"address": "Oslo, Norway",
-		"phone": "96800984, 45921449, 47734203"
+		"phone": "96800984, 45921449, 47734203",
+		"phone_small_device": "96800984, 45921449"
 	},
 
 	"slider": {
@@ -38,7 +39,6 @@
 		"become_a_member": "Become a Member",
 		"rsp": "RSP",
 		"norway": "Norway",
-		"phone_numbers": "96800984 | 45921449 | 47734203",
 		"search_placeholder": "Search..."
 	},
 	"contact": {
