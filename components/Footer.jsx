@@ -9,7 +9,7 @@ export default function Footer() {
 	const { data: settings } = useFetchData("/api/settings", "settings");
 	const t = useTranslations("footer");
 	return (
-		<footer className="bg-gradient-to-t to-blue-50 from-transparent text-black py-4">
+		<footer className="bg-gradient-to-t to-blue-50 from-transparent text-black pt-12 pb-8">
 			{/* Main Footer Content */}
 			<div className="container mx-auto px-4">
 				{/* Four Column Layout */}
@@ -22,7 +22,7 @@ export default function Footer() {
 					{/* Logo and Tagline */}
 					<div className="flex flex-col w-full justify-center">
 						<div className="flex flex-col w-full justify-center items-start md:items-center">
-							<Image src={settings?.[0]?.companyLogo || "/rsp-norway-logo.png"} alt={t("logo_alt")} width={100} height={100} className="rounded-lg shadow-xl w-24 object-cover mb-4" />
+							<Image src={settings?.[0]?.companyLogo || "/rsp-norway-logo.png"} alt={t("logo_alt")} width={100} height={100} className="w-24 object-cover mb-4" />
 							<h2 className="text-2xl font-bold text-center">{t("logo_head")}</h2>
 							<p className="text-center max-w-md">{t("tagline")}</p>
 							{/* <h2 className="text-2xl font-bold text-center">{settings?.[0]?.name}</h2> */}

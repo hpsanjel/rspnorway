@@ -30,7 +30,7 @@ function DashboardLayoutContent({ children }) {
 
 	return (
 		<div
-			className="mx-auto flex flex-col md:flex-row h-screen overflow-hidden pt-24"
+			className="mx-auto flex flex-col md:flex-row h-screen overflow-hidden pt-36"
 			onClick={(e) => {
 				if (profileOpen && !(e.target.closest && e.target.closest("#admin-profile-menu"))) {
 					setProfileOpen(false);

@@ -1,8 +1,9 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Facebook, Instagram, Menu, Search, X, ChevronDown, LogOut, Settings, User } from "lucide-react";
+import { Menu, Search, X, ChevronDown, LogOut } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import SearchModal from "@/components/SearchModal";
@@ -11,11 +12,19 @@ import Flag from "@/components/ui/Flag";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import SocialMediaLinks from "./SocialMediaLinks";
 
-const LANGUAGES = [
+/* ---------------------------------- */
+/* Constants */
+/* ---------------------------------- */
+
+const LANGUAGES: { code: string; flag: "np" | "no" | "gb"; label: string }[] = [
 	{ code: "ne", flag: "np", label: "नेपाली" },
 	{ code: "no", flag: "no", label: "Norsk" },
 	{ code: "en", flag: "gb", label: "English" },
 ];
+
+/* ---------------------------------- */
+/* Nav Item */
+/* ---------------------------------- */
 
 interface NavItemProps {
 	title: string;
@@ -29,57 +38,105 @@ interface NavItemProps {
 
 function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropdown, setActiveDropdown }: NavItemProps) {
 	const isActive = pathname === href;
-	const hasDropdown = Array.isArray(dropdownItems) && dropdownItems.length > 0;
-	const isDropdownOpen = activeDropdown === href;
-	const handleDropdownClick = (e: React.MouseEvent) => {
-		e.stopPropagation();
-		if (isDropdownOpen) {
-			setActiveDropdown(null);
-		} else {
-			setActiveDropdown(href);
-		}
-	};
+	const hasDropdown = !!dropdownItems?.length;
+	const isOpen = activeDropdown === href;
+
 	return (
-		<div className="relative">
+		<div className="relative group">
 			{hasDropdown ? (
-				<button onClick={handleDropdownClick} className={`flex items-center gap-1 border-b-2 border-transparent hover:border-b hover:border-b-white ${isScrolled ? "text-black" : "text-white hover:text-slate-100"} ${isActive ? "border-b-2 border-white" : ""}`}>
-					{title}
-					<ChevronDown size={16} className={isDropdownOpen ? "transform rotate-180 transition-transform" : "transition-transform"} />
+				<button
+					aria-haspopup="menu"
+					aria-expanded={isOpen}
+					onClick={(e) => {
+						e.stopPropagation();
+						setActiveDropdown(isOpen ? null : href);
+					}}
+					className={`
+            relative px-4 py-2 flex items-center gap-2
+            transition-all duration-300 font-medium tracking-wide
+            ${isScrolled ? "text-neutral-700 hover:text-brand" : "text-white/90 hover:text-white"}
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
+            ${isActive ? "text-brand" : ""}
+          `}
+				>
+					<span className="relative">
+						{title}
+						<span className={`absolute -bottom-1 left-0 h-0.5 bg-current transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`} />
+					</span>
+					<ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
 				</button>
 			) : (
-				<Link href={href} className={`pb-1 border-b border-transparent hover:border-b-2 hover:border-b-white ${isScrolled ? "text-black" : "text-white hover:text-slate-100"} ${isActive ? "border-b-2 border-white" : ""}`} onClick={() => setActiveDropdown(null)}>
-					{title}
+				<Link
+					href={href}
+					onClick={() => setActiveDropdown(null)}
+					className={`
+            relative px-4 py-2 block font-medium tracking-wide
+            transition-all duration-300
+            ${isScrolled ? "text-neutral-700 hover:text-brand" : "text-white/90 hover:text-white"}
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
+            ${isActive ? "text-brand" : ""}
+          `}
+				>
+					<span className="relative">
+						{title}
+						<span className={`absolute -bottom-1 left-0 h-0.5 bg-current transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`} />
+					</span>
 				</Link>
 			)}
-			{hasDropdown && isDropdownOpen && (
-				<div className="absolute z-50 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1">
-					{dropdownItems!.map((item) => (
-						<Link key={item.href} href={item.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setActiveDropdown(null)}>
-							{item.title}
-						</Link>
-					))}
-				</div>
-			)}
+
+			<AnimatePresence>
+				{hasDropdown && isOpen && (
+					<motion.div
+						initial={{ opacity: 0, y: -10 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -10 }}
+						transition={{ duration: 0.2 }}
+						role="menu"
+						className="
+              absolute left-1/2 -translate-x-1/2 mt-4 w-56 rounded-2xl
+              bg-white/95 backdrop-blur-xl
+              shadow-[0_20px_60px_rgba(0,0,0,0.12)]
+              ring-1 ring-black/5 overflow-hidden z-50
+              before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-gradient-to-r before:from-brand before:to-emerald-500
+            "
+					>
+						{dropdownItems!.map((item, idx) => (
+							<Link
+								key={item.href}
+								href={item.href}
+								role="menuitem"
+								onClick={() => setActiveDropdown(null)}
+								className={`
+                  block px-5 py-3.5 text-sm font-medium text-neutral-700 
+                  hover:bg-brand/5 hover:text-brand transition-all duration-200
+                  ${idx !== 0 ? "border-t border-neutral-100" : ""}
+                `}
+							>
+								{item.title}
+							</Link>
+						))}
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 }
 
+/* ---------------------------------- */
+/* Header */
+/* ---------------------------------- */
+
 export default function Header() {
 	const router = useRouter();
-	const pathname = usePathname(); // This returns pathname WITHOUT locale prefix
-	const locale = useLocale(); // This is the proper way to get current locale with next-intl
-
-	const [showLangDropdown, setShowLangDropdown] = useState(false);
-	const langDropdownRef = useRef<HTMLDivElement>(null);
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const toggleMenu = () => setIsMenuOpen((v) => !v);
-	const { data: session } = useSession();
-	const user = session?.user;
-	const avatarInitial = typeof user?.email === "string" && user.email ? user.email.charAt(0).toUpperCase() : "U";
+	const pathname = usePathname();
+	const locale = useLocale();
 	const t = useTranslations("navigation");
 	const tr = useTranslations("footer");
 
-	// Build navItems WITHOUT locale prefix - next-intl Link component handles this automatically
+	const { data: session } = useSession();
+	const user = session?.user;
+	const avatarInitial = typeof user?.email === "string" && user.email ? user.email.charAt(0).toUpperCase() : "U";
+
 	const navItems = [
 		{ title: t("about"), href: "/about-us" },
 		{ title: t("notices"), href: "/notices" },
@@ -88,335 +145,253 @@ export default function Header() {
 		{ title: t("contact"), href: "/contact" },
 	];
 
-	const mobileNavItems = navItems;
 	const [isScrolled, setIsScrolled] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+	const [showLangDropdown, setShowLangDropdown] = useState(false);
 	const [showUserDropdown, setShowUserDropdown] = useState(false);
-	const userDropdownRef = useRef<HTMLDivElement>(null);
-	const headerRef = useRef<HTMLDivElement>(null);
+
+	const langRef = useRef<HTMLDivElement>(null);
+	const userRef = useRef<HTMLDivElement>(null);
+
+	/* ---------------------------------- */
+	/* Effects */
+	/* ---------------------------------- */
 
 	useEffect(() => {
-		if (!showUserDropdown) return;
-		function handleClickOutside(event: MouseEvent) {
-			if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
-				setShowUserDropdown(false);
-			}
-		}
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [showUserDropdown]);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			setIsScrolled(window.scrollY > 10);
-		};
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
+		const onScroll = () => setIsScrolled(window.scrollY > 10);
+		window.addEventListener("scroll", onScroll);
+		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
 	useEffect(() => {
-		if (!showLangDropdown) return;
-		function handleClickOutside(event: MouseEvent) {
-			if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+		const close = (e: MouseEvent) => {
+			if (!langRef.current?.contains(e.target as Node) && !userRef.current?.contains(e.target as Node)) {
 				setShowLangDropdown(false);
+				setShowUserDropdown(false);
+				setActiveDropdown(null);
 			}
-		}
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [showLangDropdown]);
+		document.addEventListener("mousedown", close);
+		return () => document.removeEventListener("mousedown", close);
+	}, []);
 
-	function handleSignOut() {
-		signOut({ callbackUrl: "/" });
-	}
-
-	function openModal() {
-		setIsModalOpen(true);
-	}
-
-	function closeModal() {
-		setIsModalOpen(false);
-	}
-
-	function handleHeaderClick() {
-		setActiveDropdown(null);
-		setShowUserDropdown(false);
-		setShowLangDropdown(false);
-	}
-
-	// Fixed locale change function - use next-intl's router properly
 	const handleLocaleChange = (code: string) => {
 		if (code === locale) return;
-
-		// Store in localStorage
-		if (typeof window !== "undefined") {
-			localStorage.setItem("locale", code);
-		}
-
+		localStorage.setItem("locale", code);
 		setShowLangDropdown(false);
-
-		// Use next-intl router's replace with locale option
-		// pathname is already without locale prefix, so just pass it directly
 		router.replace(pathname, { locale: code });
 	};
 
+	/* ---------------------------------- */
+	/* Render */
+	/* ---------------------------------- */
+
 	return (
-		<div
-			className={`fixed w-full left-0 z-50 transition-all duration-300 bg-transparent`}
-			style={{
-				top: 0,
-				transitionProperty: "height, box-shadow, background-color",
-			}}
-		>
-			{/* Top header */}
-			<section className={`w-full h-10 py-[5px] border-b border-gray-300 shadow-sm transition-colors duration-500 will-change-[background-color] ${isScrolled ? "bg-brand" : "bg-gradient-to-r from-gray-50 to-gray-100"}`}>
-				<div className="container mx-auto px-4 md:px-4">
-					<div className="flex justify-between items-center">
-						<div className="flex items-center gap-4 md:gap-6">
-							<a href="tel:+4796800984" className="flex items-center gap-2 text-gray-700 hover:text-brand transition-colors group">
-								<svg className={`w-4 h-4 ${isScrolled ? "text-white" : "text-brand"} group-hover:scale-110 transition-transform`} fill="currentColor" viewBox="0 0 20 20">
-									<path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-								</svg>
-								<span className={`inline text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>{tr("phone_small_device")}</span>
-							</a>
-							<a href="mailto:info@rspnorway.org" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-brand transition-colors group">
-								<svg className={`w-4 h-4 ${isScrolled ? "text-white" : "text-brand"} group-hover:scale-110 transition-transform`} fill="currentColor" viewBox="0 0 20 20">
-									<path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-									<path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-								</svg>
-								<span className={`text-sm font-medium ${isScrolled ? "text-white" : "text-gray-900"}`}>info@rspnorway.org</span>
-							</a>
-						</div>
-						<div className="flex items-center gap-3 md:gap-4">
-							<SocialMediaLinks />
-							<div className="h-6 w-px bg-gray-300 hidden sm:block"></div>
-							<div className="relative select-none" ref={langDropdownRef}>
-								<button
-									onClick={(e) => {
-										e.stopPropagation();
-										setShowLangDropdown((v) => !v);
-									}}
-									className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1 hover:border-brand hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all duration-200"
-									aria-label="Change language"
-								>
-									{(() => {
-										const flagCode = LANGUAGES.find((l) => l.code === locale)?.flag;
-										return <Flag country={flagCode as "no" | "np" | "gb"} size={20} />;
-									})()}
-									<span className="hidden sm:inline text-sm font-medium text-gray-700">{LANGUAGES.find((l) => l.code === locale)?.label}</span>
-									<ChevronDown size={16} className={`text-gray-500 transition-transform duration-200 ${showLangDropdown ? "rotate-180" : ""}`} />
-								</button>
+		<div className="fixed inset-x-0 top-0 z-50">
+			{/* Utility Bar */}
+			<motion.section initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className={`h-11 border-b transition-all duration-500 ${isScrolled ? "bg-gradient-to-r from-brand via-brand to-emerald-600 text-white border-brand" : "bg-neutral-50/95 backdrop-blur-md border-neutral-200"}`}>
+				<div className="container mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
+					<div className="flex items-center gap-6 text-sm font-medium">
+						<a href="tel:+4796800984" className="hover:opacity-75 transition-opacity duration-200 flex items-center gap-2" aria-label="Call us">
+							<span className="hidden sm:inline">📞</span>
+							{tr("phone_small_device")}
+						</a>
+						<a href="mailto:info@rspnorway.org" className="hidden md:flex items-center gap-2 hover:opacity-75 transition-opacity duration-200" aria-label="Email us">
+							<span>✉️</span>
+							info@rspnorway.org
+						</a>
+					</div>
+					<div className="flex items-center gap-4">
+						<SocialMediaLinks />
+						<div ref={langRef} className="relative">
+							<button
+								onClick={() => setShowLangDropdown((v) => !v)}
+								aria-label="Select language"
+								aria-expanded={showLangDropdown}
+								className={`
+                  flex items-center gap-2 rounded-lg border px-3 py-1.5 
+                  font-medium text-sm transition-all duration-200
+                  hover:scale-105 active:scale-95
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
+                  ${isScrolled ? "bg-white/95 text-brand border-white/20 shadow-sm" : "bg-white text-neutral-800 border-neutral-200"}
+                `}
+							>
+								<Flag country={LANGUAGES.find((l) => l.code === locale)?.flag as "no" | "np" | "gb"} size={20} />
+								<ChevronDown size={14} className={`transition-transform duration-300 ${showLangDropdown ? "rotate-180" : ""}`} />
+							</button>
+							<AnimatePresence>
 								{showLangDropdown && (
-									<>
-										<div className="fixed inset-0 z-40 md:hidden" onClick={() => setShowLangDropdown(false)} />
-										<div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
-											<div className="py-1">
-												{LANGUAGES.map((lang) => (
-													<button
-														key={lang.code}
-														onClick={(e) => {
-															e.stopPropagation();
-															handleLocaleChange(lang.code);
-														}}
-														className={`flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors ${locale === lang.code ? "bg-brand/10 text-brand font-semibold" : "text-gray-700 hover:bg-gray-50"}`}
-													>
-														<Flag country={lang.flag as "no" | "np" | "gb"} size={20} />
-														<span className="text-sm">{lang.label}</span>
-														{locale === lang.code && (
-															<svg className="ml-auto w-4 h-4 text-brand" fill="currentColor" viewBox="0 0 20 20">
-																<path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-															</svg>
-														)}
-													</button>
-												))}
-											</div>
-										</div>
-									</>
+									<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="absolute right-0 mt-2 w-44 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] ring-1 ring-black/5 overflow-hidden">
+										{LANGUAGES.map((l, idx) => (
+											<button
+												key={l.code}
+												onClick={() => handleLocaleChange(l.code)}
+												className={`
+                          flex w-full items-center gap-3 px-4 py-3 
+                          hover:bg-brand/5 transition-all duration-200
+                          font-medium text-sm text-neutral-700 hover:text-brand
+                          ${idx !== 0 ? "border-t border-neutral-100" : ""}
+                          ${l.code === locale ? "bg-brand/5 text-brand" : ""}
+                        `}
+											>
+												<Flag country={l.flag} size={20} />
+												{l.label}
+											</button>
+										))}
+									</motion.div>
 								)}
-							</div>
+							</AnimatePresence>
 						</div>
 					</div>
 				</div>
-			</section>
+			</motion.section>
 
-			{/* Main nav bar */}
-			<motion.header ref={headerRef} className={`w-full z-40 transition-colors duration-300 ${isScrolled ? "bg-white shadow-md" : "bg-brand"}`} style={{}} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }} onClick={handleHeaderClick}>
-				<div className="container mx-auto p-4 flex justify-between items-center">
-					<Link href="/" className="flex items-center space-x-4 cursor-pointer group">
-						<Image src="/rsp-norway-logo.png" alt="RSP Norway Logo" width={200} height={200} className="w-auto h-12 md:h-16 rounded-md" />
-						<span className={`hidden md:block leading-3 text-2xl font-bold ${isScrolled ? "text-black" : "text-white group-hover:text-slate-100"} transition-colors duration-200`}>
-							<span className="text-2xl font-bold">{t("rsp")} </span>
-							<br />
-							<span className="text-md font-thin">{t("norway")} </span>
-						</span>
+			{/* Main Header */}
+			<motion.header
+				initial={{ y: -100 }}
+				animate={{ y: 0 }}
+				transition={{ duration: 0.4, ease: "easeOut" }}
+				className={`
+          transition-all duration-500
+          ${isScrolled ? "bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.08)]" : "bg-gradient-to-r from-brand via-brand to-emerald-600"}
+        `}
+			>
+				<div className="container mx-auto px-4 lg:px-6 h-24 flex items-center justify-between">
+					{/* Logo */}
+					<Link href="/" className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 rounded-lg">
+						<div className="relative">
+							<Image src="/rsp-norway-logo.png" alt="RSP Norway" width={180} height={72} className="h-14 w-auto transition-transform duration-300 group-hover:scale-105" />
+						</div>
+						<div className="flex flex-col leading-3">
+							<span className={`text-xl font-bold ${isScrolled ? "text-brand" : "text-white"}`}>{t("rsp")}</span>
+							<span className={`text-md ${isScrolled ? "text-brand" : "text-white"}`}>{t("norway")}</span>
+						</div>
 					</Link>
-					<div className="flex gap-6 items-center">
-						<nav className="hidden md:flex items-center space-x-6 font-medium text-md lg:text-lg">
-							{navItems.map((item) => (
-								<NavItem key={item.href || item.title} title={item.title} href={item.href} isScrolled={isScrolled} pathname={pathname} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
-							))}
-						</nav>
-					</div>
-					<div className="flex gap-4 md:gap-6 items-center">
+
+					{/* Desktop Nav */}
+					<nav className="hidden lg:flex items-center gap-2" role="navigation">
+						{navItems.map((item) => (
+							<NavItem key={item.href} {...item} isScrolled={isScrolled} pathname={pathname} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
+						))}
+					</nav>
+
+					{/* Actions */}
+					<div className="flex items-center gap-3">
 						<button
-							onClick={(e) => {
-								e.stopPropagation();
-								openModal();
-							}}
-							className="border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200"
-							aria-label={t("search_placeholder")}
+							onClick={() => setIsModalOpen(true)}
+							aria-label="Open search"
+							className={`
+                h-11 w-11 rounded-xl flex items-center justify-center
+                transition-all duration-300 hover:scale-105 active:scale-95
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
+                ${isScrolled ? "bg-neutral-100 hover:bg-neutral-200 text-neutral-700" : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"}
+              `}
 						>
-							<span className={`border-b border-transparent hover:border-b hover:border-b-red-700 ${isScrolled ? "text-black" : "text-white hover:text-slate-100"}`}>
-								<Search />
-							</span>
+							<Search size={19} />
 						</button>
+
 						{user ? (
-							<div className="relative" ref={userDropdownRef}>
-								<button
-									onClick={(e) => {
-										e.stopPropagation();
-										setShowUserDropdown(!showUserDropdown);
-										setActiveDropdown(null);
-									}}
-									className={`flex items-center gap-2 p-1 rounded-full ${isScrolled ? "bg-brand text-black hover:bg-brand" : "bg-white/20 text-white hover:bg-white/30"} transition-colors duration-200`}
-								>
-									<div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-brand flex items-center justify-center text-white font-semibold shadow-sm">{avatarInitial}</div>
+							<div ref={userRef} className="relative">
+								<button onClick={() => setShowUserDropdown((v) => !v)} aria-label="User menu" aria-expanded={showUserDropdown} className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand to-emerald-500 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2">
+									{avatarInitial}
 								</button>
-								{showUserDropdown && (
-									<div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl ring-1 ring-gray-900/5 overflow-hidden z-50">
-										{/* ...existing code for user dropdown... */}
-										<div className="p-4 bg-gradient-to-br from-brand/5 to-transparent border-b border-gray-100">
-											<div className="flex items-center gap-3 mb-3">
-												<div className="w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center font-semibold text-lg">{user?.name?.charAt(0).toUpperCase()}</div>
-												<div className="flex-1 min-w-0">
-													<p className="font-semibold text-gray-900 truncate">{user?.name}</p>
-													<p className="text-sm text-gray-500 truncate">{user?.email}</p>
-												</div>
+								<AnimatePresence>
+									{showUserDropdown && (
+										<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] ring-1 ring-black/5 overflow-hidden">
+											<div className="px-5 py-4 border-b border-neutral-100">
+												<p className="font-semibold text-neutral-900 truncate">{user.email}</p>
+												<p className="text-xs text-neutral-500 mt-1">Signed in</p>
 											</div>
-										</div>
-										<div className="py-2">
-											<button
-												onClick={() => {
-													setShowUserDropdown(false);
-													// Navigate to profile
-												}}
-												className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-											>
-												<User size={18} className="text-gray-400" />
-												<span>My Profile</span>
-											</button>
-											<button
-												onClick={() => {
-													setShowUserDropdown(false);
-													// Navigate to settings
-												}}
-												className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-											>
-												<Settings size={18} className="text-gray-400" />
-												<span>Settings</span>
-											</button>
-											<Link
-												href="/membership"
-												onClick={() => {
-													setShowUserDropdown(false);
-												}}
-												className={`flex items-center gap-3 w-full px-4 py-2.5 text-sm  hover:bg-gray-50 ${isScrolled ? "text-white bg-brand" : "text-gray-700"} transition-colors`}
-											>
-												<User size={18} className="text-gray-400" />
-												<span>Become a Member</span>
-											</Link>
-										</div>
-										<div className="border-t border-gray-100"></div>
-										<div className="py-2">
-											<button
-												onClick={() => {
-													setShowUserDropdown(false);
-													handleSignOut();
-												}}
-												className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-											>
+											<button onClick={() => signOut({ callbackUrl: "/" })} className="flex items-center gap-3 px-5 py-3.5 text-red-600 hover:bg-red-50 w-full transition-all duration-200 font-medium">
 												<LogOut size={18} />
-												<span className="font-medium">Sign Out</span>
+												Sign Out
 											</button>
-										</div>
-									</div>
-								)}
+										</motion.div>
+									)}
+								</AnimatePresence>
 							</div>
 						) : (
-							<div className="flex gap-2">
-								<Link href="/login" className={`hidden sm:block px-4 py-2 rounded-md bg-gray-700 text-white font-medium hover:bg-gray-900  transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
-									{t("login")}
-								</Link>
-								<Link href="/membership" className={`px-4 py-2 rounded-md text-brand bg-gray-100 font-medium hover:bg-white transition-colors duration-200`} onClick={() => setActiveDropdown(null)}>
-									{t("become_a_member")}
-								</Link>
-							</div>
+							<Link
+								href="/login"
+								className={`
+                  px-6 py-2.5 rounded-xl font-semibold tracking-wide
+                  transition-all duration-300 hover:scale-105 active:scale-95
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
+                  ${isScrolled ? "bg-gradient-to-r from-brand to-emerald-600 text-white shadow-md hover:shadow-lg" : "bg-white text-brand shadow-md hover:shadow-lg"}
+                `}
+							>
+								{t("login")}
+							</Link>
 						)}
-						<div
-							className="md:hidden cursor-pointer ml-4"
-							onClick={(e) => {
-								e.stopPropagation();
-								toggleMenu();
-								setActiveDropdown(null);
-							}}
+
+						<button
+							className={`
+                lg:hidden h-11 w-11 rounded-xl flex items-center justify-center
+                transition-all duration-300
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
+                ${isScrolled ? "bg-neutral-100 hover:bg-neutral-200 text-neutral-700" : "bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"}
+              `}
+							onClick={() => setIsMenuOpen((v) => !v)}
+							aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+							aria-expanded={isMenuOpen}
 						>
-							{isMenuOpen ? <X className={`${isScrolled ? "text-black" : "text-slate-700"}`} style={{ height: "32px", width: "32px" }} /> : <Menu className={`${isScrolled ? "text-black" : "text-white"}`} style={{ height: "32px", width: "32px" }} />}
-						</div>
+							<AnimatePresence mode="wait">
+								{isMenuOpen ? (
+									<motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+										<X size={22} />
+									</motion.div>
+								) : (
+									<motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+										<Menu size={22} />
+									</motion.div>
+								)}
+							</AnimatePresence>
+						</button>
 					</div>
 				</div>
-				<AnimatePresence>
-					{isMenuOpen && (
-						<motion.div className="md:hidden" initial={{ opacity: 0, x: 300 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 300 }} transition={{ duration: 0.3 }}>
-							<div className="fixed right-0 w-[60%] h-full bg-brand/90 backdrop-blur-sm shadow-lg z-50">
-								<nav className="flex flex-col items-center text-xl font-semibold py-24">
-									{mobileNavItems.map((item) => (
-										<Link key={item.href} href={item.href} className="text-gray-300 hover:bg-slate-100 w-full text-center hover:text-red-600 transition-colors duration-300 py-2" onClick={toggleMenu}>
-											{item.title}
-										</Link>
-									))}
-									<div className="mt-12 text-slate-300 text-center">
-										<p className="text-md underline">For Enquiry</p>
-										<p>Send us a message</p>
-									</div>
-									<div className="mt-8 flex gap-2">
-										<Link href="https://www.facebook.com/profile.php?id=61577689933528" className={`border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 text-white hover:text-slate-100`} aria-label="Facebook" onClick={() => setActiveDropdown(null)}>
-											<Facebook />
-										</Link>
-										<Link href="#" className={`border-b border-transparent hover:border-b hover:scale-110 transition-transform duration-200 text-white hover:text-slate-100`} aria-label="Instagram" onClick={() => setActiveDropdown(null)}>
-											<Instagram />
-										</Link>
-									</div>
-								</nav>
-							</div>
-						</motion.div>
-					)}
-				</AnimatePresence>
 			</motion.header>
 
-			{/* Animated search bar below nav */}
-			<div
-				className={`w-full transition-all duration-300 ${isModalOpen ? "h-20 opacity-100" : "h-0 opacity-0 overflow-hidden"}`}
-				style={{
-					transitionProperty: "height, opacity",
-					transitionDuration: "300ms, 300ms",
-					transitionDelay: isModalOpen ? "0ms, 150ms" : "0ms, 0ms",
-					position: "relative",
-				}}
-			>
-				{isModalOpen && (
+			{/* Mobile Menu */}
+			<AnimatePresence>
+				{isMenuOpen && (
 					<>
-						{/* Backdrop to close modal on outside click */}
-						<div className="fixed inset-0 z-40 bg-black/10" onClick={closeModal} aria-label="Close search modal" />
-						<div className="relative z-50">
-							<SearchModal closeModal={closeModal} placeholder={t("search_placeholder")} />
-						</div>
+						<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" onClick={() => setIsMenuOpen(false)} />
+						<motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeOut" }} className="fixed inset-y-0 right-0 w-[75%] max-w-md bg-gradient-to-br from-brand via-brand to-emerald-600 z-50 overflow-y-auto">
+							<div className="py-12 px-8 h-full min-h-full flex flex-col">
+								<nav className="flex flex-col gap-2" role="navigation">
+									{navItems.map((item, idx) => (
+										<motion.div key={item.href} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1, duration: 0.3 }}>
+											<Link href={item.href} onClick={() => setIsMenuOpen(false)} className="block px-6 py-4 text-2xl font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-200">
+												{item.title}
+											</Link>
+										</motion.div>
+									))}
+								</nav>
+
+								<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.3 }} className="mt-12 pt-8 border-t border-white/20">
+									<p className="text-white/60 text-sm font-medium mb-4 px-6">Contact Us</p>
+									<a href="tel:+4796800984" className="block px-6 py-3 text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+										📞 {tr("phone_small_device")}
+									</a>
+									<a href="mailto:info@rspnorway.org" className="block px-6 py-3 text-white hover:bg-white/10 rounded-xl transition-all duration-200 mt-2">
+										✉️ info@rspnorway.org
+									</a>
+								</motion.div>
+								<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.3 }} className="mt-8 px-6">
+									<Link href="/membership" onClick={() => setIsMenuOpen(false)} className="block w-full px-6 py-4 text-center text-lg font-bold text-brand bg-white rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200">
+										{t("become_a_member") || "Become a Member"}
+									</Link>
+								</motion.div>
+							</div>
+						</motion.div>
 					</>
 				)}
-			</div>
+			</AnimatePresence>
+
+			{/* Search */}
+			{isModalOpen && <SearchModal placeholder={t("search_placeholder")} closeModal={() => setIsModalOpen(false)} />}
 		</div>
 	);
 }

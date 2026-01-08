@@ -113,7 +113,7 @@ export default function MembershipPage() {
 	}
 
 	return (
-		<div className="container mx-auto min-h-screen mt-16 md:mt-20 ">
+		<div className="container mx-auto min-h-screen mt-24 md:mt-32 ">
 			{/* Hero Section */}
 			{/* <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
 				<div className="max-w-6xl mx-auto px-4">
