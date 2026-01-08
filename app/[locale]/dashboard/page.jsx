@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useActiveMenu } from "@/context/ActiveMenuContext";
-import { menuItems } from "@/components/dashboardMenuItems";
+import { menuItems } from "@/components/DashboardMenuItems";
 
 export default function DashboardGrid() {
 	const { setActiveMenu } = useActiveMenu();

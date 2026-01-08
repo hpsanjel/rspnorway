@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Download, FileText, Calendar, Search, Filter } from "lucide-react";
 import Image from "next/image";
-import { useLoading } from "@/context/LoadingContext";
 import { useTranslations } from "next-intl";
 
 interface Document {
@@ -23,13 +22,13 @@ export default function DownloadsPage() {
 	const [showMobileFilter, setShowMobileFilter] = useState(false);
 
 	const [documents, setDocuments] = useState<Document[]>([]);
-	const { isLoading, setLoading } = useLoading();
 	const [error, setError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchDocuments = async () => {
-			setLoading(true);
 			setError(null);
+			setIsLoading(true);
 			try {
 				const res = await fetch("/api/downloads");
 				const data = await res.json();
@@ -53,7 +52,7 @@ export default function DownloadsPage() {
 			} catch (err) {
 				setError("Failed to load documents" + (err instanceof Error ? ": " + err.message : ""));
 			} finally {
-				setLoading(false);
+				setIsLoading(false);
 			}
 		};
 		fetchDocuments();
@@ -100,7 +99,7 @@ export default function DownloadsPage() {
 
 	if (isLoading) {
 		return (
-			<div className="mt-16 md:mt-32 min-h-screen">
+			<div className="mt-24 md:mt-32 min-h-screen">
 				<main className="container mx-auto px-4 py-8">
 					<section className="container mx-auto md:px-4 py-8 mb-16">
 						<h2 className="text-3xl text-center font-bold mb-6">
@@ -162,7 +161,7 @@ export default function DownloadsPage() {
 
 	if (error) {
 		return (
-			<div className="mt-16 md:mt-32 min-h-screen flex items-center justify-center">
+			<div className="mt-24 md:mt-32 min-h-screen flex items-center justify-center">
 				<div className="bg-white rounded-2xl shadow-lg p-12 text-center">
 					<div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
 						<FileText size={40} className="text-red-400" />
@@ -174,9 +173,9 @@ export default function DownloadsPage() {
 		);
 	}
 	return (
-		<div className="mt-16 md:mt-32 min-h-screen">
-			<main className="container mx-auto px-4 py-4">
-				<section className="py-8 ">
+		<div className="mt-24 md:mt-32 min-h-screen">
+			<main className="container mx-auto px-4 py-8">
+				<section className="container mx-auto md:px-4 py-8 mb-16">
 					<h2 className="text-3xl text-center font-bold mb-6">
 						{t("title")} <span className="mx-auto text-brand"></span>
 					</h2>
@@ -231,7 +230,7 @@ export default function DownloadsPage() {
 						</div>
 
 						{/* Documents Grid */}
-						{filteredDocuments.length > 0 ? (
+						{filteredDocuments.length && filteredDocuments.length > 0 ? (
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12">
 								{filteredDocuments.map((doc) => (
 									<div key={doc.id} className="flex bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden max-h-[224px] group">

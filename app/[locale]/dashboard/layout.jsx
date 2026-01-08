@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
-import { menuItems } from "@/components/dashboardMenuItems";
+import { menuItems } from "@/components/DashboardMenuItems";
 import { useSession } from "next-auth/react";
 import { ActiveMenuProvider, useActiveMenu } from "@/context/ActiveMenuContext";
 

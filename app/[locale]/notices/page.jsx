@@ -5,10 +5,11 @@ import Image from "next/image";
 import useFetchData from "@/hooks/useFetchData";
 import { Calendar, MapPin, Clock, Bell } from "lucide-react";
 import { useTranslations } from "next-intl";
+import GlobalLoading from "@/components/GlobalLoading";
 
 export default function EventsAndNoticesPage() {
-	const { data: events } = useFetchData("/api/events", "events");
-	const { data: notices } = useFetchData("/api/notices", "notices");
+	const { data: events, loading: eventsLoading } = useFetchData("/api/events", "events");
+	const { data: notices, loading: noticesLoading } = useFetchData("/api/notices", "notices");
 	const [activeTab, setActiveTab] = useState("events"); // 'events' or 'notices'
 	const [selectedEvent, setSelectedEvent] = useState(null);
 	const [selectedNotice, setSelectedNotice] = useState(null);
@@ -41,6 +42,10 @@ export default function EventsAndNoticesPage() {
 			return { day: "—", month: "—" };
 		}
 	};
+
+	if ((activeTab === "events" && eventsLoading) || (activeTab === "notices" && noticesLoading)) {
+		return <GlobalLoading />;
+	}
 
 	// Event Detail View
 	if (selectedEvent) {

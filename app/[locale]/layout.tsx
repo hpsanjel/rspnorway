@@ -2,9 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import ClientLayout from "./ClientLayout";
-import { LoadingProvider } from "@/context/LoadingContext";
 import { NextIntlClientProvider } from "next-intl";
-import LoadingWrapperClient from "./LoadingWrapper.client";
 import Header from "@/components/Header";
 
 const geistSans = localFont({
@@ -24,11 +22,9 @@ export default function LocaleLayout({ children }: { children: React.ReactNode }
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<ClientLayout>
 					<NextIntlClientProvider>
-						<LoadingProvider>
-							<Header />
-							<LoadingWrapperClient>{children}</LoadingWrapperClient>
-							<Footer />
-						</LoadingProvider>
+						<Header />
+						{children}
+						<Footer />
 					</NextIntlClientProvider>
 				</ClientLayout>
 			</body>

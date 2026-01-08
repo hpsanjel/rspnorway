@@ -1,3 +1,4 @@
+"use client";
 import useFetchData from "@/hooks/useFetchData";
 import { Facebook, Instagram } from "lucide-react";
 

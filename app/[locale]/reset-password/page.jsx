@@ -1,14 +1,12 @@
 "use client";
 import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useLoading } from "@/context/LoadingContext";
 
 export default function ResetPasswordPage() {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState("");
-	const { isLoading, setLoading } = useLoading();
 
 	function TokenField() {
 		const searchParams = useSearchParams();
@@ -28,7 +26,7 @@ export default function ResetPasswordPage() {
 			setError("Passwords do not match.");
 			return;
 		}
-		setLoading(true);
+		// setLoading(true);
 		// Get token from searchParams inside TokenField
 		const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
 		const token = searchParams ? searchParams.get("token") || "" : "";
@@ -47,7 +45,7 @@ export default function ResetPasswordPage() {
 		} catch (err) {
 			setError("Unexpected error. Please try again.", err);
 		} finally {
-			setLoading(false);
+			// setLoading(false);
 		}
 	};
 

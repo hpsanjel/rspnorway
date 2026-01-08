@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, Calendar, BookOpen, Image as ImageIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useLoading } from "@/context/LoadingContext";
 
 function SearchContent() {
 	const t = useTranslations("search");
@@ -27,18 +26,17 @@ function SearchContent() {
 		pages: [],
 	});
 	const [unifiedResults, setUnifiedResults] = useState([]);
-	const { setLoading } = useLoading();
 
 	useEffect(() => {
 		if (query) {
 			searchContent(query);
 		} else {
-			setLoading(false);
+			// setLoading(false);
 		}
 	}, [query]);
 
 	const searchContent = async (searchQuery) => {
-		setLoading(true);
+		// setLoading(true);
 
 		try {
 			const [eventsRes, galleryRes, noticesRes] = await Promise.all([fetch("/api/events").then((res) => res.json()), fetch("/api/gallery").then((res) => res.json()), fetch("/api/notices").then((res) => res.json())]);
@@ -149,7 +147,7 @@ function SearchContent() {
 		} catch (error) {
 			console.error("Search error:", error);
 		} finally {
-			setLoading(false);
+			// setLoading(false);
 		}
 	};
 

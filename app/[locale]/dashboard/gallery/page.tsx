@@ -4,7 +4,6 @@ import GalleryForm from "@/components/GalleryForm";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useLoading } from "@/context/LoadingContext";
 
 type GalleryItem = {
 	_id: string;
@@ -18,7 +17,6 @@ export default function Page() {
 	const [gallery, setGallery] = useState<GalleryItem[]>([]);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [galleryToEdit, setGalleryToEdit] = useState<GalleryItem | null>(null);
-	const { setLoading } = useLoading();
 	const [error, setError] = useState<string>("");
 
 	const fetchGallery = async (): Promise<GalleryItem[]> => {
@@ -28,7 +26,6 @@ export default function Page() {
 	};
 
 	const loadGallery = async () => {
-		setLoading(true);
 		try {
 			const data = await fetchGallery();
 			setGallery(data);
@@ -39,7 +36,6 @@ export default function Page() {
 				setError("Failed to load gallery: " + String(err));
 			}
 		} finally {
-			setLoading(false);
 		}
 	};
 

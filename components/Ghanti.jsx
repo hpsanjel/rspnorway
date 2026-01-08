@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 
-export default function AnimatedBell() {
+export default function Ghanti() {
 	return (
 		<div className="relative w-32 h-32 flex items-center justify-center">
 			<div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg animate-swing origin-top">
