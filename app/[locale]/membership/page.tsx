@@ -115,8 +115,8 @@ export default function MembershipPage() {
 	return (
 		<div className="md:px-4 py-12">
 			{/* Membership Form */}
-			<div className="bg-white  md:shadow-md p-8 md:p-12">
-				<div className="flex flex-col items-center justify-center">
+			<div className="bg-white  md:shadow-md px-8 md:px-12">
+				<div className="flex flex-col md:items-center md:justify-center">
 					<h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{t("title")}</h2>
 					<p className="text-gray-600 mb-8"> {t("subtitle")}</p>
 				</div>

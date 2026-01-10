@@ -119,7 +119,7 @@
 		"downloads": "Downloads",
 		"contact": "Contact",
 		"login": "Login",
-		"become_a_member": "Become a Member",
+		"become_a_member": "Become Member",
 		"rsp": "RSP",
 		"norway": "Norway",
 		"search_placeholder": "Search..."
@@ -211,7 +211,7 @@
 		"no_circulars": "No circulars found"
 	},
 	"membership": {
-		"title": "Membership Application Form",
+		"title": "Membership Form",
 		"subtitle": "Your voice matters in shaping future of our nation. Fill out the information below to become a member of RSP Norway and be part of the movement to build a progressive, corruption-free Nepal.",
 		"personal_info": "Personal Information",
 		"address_norway": "Address in Norway",

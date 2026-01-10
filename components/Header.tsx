@@ -8,19 +8,14 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import SearchModal from "@/components/SearchModal";
 import { useTranslations, useLocale } from "next-intl";
-import Flag from "@/components/ui/Flag";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import SocialMediaLinks from "./SocialMediaLinks";
+import LanguageSelector from "./LanguageSelector";
+import MobileMenu from "./MobileMenu";
 
 /* ---------------------------------- */
 /* Constants */
 /* ---------------------------------- */
-
-const LANGUAGES: { code: string; flag: "np" | "no" | "gb"; label: string }[] = [
-	{ code: "ne", flag: "np", label: "नेपाली" },
-	{ code: "no", flag: "no", label: "Norsk" },
-	{ code: "en", flag: "gb", label: "English" },
-];
 
 /* ---------------------------------- */
 /* Nav Item */
@@ -149,10 +144,8 @@ export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-	const [showLangDropdown, setShowLangDropdown] = useState(false);
 	const [showUserDropdown, setShowUserDropdown] = useState(false);
 
-	const langRef = useRef<HTMLDivElement>(null);
 	const userRef = useRef<HTMLDivElement>(null);
 
 	/* ---------------------------------- */
@@ -164,25 +157,6 @@ export default function Header() {
 		window.addEventListener("scroll", onScroll);
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
-
-	useEffect(() => {
-		const close = (e: MouseEvent) => {
-			if (!langRef.current?.contains(e.target as Node) && !userRef.current?.contains(e.target as Node)) {
-				setShowLangDropdown(false);
-				setShowUserDropdown(false);
-				setActiveDropdown(null);
-			}
-		};
-		document.addEventListener("mousedown", close);
-		return () => document.removeEventListener("mousedown", close);
-	}, []);
-
-	const handleLocaleChange = (code: string) => {
-		if (code === locale) return;
-		localStorage.setItem("locale", code);
-		setShowLangDropdown(false);
-		router.replace(pathname, { locale: code });
-	};
 
 	/* ---------------------------------- */
 	/* Render */
@@ -207,45 +181,7 @@ export default function Header() {
 					</div>
 					<div className="flex items-center gap-4">
 						<SocialMediaLinks />
-						<div ref={langRef} className="relative">
-							<button
-								onClick={() => setShowLangDropdown((v) => !v)}
-								aria-label="Select language"
-								aria-expanded={showLangDropdown}
-								className={`
-                  flex items-center gap-2 rounded-lg border px-3 py-1.5 
-                  font-medium text-sm transition-all duration-200
-                  hover:scale-105 active:scale-95
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2
-				  bg-white ${isScrolled ? "shadow-sm" : ""}
-                `}
-							>
-								<Flag country={LANGUAGES.find((l) => l.code === locale)?.flag as "no" | "np" | "gb"} size={20} />
-								<ChevronDown size={14} className={`transition-transform duration-300 ${showLangDropdown ? "rotate-180" : ""}`} />
-							</button>
-							<AnimatePresence>
-								{showLangDropdown && (
-									<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="absolute right-0 mt-2 w-44 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] ring-1 ring-black/5 overflow-hidden">
-										{LANGUAGES.map((l, idx) => (
-											<button
-												key={l.code}
-												onClick={() => handleLocaleChange(l.code)}
-												className={`
-                          flex w-full items-center gap-3 px-4 py-3 
-                          hover:bg-brand/5 transition-all duration-200
-                          font-medium text-sm text-neutral-700 hover:text-brand
-                          ${idx !== 0 ? "border-t border-neutral-100" : ""}
-                          ${l.code === locale ? "bg-brand/5 text-brand" : ""}
-                        `}
-											>
-												<Flag country={l.flag} size={20} />
-												{l.label}
-											</button>
-										))}
-									</motion.div>
-								)}
-							</AnimatePresence>
-						</div>
+						<LanguageSelector />
 					</div>
 				</div>
 			</motion.section>
@@ -279,7 +215,7 @@ export default function Header() {
 						))}
 					</nav>
 
-					{/* Actions */}
+					{/* Search */}
 					<div className="flex items-center gap-3">
 						<button
 							onClick={() => setIsModalOpen(true)}
@@ -360,41 +296,7 @@ export default function Header() {
 			</motion.header>
 
 			{/* Mobile Menu */}
-			<AnimatePresence>
-				{isMenuOpen && (
-					<>
-						<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" onClick={() => setIsMenuOpen(false)} />
-						<motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeOut" }} className="fixed inset-y-0 right-0 w-[75%] max-w-md bg-gradient-to-br from-brand via-brand to-emerald-600 z-50 overflow-y-auto">
-							<div className="py-12 px-8 h-full min-h-full flex flex-col">
-								<nav className="flex flex-col gap-2" role="navigation">
-									{navItems.map((item, idx) => (
-										<motion.div key={item.href} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1, duration: 0.3 }}>
-											<Link href={item.href} onClick={() => setIsMenuOpen(false)} className="block px-6 py-4 text-2xl font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-200">
-												{item.title}
-											</Link>
-										</motion.div>
-									))}
-								</nav>
-
-								<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.3 }} className="mt-12 pt-8 border-t border-white/20">
-									<p className="text-white/60 text-sm font-medium mb-4 px-6">Contact Us</p>
-									<a href="tel:+4796800984" className="block px-6 py-3 text-white hover:bg-white/10 rounded-xl transition-all duration-200">
-										📞 {tr("phone_small_device")}
-									</a>
-									<a href="mailto:info@rspnorway.org" className="block px-6 py-3 text-white hover:bg-white/10 rounded-xl transition-all duration-200 mt-2">
-										✉️ info@rspnorway.org
-									</a>
-								</motion.div>
-								<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.3 }} className="mt-8 px-6">
-									<Link href="/membership" onClick={() => setIsMenuOpen(false)} className="block w-full px-6 py-4 text-center text-lg font-bold text-brand bg-white rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200">
-										{t("become_a_member") || "Become a Member"}
-									</Link>
-								</motion.div>
-							</div>
-						</motion.div>
-					</>
-				)}
-			</AnimatePresence>
+			<AnimatePresence>{isMenuOpen && <MobileMenu navItems={navItems} isScrolled={isScrolled} pathname={pathname} closeMenu={() => setIsMenuOpen(false)} />}</AnimatePresence>
 
 			{/* Search */}
 			{isModalOpen && <SearchModal placeholder={t("search_placeholder")} closeModal={() => setIsModalOpen(false)} />}
