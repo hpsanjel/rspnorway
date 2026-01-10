@@ -161,7 +161,7 @@ export default function EmployeeForm({ settingdata }) {
 					<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="companyLogo">
 						Company Logo
 					</label>
-					{formData.companyLogo && <Image src={formData.companyLogo || "/placeholder.jpg"} alt="Company Logo" width={100} height={100} className="w-auto h-24 mb-2 rounded-full" />}
+					{formData.companyLogo && <Image src={formData.companyLogo || "/ghanti.png"} alt="Company Logo" width={100} height={100} className="w-auto h-24 mb-2 rounded-full" />}
 					<input type="file" id="companyLogo" name="companyLogo" onChange={handleImageChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
 				</div>
 				<div className="grid justify-items-end gap-2 mt-12">

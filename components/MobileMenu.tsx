@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useTranslations } from "next-intl";

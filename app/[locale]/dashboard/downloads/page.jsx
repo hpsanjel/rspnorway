@@ -59,7 +59,7 @@ export default function DownloadsDashboardPage() {
 	return (
 		<div className="max-w-4xl">
 			<div className="text-right">
-				<button onClick={handleCreate} className="bg-blue-800 text-slate-200 font-bold px-4 py-2 my-4">
+				<button onClick={handleCreate} className="bg-brand text-slate-200 font-bold px-4 py-2">
 					Create Download
 				</button>
 			</div>

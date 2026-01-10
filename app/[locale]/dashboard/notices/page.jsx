@@ -75,7 +75,7 @@ export default function NoticesPage() {
 									<TableCell className="w-48">{notice.notice}</TableCell>
 									<TableCell className="w-72">{notice.noticedate}</TableCell>
 									<TableCell className="w-24">
-										<Image src={notice.noticeimage || "/placeholder.jpg"} width={200} height={200} alt={notice.notice || "alt"} className="w-16 h-16 rounded-full object-cover" />
+										<Image src={notice.noticeimage || "/ghanti.png"} width={200} height={200} alt={notice.notice || "alt"} className="w-16 h-16 rounded-full object-cover" />
 									</TableCell>
 									<TableCell>
 										<div className="flex space-x-2">

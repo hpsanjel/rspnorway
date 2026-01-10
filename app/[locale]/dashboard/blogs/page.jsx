@@ -47,7 +47,7 @@ export default function EventsPage() {
 	return (
 		<div className="max-w-6xl">
 			<div className="text-right">
-				<button onClick={handleCreateBlog} className="bg-red-800 text-slate-200 font-bold px-4 py-2 my-4">
+				<button onClick={handleCreateBlog} className="bg-brand text-slate-200 font-bold px-4 py-2">
 					Create Blog
 				</button>
 			</div>
@@ -73,10 +73,10 @@ export default function EventsPage() {
 									{/* <TableCell className="w-36">{blog.blogAuthor}</TableCell> */}
 									<TableCell className="w-32">{blog.blogDate}</TableCell>
 									<TableCell className="w-16">
-										<Image src={blog?.blogMainPicture || "/placeholder.jpg"} width={50} height={50} alt={blog?.blogAuthor || "alt"} className="w-16 h-16 object-cover" />
+										<Image src={blog?.blogMainPicture || "/ghanti.png"} width={50} height={50} alt={blog?.blogAuthor || "alt"} className="w-16 h-16 object-cover" />
 									</TableCell>
 									<TableCell className="w-16">
-										<Image src={blog?.blogSecondPicture || "/placeholder.jpg"} width={50} height={50} alt={blog?.blogAuthor || "alt"} className="w-16 h-16 object-cover" />
+										<Image src={blog?.blogSecondPicture || "/ghanti.png"} width={50} height={50} alt={blog?.blogAuthor || "alt"} className="w-16 h-16 object-cover" />
 									</TableCell>
 
 									<TableCell className="w-32">

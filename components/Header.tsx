@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, Search, X, ChevronDown, LogOut, Phone, Mail, LayoutDashboard } from "lucide-react";
+import { Menu, Search, X, ChevronDown, Phone, Mail } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import SearchModal from "@/components/SearchModal";
-import { useTranslations, useLocale } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
 import SocialMediaLinks from "./SocialMediaLinks";
 import LanguageSelector from "./LanguageSelector";
 import MobileMenu from "./MobileMenu";
+import LoggedInUser from "./LoggedInUser";
 
 /* ---------------------------------- */
 /* Constants */
@@ -122,15 +123,9 @@ function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 /* ---------------------------------- */
 
 export default function Header() {
-	const router = useRouter();
 	const pathname = usePathname();
-	const locale = useLocale();
 	const t = useTranslations("navigation");
 	const tr = useTranslations("footer");
-
-	const { data: session } = useSession();
-	const user = session?.user;
-	const avatarInitial = typeof user?.email === "string" && user.email ? user.email.charAt(0).toUpperCase() : "U";
 
 	const navItems = [
 		{ title: t("about"), href: "/about-us" },
@@ -144,9 +139,8 @@ export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-	const [showUserDropdown, setShowUserDropdown] = useState(false);
-
-	const userRef = useRef<HTMLDivElement>(null);
+	const { data: session } = useSession();
+	const user = session?.user;
 
 	/* ---------------------------------- */
 	/* Effects */
@@ -215,8 +209,8 @@ export default function Header() {
 						))}
 					</nav>
 
-					{/* Search */}
 					<div className="flex items-center gap-3">
+						{/* Search */}
 						<button
 							onClick={() => setIsModalOpen(true)}
 							aria-label="Open search"
@@ -231,29 +225,7 @@ export default function Header() {
 						</button>
 
 						{user ? (
-							<div ref={userRef} className="relative">
-								<button onClick={() => setShowUserDropdown((v) => !v)} aria-label="User menu" aria-expanded={showUserDropdown} className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand to-emerald-500 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2">
-									{avatarInitial}
-								</button>
-								<AnimatePresence>
-									{showUserDropdown && (
-										<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] ring-1 ring-black/5 overflow-hidden">
-											<div className="px-5 py-4 border-b border-neutral-100">
-												<p className="font-semibold text-neutral-900 truncate">{user.email}</p>
-												<p className="text-xs text-neutral-500 mt-1">Signed in</p>
-											</div>
-											<Link href="/dashboard" className="flex items-center gap-3 px-5 py-3.5 text-brand hover:bg-brand/10 w-full transition-all duration-200 font-medium">
-												<LayoutDashboard size={18} />
-												Dashboard
-											</Link>
-											<button onClick={() => signOut({ callbackUrl: "/" })} className="flex items-center gap-3 px-5 py-3.5 text-red-600 hover:bg-red-50 w-full transition-all duration-200 font-medium">
-												<LogOut size={18} />
-												Sign Out
-											</button>
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</div>
+							<LoggedInUser user={user} />
 						) : (
 							<Link
 								href="/login"

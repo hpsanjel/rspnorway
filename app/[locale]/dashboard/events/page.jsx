@@ -50,8 +50,8 @@ export default function EventsPage() {
 
 	return (
 		<div className="w-full max-w-full px-2 sm:px-6">
-			<div className="flex flex-col sm:flex-row sm:justify-end items-stretch gap-2 mt-2 mb-4">
-				<button onClick={handleCreateEvent} className="bg-red-800 text-slate-200 font-bold px-4 py-2 rounded w-full sm:w-auto text-center">
+			<div className="flex flex-col sm:flex-row sm:justify-end items-stretch gap-2 mb-4">
+				<button onClick={handleCreateEvent} className="bg-brand text-slate-200 font-bold px-4 py-2 rounded w-full sm:w-auto text-center">
 					Create Event
 				</button>
 			</div>
@@ -78,7 +78,7 @@ export default function EventsPage() {
 									<TableCell className="w-24">{event.eventdate}</TableCell>
 									<TableCell className="w-28">{event.eventtime}</TableCell>
 									<TableCell>
-										<Image src={event.eventposterUrl || "/placeholder.jpg"} width={100} height={100} alt={event.eventname || "alt"} className="w-16 h-20 object-cover rounded" />
+										<Image src={event.eventposterUrl || "/ghanti.png"} width={100} height={100} alt={event.eventname || "alt"} className="w-16 h-20 object-cover rounded" />
 									</TableCell>
 									<TableCell>
 										<div className="flex flex-col sm:flex-row gap-2">

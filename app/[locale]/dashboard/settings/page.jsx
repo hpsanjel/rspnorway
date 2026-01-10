@@ -13,9 +13,9 @@ export default function SettingsPage() {
 	if (error) return <p>Error: {error}</p>;
 
 	return (
-		<div className="bg-white md:p-4 lg:p-6 rounded-lg shadow-lg max-w-6xl">
+		<div className="bg-white md:px-4 lg:px-6 rounded-lg shadow-lg max-w-6xl">
 			<h2 className="text-lg font-bold text-slate-200 bg-brand p-4 mb-4 text-center">Update Profile</h2>
-			<SettingForm fetchSettings={settings} settingdata={settings} onClose={() => router.push("/dashboard")} />
+			<SettingForm fetchSettings={settings} settingdata={settings} onClose={() => router.push("/en/dashboard")} />
 		</div>
 	);
 }

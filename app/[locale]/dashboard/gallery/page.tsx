@@ -70,7 +70,7 @@ export default function Page() {
 	};
 
 	return (
-		<div className="p-4">
+		<div className="px-4">
 			<div className="flex justify-between items-center mb-4">
 				<h1 className="text-2xl font-bold">Manage Gallery</h1>
 				<button
@@ -80,7 +80,7 @@ export default function Page() {
 						setOpenModal(true);
 					}}
 				>
-					Add New
+					Add Gallery Items
 				</button>
 			</div>
 

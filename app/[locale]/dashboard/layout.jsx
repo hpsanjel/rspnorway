@@ -16,20 +16,20 @@ function DashboardLayoutContent({ children }) {
 	// Protect dashboard: redirect if not authenticated
 	if (status === "loading") {
 		return (
-			<div className="flex items-center justify-center h-screen w-full">
-				<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
-				<span>Loading...</span>
+			<div className="flex flex-col space-y-6 items-center justify-center min-h-screen w-full">
+				<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-brand"></div>
+				<div>Loading...</div>
 			</div>
 		);
 	}
 	if (!session) {
-		router.replace("/login");
+		router.replace("/en/login");
 		return null;
 	}
 
 	return (
 		<div
-			className="mx-auto flex flex-col md:flex-row h-screen overflow-hidden pt-36"
+			className="flex flex-col pl-4 md:flex-row overflow-hidden"
 			onClick={(e) => {
 				if (profileOpen && !(e.target.closest && e.target.closest("#admin-profile-menu"))) {
 					setProfileOpen(false);
@@ -37,8 +37,8 @@ function DashboardLayoutContent({ children }) {
 			}}
 		>
 			{/* Sidebar */}
-			<div className="hidden md:flex w-64 flex-col bg-slate-800 shadow-lg">
-				<nav className="flex-1 overflow-y-auto no-scrollbar">
+			<div className="hidden my-12 md:flex w-48 h-auto bg-brand/20 flex-col shadow-lg">
+				<nav className="overflow-y-hidden no-scrollbar">
 					{menuItems.map((item) => {
 						const Icon = item.icon;
 						const isActive = activeMenu === item.id;
@@ -47,7 +47,7 @@ function DashboardLayoutContent({ children }) {
 								key={item.id}
 								href={item.href}
 								className={`w-full flex items-center px-4 py-4 text-sm transition-colors duration-200
-									${isActive ? "bg-brand text-white font-semibold shadow border-r-4 border-black" : "text-slate-200 hover:text-black hover:bg-gray-100"}
+									${isActive ? "bg-brand text-white font-semibold shadow border-l-2 border-black" : "text-black hover:text-brand hover:bg-gray-100"}
 								`}
 								style={isActive ? { boxShadow: "0 2px 8px 0 rgba(0, 0, 0, 0.10)" } : {}}
 							>
@@ -60,7 +60,7 @@ function DashboardLayoutContent({ children }) {
 			</div>
 
 			{/* Content Area */}
-			<main className="flex-1 overflow-x-auto overflow-y-auto bg-gray-50 p-6 no-scrollbar">{children}</main>
+			<main className="flex-1 mt-8 overflow-x-auto overflow-y-auto p-6 no-scrollbar">{children}</main>
 			<Toaster />
 		</div>
 	);

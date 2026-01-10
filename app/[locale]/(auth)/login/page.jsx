@@ -74,7 +74,7 @@ function AuthFormContent() {
 
 		if (result?.ok) {
 			// Use window.location to force navigation and session update
-			window.location.href = "/dashboard";
+			window.location.href = `/en/dashboard`;
 		} else {
 			setError(result?.error || t("error"));
 		}

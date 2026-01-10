@@ -18,10 +18,10 @@ export const ActiveMenuProvider = ({ children }) => {
 		// Extract menu id from pathname
 		// e.g. /dashboard/blogs => blogs, /dashboard => dashboard
 		let menuId = "dashboard";
-		if (pathname.startsWith("/dashboard")) {
+		if (pathname.startsWith("/en/dashboard")) {
 			const parts = pathname.split("/").filter(Boolean); // removes empty
 			// parts[0] === 'dashboard', parts[1] === menu id (if exists)
-			menuId = parts[1] || "dashboard";
+			menuId = parts[2] || "dashboard";
 		}
 		setActiveMenu(menuId);
 	}, [pathname]);

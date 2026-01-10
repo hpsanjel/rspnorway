@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Flag from "@/components/ui/Flag";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
 const LANGUAGES: { code: string; flag: "np" | "no" | "gb"; label: string }[] = [

@@ -108,7 +108,7 @@ export default function UsersPage() {
 						<option value="user">User</option>
 					</select>
 				</div>
-				<button onClick={handleCreateUser} className="bg-red-800 text-slate-200 font-bold px-4 py-2">
+				<button onClick={handleCreateUser} className="bg-brand text-slate-200 font-bold px-4 py-2">
 					Register User
 				</button>
 			</div>

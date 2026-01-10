@@ -8,7 +8,7 @@ export const menuItems = [
 	{ id: "blogs", label: "Blogs", icon: Newspaper, color: "bg-orange-700", href: "/en/dashboard/blogs" },
 	{ id: "gallery", label: "Gallery", icon: GalleryThumbnails, color: "bg-orange-500", href: "/en/dashboard/gallery" },
 	{ id: "downloads", label: "Downloads", icon: Download, color: "bg-red-500", href: "/en/dashboard/downloads" },
-	{ id: "users", label: "Users", icon: User, color: "bg-brand", href: "/en/dashboard/users" },
+	{ id: "users", label: "Users", icon: User, color: "bg-green-700", href: "/en/dashboard/users" },
 	// { id: "notices", label: "Notices", icon: MessageCircle, color: "bg-yellow-800", href: "/dashboard/notices" },
 	// { id: "subscribers", label: "Subscribers", icon: Mail, color: "bg-brand", href: "/dashboard/subscribers" },
 	{ id: "settings", label: "Profile Settings", icon: Settings, color: "bg-gray-500", href: "/en/dashboard/settings" },
