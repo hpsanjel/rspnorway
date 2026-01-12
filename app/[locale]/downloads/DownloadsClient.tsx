@@ -4,6 +4,7 @@
 import { useState, useMemo } from "react";
 import { Download, FileText, Calendar, Search, Filter } from "lucide-react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 
 interface Document {
 	id: string;
@@ -37,7 +38,7 @@ export default function DownloadsClient({ documents, translations }: DownloadsCl
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState(translations.all);
 	const [showMobileFilter, setShowMobileFilter] = useState(false);
-
+	const locale = useLocale();
 	const categories = useMemo(() => {
 		return [translations.all, ...Array.from(new Set(documents.map((d) => d.category)))];
 	}, [documents, translations.all]);
@@ -87,7 +88,7 @@ export default function DownloadsClient({ documents, translations }: DownloadsCl
 							<input type="text" placeholder={translations.searchPlaceholder} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 							{/* Filter icon for mobile */}{" "}
 							<button type="button" className="ml-2 md:hidden flex items-center justify-center p-2 rounded-lg bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Show filter categories" onClick={() => setShowMobileFilter((v) => !v)}>
-								<Filter size={22} className="text-gray-500" />{" "}
+								<Filter size={22} className="text-gray-500" />
 							</button>{" "}
 						</div>
 						{/* Category Filter */}{" "}
@@ -148,7 +149,10 @@ export default function DownloadsClient({ documents, translations }: DownloadsCl
 								{/* Document Info */}{" "}
 								<div className="p-6 flex flex-col justify-between flex-1">
 									{" "}
-									<span className="px-3 py-1 w-fit bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-3">{doc.category}</span> <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{doc.title}</h3>{" "}
+									<span className="px-3 py-1 w-fit bg-blue-100 text-brand text-xs font-semibold rounded-full mb-3">{doc.category}</span>
+									<a href={`/${locale}/downloads/${doc.id}`} className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500">
+										{doc.title}
+									</a>
 									<div className="flex items-center text-sm text-gray-500 mb-4">
 										{" "}
 										<Calendar size={16} className="mr-2" /> {doc.date}{" "}
@@ -158,7 +162,7 @@ export default function DownloadsClient({ documents, translations }: DownloadsCl
 										{/* Action Buttons */}{" "}
 										<div className="flex gap-3 w-fit">
 											{" "}
-											<button onClick={() => handleDownload(doc.fileUrl, doc.title, doc.id)} className="flex-1 flex items-center justify-center gap-2 px-4 md:px-4 py-1 md:py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium shadow-md">
+											<button onClick={() => handleDownload(doc.fileUrl, doc.title, doc.id)} className="flex-1 flex items-center justify-center gap-2 px-4 md:px-4 py-1 md:py-2 bg-brand text-white rounded-xl hover:bg-blue-700 transition-colors font-medium shadow-md">
 												{" "}
 												<Download size={18} /> {translations.download}{" "}
 											</button>{" "}

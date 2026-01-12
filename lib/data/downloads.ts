@@ -1,7 +1,22 @@
 import connectDB from "@/lib/mongodb";
 import Download from "@/models/Download.Model";
 
-export async function getDownloads() {
+import { Download as DownloadType } from "@/types";
+
+function normalizeDownload(doc: Record<string, unknown>): DownloadType {
+	return {
+		id: (doc._id as { toString: () => string })?.toString() ?? (doc.id as string),
+		title: doc.title as string,
+		date: doc.date as string,
+		fileUrl: doc.fileUrl as string,
+		imageUrl: doc.imageUrl as string,
+		category: doc.category as string,
+		downloadCount: (doc.downloadCount as number) ?? 0,
+	};
+}
+
+export async function getDownloads(): Promise<DownloadType[]> {
 	await connectDB();
-	return Download.find().sort({ date: -1 }).lean();
+	const docs = await Download.find().sort({ date: -1 }).lean();
+	return docs.map(normalizeDownload);
 }

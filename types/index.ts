@@ -1,3 +1,12 @@
+export interface Download {
+	id: string;
+	title: string;
+	date: string;
+	fileUrl: string;
+	imageUrl?: string;
+	category: string;
+	downloadCount: number;
+}
 import { ObjectId } from "mongodb";
 
 export interface Blog {
