@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X, ChevronDown, Phone, Mail } from "lucide-react";
@@ -36,9 +36,36 @@ function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 	const isActive = pathname === href;
 	const hasDropdown = !!dropdownItems?.length;
 	const isOpen = activeDropdown === href;
+	const dropdownRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+				setActiveDropdown(null);
+			}
+		};
+
+		if (isOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [isOpen, setActiveDropdown]);
+
+	const handleMouseEnter = () => {
+		if (!hasDropdown) return;
+		setActiveDropdown(href);
+	};
+
+	const handleMouseLeave = () => {
+		if (!hasDropdown) return;
+		setActiveDropdown(null);
+	};
 
 	return (
-		<div className="relative group">
+		<div ref={dropdownRef} className="relative group" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
 			{hasDropdown ? (
 				<button
 					aria-haspopup="menu"
@@ -89,11 +116,12 @@ function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 						transition={{ duration: 0.2 }}
 						role="menu"
 						className="
-              absolute left-1/2 -translate-x-1/2 mt-4 w-56 rounded-2xl
+              absolute -translate-x-1/2 top-full mt-2 w-48 rounded-md
               bg-white/95 backdrop-blur-xl
               shadow-[0_20px_60px_rgba(0,0,0,0.12)]
               ring-1 ring-black/5 overflow-hidden z-50
               before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-gradient-to-r before:from-brand before:to-emerald-500
+              py-2
             "
 					>
 						{dropdownItems!.map((item, idx) => (
@@ -103,7 +131,7 @@ function NavItem({ title, href, isScrolled, pathname, dropdownItems, activeDropd
 								role="menuitem"
 								onClick={() => setActiveDropdown(null)}
 								className={`
-                  block px-5 py-3.5 text-sm font-medium text-neutral-700 
+                  block px-4 py-2 text-sm font-medium text-neutral-700 
                   hover:bg-brand/5 hover:text-brand transition-all duration-200
                   ${idx !== 0 ? "border-t border-neutral-100" : ""}
                 `}
@@ -128,9 +156,33 @@ export default function Header() {
 	const tr = useTranslations("footer");
 
 	const navItems = [
-		{ title: t("about"), href: "/about-us" },
-		{ title: t("notices"), href: "/notices" },
-		{ title: t("gallery"), href: "/gallery" },
+		{
+			title: t("home"),
+			href: "/",
+			dropdownItems: [
+				{ title: t("about"), href: "/about-us" },
+				{ title: t("privacy"), href: "/privacy-policy" },
+				{ title: t("terms"), href: "/terms-and-conditions" },
+			],
+		},
+
+		{
+			title: t("updates"),
+			href: "/notices",
+			dropdownItems: [
+				{ title: t("notices"), href: "/notices" },
+				{ title: t("events"), href: "/events" },
+				{ title: t("circulars"), href: "/circulars" },
+			],
+		},
+		{
+			title: t("gallery"),
+			href: "/gallery",
+			dropdownItems: [
+				{ title: t("photos"), href: "/photo-gallery" },
+				{ title: t("videos"), href: "/video-gallery" },
+			],
+		},
 		{ title: t("downloads"), href: "/downloads" },
 		{ title: t("contact"), href: "/contact" },
 	];
@@ -139,8 +191,31 @@ export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+	const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const { data: session } = useSession();
 	const user = session?.user;
+
+	// Wrapper function to manage hover delays
+	const handleDropdownChange = (newDropdown: string | null) => {
+		if (hoverTimeoutRef.current) {
+			clearTimeout(hoverTimeoutRef.current);
+		}
+
+		if (newDropdown === null) {
+			// Delay closing
+			hoverTimeoutRef.current = setTimeout(() => {
+				setActiveDropdown(null);
+			}, 200);
+		} else if (activeDropdown === null) {
+			// Delay opening from closed state
+			hoverTimeoutRef.current = setTimeout(() => {
+				setActiveDropdown(newDropdown);
+			}, 150);
+		} else {
+			// Instant switch between dropdowns
+			setActiveDropdown(newDropdown);
+		}
+	};
 
 	/* ---------------------------------- */
 	/* Effects */
@@ -151,6 +226,21 @@ export default function Header() {
 		window.addEventListener("scroll", onScroll);
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
+
+	// Close dropdown when clicking outside
+	useEffect(() => {
+		const handleClickOutside = () => {
+			setActiveDropdown(null);
+		};
+
+		if (activeDropdown) {
+			document.addEventListener("click", handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+		};
+	}, [activeDropdown]);
 
 	/* ---------------------------------- */
 	/* Render */
@@ -172,10 +262,10 @@ export default function Header() {
 							<Mail size={16} />
 							info@rspnorway.org
 						</a>
+						<SocialMediaLinks />
 					</div>
 					<div className="flex items-center gap-4">
-						<SocialMediaLinks />
-						<LanguageSelector />
+						<LanguageSelector isScrolled={isScrolled} />
 					</div>
 				</div>
 			</motion.section>
@@ -205,7 +295,7 @@ export default function Header() {
 					{/* Desktop Nav */}
 					<nav className="hidden lg:flex items-center gap-2" role="navigation">
 						{navItems.map((item) => (
-							<NavItem key={item.href} {...item} isScrolled={isScrolled} pathname={pathname} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} />
+							<NavItem key={item.href} {...item} isScrolled={isScrolled} pathname={pathname} activeDropdown={activeDropdown} setActiveDropdown={handleDropdownChange} />
 						))}
 					</nav>
 

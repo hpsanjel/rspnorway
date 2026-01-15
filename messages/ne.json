@@ -80,7 +80,10 @@
 		"resultsFound": "\"{query}\" का लागि {count} परिणामहरू फेला परे",
 		"noResults": "कुनै परिणाम भेटिएन",
 		"tryDifferentKeywords": "फेरि फरक शब्दहरू खोज्नुहोस्",
-		"viewDetails": "विवरण हेर्नुहोस्"
+		"viewDetails": "विवरण हेर्नुहोस्",
+		"searching": "खोज्दैछ...",
+		"searchPlaceholder": "खोज्नुहोस्...",
+		"search": "खोज्नुहोस्"
 	},
 	"footer": {
 		"about_us": "हाम्रो बारेमा",
@@ -114,17 +117,24 @@
 	"navigation": {
 		"home": "गृहपृष्ठ",
 		"about": "हाम्रो बारेमा",
+		"privacy": "गोपनीयता नीति",
+		"terms": "नियम तथा सर्तहरू",
 		"contact": "सम्पर्क",
-		"downloads": "डाउनलोडहरू",
-		"notices": "सूचनाहरू",
+		"downloads": "डाउनलोड",
+		"notices": "सूचना",
 		"gallery": "ग्यालेरी",
 		"login": "लगइन",
 		"membership": "सदस्यता",
-		"blogs": "परिपत्रहरू",
+		"blogs": "परिपत्र",
 		"become_a_member": "सदस्य बन्नुहोस्",
 		"rsp": "रास्वपा",
 		"norway": "नर्वे",
-		"search_placeholder": "खोज्नुहोस्..."
+		"search_placeholder": "खोज्नुहोस्...",
+		"events": "कार्यक्रम",
+		"circulars": "परिपत्र",
+		"updates": "सूचना",
+		"photos": "फोटो",
+		"videos": "भिडियो"
 	},
 	"contact": {
 		"title": "सम्पर्क गर्नुहोस्",

@@ -1,6 +1,8 @@
+"use client";
 import { Calendar, BookOpen, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 function highlight(text, query) {
 	if (!text || !query) return text;
@@ -24,7 +26,8 @@ function isValidImageUrl(url) {
 	return false;
 }
 
-export default function SearchResultCard({ item, query, t }) {
+export default function SearchResultCard({ item, query }) {
+	const t = useTranslations("search");
 	const typeIcon = {
 		Event: <Calendar className="w-5 h-5 text-green-500" />,
 		Gallery: <ImageIcon className="w-5 h-5 text-pink-500" />,

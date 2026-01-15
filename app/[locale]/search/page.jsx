@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import SearchResultsClient from "./SearchResultsClient";
+import SearchBar from "./SearchBar";
 import { getTranslations } from "next-intl/server";
 
 async function SearchContent({ query }) {
@@ -14,9 +15,9 @@ async function SearchContent({ query }) {
 	const lowerQuery = query.toLowerCase().trim();
 
 	const filteredEvents = eventsArray.filter((event) => {
-		const titleMatch = event.title?.toLowerCase().trim().includes(lowerQuery);
-		const descMatch = event.description?.toLowerCase().trim().includes(lowerQuery);
-		const locMatch = event.location?.toLowerCase().trim().includes(lowerQuery);
+		const titleMatch = event.eventname?.toLowerCase().trim().includes(lowerQuery);
+		const descMatch = event.eventdescription?.toLowerCase().trim().includes(lowerQuery);
+		const locMatch = event.eventvenue?.toLowerCase().trim().includes(lowerQuery);
 		return titleMatch || descMatch || locMatch;
 	});
 
@@ -28,8 +29,8 @@ async function SearchContent({ query }) {
 	});
 
 	const filteredNotices = noticesArray.filter((notice) => {
-		const titleMatch = notice.title?.toLowerCase().trim().includes(lowerQuery);
-		const contentMatch = notice.content?.toLowerCase().trim().includes(lowerQuery);
+		const titleMatch = notice.noticetitle?.toLowerCase().trim().includes(lowerQuery);
+		const contentMatch = notice.notice?.toLowerCase().trim().includes(lowerQuery);
 		return titleMatch || contentMatch;
 	});
 
@@ -50,12 +51,12 @@ async function SearchContent({ query }) {
 		...filteredEvents.map((item) => ({
 			type: "Event",
 			_id: item._id,
-			title: item.title || item.eventname,
-			description: item.description || item.eventdescription,
-			image: item.eventposterUrl || item.imageUrl,
-			url: `/events/${item._id}`,
-			date: item.date || item.eventdate,
-			meta: item.location || item.eventvenue,
+			title: item.eventname,
+			description: item.eventdescription,
+			image: item.eventposterUrl,
+			url: `/en/notices/${item._id}`,
+			date: item.eventdate,
+			meta: item.eventvenue,
 		})),
 		...filteredGallery.map((item) => ({
 			type: "Gallery",
@@ -63,18 +64,18 @@ async function SearchContent({ query }) {
 			title: item.title,
 			description: item.description,
 			image: item.imageUrl || item.media,
-			url: `/gallery`,
+			url: `/en/gallery`,
 			date: item.date,
 			meta: item.category,
 		})),
 		...filteredNotices.map((item) => ({
 			type: "Notice",
 			_id: item._id,
-			title: item.title || item.noticetitle,
-			description: item.content || item.notice,
+			title: item.noticetitle,
+			description: item.notice,
 			image: item.noticeimage,
-			url: `/notices/${item._id}`,
-			date: item.date || item.noticedate,
+			url: `/en/notices/${item._id}`,
+			date: item.noticedate,
 			meta: item.classGroup,
 		})),
 		...matchedPages.map((item) => ({
@@ -92,11 +93,17 @@ async function SearchContent({ query }) {
 
 	return (
 		<div className="mx-6 md:mx-12 pt-12 max-w-6xl">
-			{/* Search Header */}
-			<div className="mb-8">
-				<h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{t("resultsTitle")}</h1>
-				{query && <p className="text-gray-600 text-lg">{t("resultsFound", { count: totalResults, query })}</p>}
+			<div className="mx-auto">
+				{/* Search Bar - Always visible */}
+				<SearchBar initialQuery={query} />
 			</div>
+			{/* Search Header */}
+			{totalResults !== 0 && (
+				<div className="mb-8">
+					<h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{t("resultsTitle")}</h1>
+					<p className="text-gray-600 text-lg">{t("resultsFound", { count: totalResults, query })}</p>
+				</div>
+			)}
 
 			{totalResults === 0 ? (
 				<div className="text-center py-20">
@@ -105,7 +112,7 @@ async function SearchContent({ query }) {
 					<p className="text-gray-600">{t("tryDifferentKeywords")}</p>
 				</div>
 			) : (
-				<SearchResultsClient results={allResults} query={query} t={t} />
+				<SearchResultsClient results={allResults} query={query} />
 			)}
 		</div>
 	);
@@ -113,7 +120,7 @@ async function SearchContent({ query }) {
 
 export default async function SearchPage({ searchParams }) {
 	const params = typeof searchParams.then === "function" ? await searchParams : searchParams;
-	const query = typeof params.get === "function" ? params.get("q") : params.q || "";
+	const query = params.q || "";
 	if (!query) {
 		return (
 			<div className="min-h-screen bg-gray-50 py-12">
