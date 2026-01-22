@@ -56,7 +56,7 @@ export default function BlogsClient({ blogs, translations: t, locale }: Props) {
 								<div className="flex flex-row md:flex-col h-32 md:h-full bg-white">
 									{/* Image: small and left on mobile, top on md+ */}
 									<div className="relative flex-shrink-0 w-28 h-full md:w-full md:h-64 overflow-hidden">
-										<Image src={blog?.blogMainPicture || "/ghanti.png"} alt={blog?.blogTitle || "Blog image"} width={300} height={300} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+										<Image src={blog?.blogMainPicture || "/ghanti.png"} alt={blog?.blogTitle || "Blog image"} width={300} height={300} className="object-top object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
 									</div>
 									{/* Text: right on mobile, below on md+ */}
 									<div className="flex flex-col justify-center p-4 md:p-6 space-y-2 w-full">

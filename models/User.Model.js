@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema(
 		phone: { type: String },
 		resetToken: { type: String },
 		resetTokenExpiry: { type: Date },
+		setupToken: { type: String },
+		setupTokenExpiry: { type: Date },
 	},
 	{
 		timestamps: true,

@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function MembershipPage() {
+export default async function MembershipPage({ params }: { params: Promise<{ locale: string }> }) {
+	const { locale } = await params;
 	const t = await getTranslations("membership");
 
 	const translations = {
@@ -55,6 +56,8 @@ export default async function MembershipPage() {
 		general_member: t("general_member"),
 		general_member_desc: t("general_member_desc"),
 		active_member: t("active_member"),
+		national_membership_no: t("national_membership_no"),
+		national_membership_no_ph: t("national_membership_no_ph"),
 		active_member_desc: t("active_member_desc"),
 		areas_of_interests: t("areas_of_interests"),
 		interest_politics: t("interest_politics"),
@@ -69,7 +72,11 @@ export default async function MembershipPage() {
 		need_help: t("need_help"),
 		contact_us_any_questions: t("contact_us_any_questions"),
 		email_us: t("email_us"),
+		province: t("province"),
+		district: t("district"),
+		select_province: t("select_province"),
+		select_district: t("select_district"),
 	};
 
-	return <MembershipPageClient translations={translations} />;
+	return <MembershipPageClient translations={translations} locale={locale} />;
 }

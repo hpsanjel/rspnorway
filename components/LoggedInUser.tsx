@@ -1,13 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, User } from "lucide-react";
 
 interface SessionUser {
 	name?: string | null;
 	email?: string | null;
 	image?: string | null;
+	role?: string;
 	// [key: string]: any;
 }
 
@@ -15,6 +16,23 @@ const LoggedInUser = ({ user }: { user: SessionUser }) => {
 	const userRef = useRef<HTMLDivElement>(null);
 	const avatarInitial = typeof user?.email === "string" && user.email ? user.email.charAt(0).toUpperCase() : "U";
 	const [showUserDropdown, setShowUserDropdown] = useState(false);
+
+	// Close dropdown when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (userRef.current && !userRef.current.contains(event.target as Node)) {
+				setShowUserDropdown(false);
+			}
+		};
+
+		if (showUserDropdown) {
+			document.addEventListener("mousedown", handleClickOutside);
+		}
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [showUserDropdown]);
 
 	return (
 		<div ref={userRef} className="relative">
@@ -28,10 +46,17 @@ const LoggedInUser = ({ user }: { user: SessionUser }) => {
 							<p className="font-semibold text-neutral-900 truncate">{user.email}</p>
 							<p className="text-xs text-neutral-500 mt-1">Signed in</p>
 						</div>
-						<Link href="/en/dashboard" className="flex items-center gap-3 px-5 py-3.5 text-brand hover:bg-brand/10 w-full transition-all duration-200 font-medium">
-							<LayoutDashboard size={18} />
-							Dashboard
-						</Link>
+						{user.role === "admin" ? (
+							<Link href="/en/dashboard" onClick={() => setShowUserDropdown(false)} className="flex items-center gap-3 px-5 py-3.5 text-brand hover:bg-brand/10 w-full transition-all duration-200 font-medium">
+								<LayoutDashboard size={18} />
+								Dashboard
+							</Link>
+						) : (
+							<Link href="/en/profile" onClick={() => setShowUserDropdown(false)} className="flex items-center gap-3 px-5 py-3.5 text-brand hover:bg-brand/10 w-full transition-all duration-200 font-medium">
+								<User size={18} />
+								My Profile
+							</Link>
+						)}
 						<button onClick={() => signOut({ callbackUrl: "/" })} className="flex items-center gap-3 px-5 py-3.5 text-red-600 hover:bg-red-50 w-full transition-all duration-200 font-medium">
 							<LogOut size={18} />
 							Sign Out

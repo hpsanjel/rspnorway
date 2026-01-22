@@ -23,3 +23,26 @@ export interface Event {
 	location: string;
 	description: string;
 }
+
+export interface Membership {
+	_id: string;
+	fullName: string;
+	email: string;
+	phone: string;
+	address: string;
+	city: string;
+	postalCode: string;
+	dateOfBirth: string;
+	gender: string;
+	province?: string;
+	district?: string;
+	profession?: string;
+	membershipType: "general" | "active";
+	membershipStatus: "blocked" | "pending" | "approved";
+	nationalMembershipNo?: string;
+	skills?: string;
+	volunteerInterest?: string[];
+	agreeTerms: boolean;
+	profilePhoto?: string;
+	createdAt: string;
+}

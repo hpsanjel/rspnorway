@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
 import { useSession } from "next-auth/react";
 import { ActiveMenuProvider, useActiveMenu } from "@/context/ActiveMenuContext";
-import { BookImage, Settings, GalleryThumbnails, LayoutDashboard, Book, Newspaper, User, Download } from "lucide-react";
+import { BookImage, Settings, GalleryThumbnails, LayoutDashboard, Book, Newspaper, User, Download, Users } from "lucide-react";
 
 function DashboardLayoutContent({ children }) {
 	const { activeMenu } = useActiveMenu();
@@ -16,6 +16,7 @@ function DashboardLayoutContent({ children }) {
 	const menuItems = [
 		{ id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "bg-brand", href: "/en/dashboard" },
 		{ id: "contactmessages", label: "Contact Messages", icon: Book, color: "bg-red-900", href: "/en/dashboard/contactmessages" },
+		{ id: "memberships", label: "Memberships", icon: Users, color: "bg-blue-600", href: "/en/dashboard/memberships" },
 		{ id: "events", label: "Events", icon: BookImage, color: "bg-purple-500", href: "/en/dashboard/events" },
 		{ id: "blogs", label: "Blogs", icon: Newspaper, color: "bg-orange-700", href: "/en/dashboard/blogs" },
 		{ id: "gallery", label: "Gallery", icon: GalleryThumbnails, color: "bg-orange-500", href: "/en/dashboard/gallery" },
@@ -24,7 +25,7 @@ function DashboardLayoutContent({ children }) {
 		{ id: "settings", label: "Profile Settings", icon: Settings, color: "bg-gray-500", href: "/en/dashboard/settings" },
 	];
 
-	// Protect dashboard: redirect if not authenticated
+	// Protect dashboard: redirect if not authenticated or not admin
 	if (status === "loading") {
 		return (
 			<div className="flex flex-col space-y-6 items-center justify-center min-h-screen w-full">
@@ -35,6 +36,11 @@ function DashboardLayoutContent({ children }) {
 	}
 	if (!session) {
 		router.replace("/en/login");
+		return null;
+	}
+	// Redirect non-admin users to profile page
+	if (session.user.role !== "admin") {
+		router.replace("/en/profile");
 		return null;
 	}
 

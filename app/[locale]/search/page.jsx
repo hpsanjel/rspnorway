@@ -6,12 +6,13 @@ import { getTranslations } from "next-intl/server";
 async function SearchContent({ query }) {
 	const t = await getTranslations("search");
 
-	// Build absolute URLs for fetch
 	// Fetch data using direct DB functions
 	const { getEvents } = await import("@/lib/data/events");
 	const { getGallery } = await import("@/lib/data/gallery");
 	const { getNotices } = await import("@/lib/data/notices");
-	const [eventsArray, galleryArray, noticesArray] = await Promise.all([getEvents(), getGallery(), getNotices()]);
+	const { getMembers } = await import("@/lib/data/members");
+	const { getBlogs } = await import("@/lib/data/blogs");
+	const [eventsArray, galleryArray, noticesArray, membersArray, blogsArray] = await Promise.all([getEvents(), getGallery(), getNotices(), getMembers(), getBlogs()]);
 	const lowerQuery = query.toLowerCase().trim();
 
 	const filteredEvents = eventsArray.filter((event) => {
@@ -32,6 +33,18 @@ async function SearchContent({ query }) {
 		const titleMatch = notice.noticetitle?.toLowerCase().trim().includes(lowerQuery);
 		const contentMatch = notice.notice?.toLowerCase().trim().includes(lowerQuery);
 		return titleMatch || contentMatch;
+	});
+	const filteredMembers = membersArray.filter((member) => {
+		const nameMatch = member.fullName?.toLowerCase().trim().includes(lowerQuery);
+		const cityMatch = member.city?.toLowerCase().trim().includes(lowerQuery);
+		const professionMatch = member.profession?.toLowerCase().trim().includes(lowerQuery);
+		return nameMatch || cityMatch || professionMatch;
+	});
+	const filteredBlogs = blogsArray.filter((blog) => {
+		const titleMatch = blog.blogTitle?.toLowerCase().trim().includes(lowerQuery);
+		const contentMatch = blog.blogDesc?.toLowerCase().trim().includes(lowerQuery);
+		const authorMatch = blog.blogAuthor?.toLowerCase().trim().includes(lowerQuery);
+		return titleMatch || contentMatch || authorMatch;
 	});
 
 	const staticPages = [
@@ -77,6 +90,26 @@ async function SearchContent({ query }) {
 			url: `/en/notices/${item._id}`,
 			date: item.noticedate,
 			meta: item.classGroup,
+		})),
+		...filteredMembers.map((item) => ({
+			type: "Member",
+			_id: item._id,
+			title: item.fullName,
+			description: item.profession || item.membershipType,
+			image: item.profilePhoto,
+			url: `/en/membership/${item._id}`,
+			date: item.createdAt,
+			meta: `${item.city}, ${item.province || ""}`.trim(),
+		})),
+		...filteredBlogs.map((item) => ({
+			type: "Blog",
+			_id: item._id,
+			title: item.blogTitle,
+			description: item.blogDesc,
+			image: item.blogMainPicture,
+			url: `/en/blogs/${item._id}`,
+			date: item.blogDate,
+			meta: item.blogAuthor,
 		})),
 		...matchedPages.map((item) => ({
 			type: "Page",

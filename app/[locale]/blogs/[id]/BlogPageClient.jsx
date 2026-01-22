@@ -12,7 +12,7 @@ export default function BlogPageClient({ blogData, blogsData }) {
 	}
 
 	return (
-		<div className="container grid grid-cols-1 lg:grid-cols-3 gap-12 py-40 md:py-48 px-4 mx-auto">
+		<div className="container grid grid-cols-1 lg:grid-cols-3 gap-12 py-12 px-4 mx-auto">
 			{/* Main Content */}
 			<main className="lg:col-span-2">
 				<h1 className="mt-4 text-xl md:text-3xl font-bold font-serif text-center">{blog.blogTitle}</h1>

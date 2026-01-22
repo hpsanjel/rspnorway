@@ -14,7 +14,7 @@ function highlight(text, query) {
 			</mark>
 		) : (
 			part
-		)
+		),
 	);
 }
 
@@ -42,8 +42,8 @@ export default function SearchResultCard({ item, query }) {
 				<span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{item.type}</span>
 			</div>
 			{isValidImageUrl(item.image) && (
-				<div className="relative h-40 w-full mt-2">
-					<Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" />
+				<div className="relative h-72 w-full mt-2">
+					<Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover object-top" />
 				</div>
 			)}
 			<div className="p-4 flex-1 flex flex-col">

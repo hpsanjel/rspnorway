@@ -174,19 +174,3 @@ export default function Hero() {
 		</div>
 	);
 }
-
-// import Image from "next/image";
-// import React from "react";
-
-// const Hero = () => {
-// 	return (
-// 		<div className={`min-h-screen flex items-center justify-center`}>
-// 			<div className={`relative min-h-screen w-full flex items-center justify-center overflow-hidden`}>
-// 				<Image src="/herorabi.jpeg" alt="RSP Norway Hero" fill style={{ objectFit: "cover" }} className="absolute inset-0 w-full h-full" />
-// 				<div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-10" />
-// 			</div>
-// 		</div>
-// 	);
-// };
-
-// export default Hero;

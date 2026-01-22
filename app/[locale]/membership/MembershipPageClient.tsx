@@ -1,5 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import nepalLocationsData from "@/lib/data/nepal-locations.json";
+
+interface District {
+	id: string;
+	name: string;
+	nameNe: string;
+}
 
 interface Translations {
 	welcome: string;
@@ -36,6 +43,8 @@ interface Translations {
 	skills_expertise: string;
 	skills_expertise_ph: string;
 	membership_type: string;
+	national_membership_no: string;
+	national_membership_no_ph: string;
 	general_member: string;
 	general_member_desc: string;
 	active_member: string;
@@ -53,13 +62,18 @@ interface Translations {
 	need_help: string;
 	contact_us_any_questions: string;
 	email_us: string;
+	province: string;
+	district: string;
+	select_province: string;
+	select_district: string;
 }
 
 interface Props {
 	translations: Translations;
+	locale: string;
 }
 
-export default function MembershipPageClient({ translations: t }: Props) {
+export default function MembershipPageClient({ translations: t, locale }: Props) {
 	const [formData, setFormData] = useState({
 		fullName: "",
 		email: "",
@@ -69,9 +83,12 @@ export default function MembershipPageClient({ translations: t }: Props) {
 		postalCode: "",
 		dateOfBirth: "",
 		gender: "",
-		nepaliOrigin: "",
+		province: "",
+		district: "",
 		profession: "",
 		membershipType: "general",
+		membershipStatus: "pending",
+		nationalMembershipNo: "",
 		skills: "",
 		volunteerInterest: [] as string[],
 		agreeTerms: false,
@@ -80,10 +97,33 @@ export default function MembershipPageClient({ translations: t }: Props) {
 	const [submitted, setSubmitted] = useState(false);
 	const [emailError, setEmailError] = useState("");
 
+	// Cascading dropdown state
+	const [availableDistricts, setAvailableDistricts] = useState<District[]>([]);
+
+	// Update available districts when province changes
+	useEffect(() => {
+		if (formData.province) {
+			const province = nepalLocationsData.provinces.find((p) => p.id === formData.province);
+			if (province) {
+				setAvailableDistricts(province.districts);
+				// Reset dependent fields
+				setFormData((prev) => ({ ...prev, district: "" }));
+			}
+		} else {
+			setAvailableDistricts([]);
+		}
+	}, [formData.province]);
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const target = e.target as HTMLInputElement | HTMLSelectElement;
 		const name = target.name;
 		const value = target.value;
+
+		// Clear email error when user changes email field
+		if (name === "email" && emailError) {
+			setEmailError("");
+		}
+
 		if (target instanceof HTMLInputElement && target.type === "checkbox" && name === "volunteerInterest") {
 			const checked = target.checked;
 			const currentInterests = formData.volunteerInterest;
@@ -100,6 +140,7 @@ export default function MembershipPageClient({ translations: t }: Props) {
 
 	const handleEmailBlur = async () => {
 		if (!formData.email) return;
+
 		try {
 			const res = await fetch(`/api/membership?email=${encodeURIComponent(formData.email)}`);
 			if (res.ok) {
@@ -136,9 +177,12 @@ export default function MembershipPageClient({ translations: t }: Props) {
 				postalCode: "",
 				dateOfBirth: "",
 				gender: "",
-				nepaliOrigin: "",
+				province: "",
+				district: "",
 				profession: "",
 				membershipType: "general",
+				membershipStatus: "pending",
+				nationalMembershipNo: "",
 				skills: "",
 				volunteerInterest: [],
 				agreeTerms: false,
@@ -158,9 +202,12 @@ export default function MembershipPageClient({ translations: t }: Props) {
 			postalCode: "",
 			dateOfBirth: "",
 			gender: "",
-			nepaliOrigin: "",
+			province: "",
+			district: "",
 			profession: "",
 			membershipType: "general",
+			membershipStatus: "pending",
+			nationalMembershipNo: "",
 			skills: "",
 			volunteerInterest: [],
 			agreeTerms: false,
@@ -169,7 +216,7 @@ export default function MembershipPageClient({ translations: t }: Props) {
 
 	if (submitted) {
 		return (
-			<div className="bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+			<div className="bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center min-h-screen justify-center p-4">
 				<div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center">
 					<div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
 						<svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +264,7 @@ export default function MembershipPageClient({ translations: t }: Props) {
 								<label className="block text-sm font-medium text-gray-700 mb-2">
 									{t.phone_number} <span className="text-red-500">*</span>
 								</label>
-								<input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={t.phone_number_placeholder} />
+								<input type="tel" maxLength={14} name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={t.phone_number_placeholder} />
 							</div>
 							<div>
 								<label className="block text-sm font-medium text-gray-700 mb-2">
@@ -239,7 +286,33 @@ export default function MembershipPageClient({ translations: t }: Props) {
 							</div>
 							<div>
 								<label className="block text-sm font-medium text-gray-700 mb-2">{t.address_nepal}</label>
-								<input type="text" name="nepaliOrigin" value={formData.nepaliOrigin} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={t.address_nepal_ph} />
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									{/* Province Dropdown */}
+									<div>
+										<label className="block text-xs text-gray-600 mb-1">{t.province}</label>
+										<select name="province" value={formData.province} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+											<option value="">{t.select_province}</option>
+											{nepalLocationsData.provinces.map((province) => (
+												<option key={province.id} value={province.id}>
+													{locale === "ne" ? province.nameNe : province.name}
+												</option>
+											))}
+										</select>
+									</div>
+
+									{/* District Dropdown */}
+									<div>
+										<label className="block text-xs text-gray-600 mb-1">{t.district}</label>
+										<select name="district" value={formData.district} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" disabled={!formData.province}>
+											<option value="">{t.select_district}</option>
+											{availableDistricts.map((district) => (
+												<option key={district.id} value={district.id}>
+													{locale === "ne" ? district.nameNe : district.name}
+												</option>
+											))}
+										</select>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -302,6 +375,10 @@ export default function MembershipPageClient({ translations: t }: Props) {
 									<p className="text-sm text-gray-600">{t.active_member_desc}</p>
 								</div>
 							</label>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-2">{t.national_membership_no}</label>
+								<input type="text" name="nationalMembershipNo" value={formData.nationalMembershipNo} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={t.national_membership_no_ph} />
+							</div>
 						</div>
 					</div>
 

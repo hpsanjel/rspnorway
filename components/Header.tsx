@@ -191,6 +191,8 @@ export default function Header() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+	const [isVisible, setIsVisible] = useState(true);
+	const [lastScrollY, setLastScrollY] = useState(0);
 	const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const { data: session } = useSession();
 	const user = session?.user;
@@ -222,10 +224,31 @@ export default function Header() {
 	/* ---------------------------------- */
 
 	useEffect(() => {
-		const onScroll = () => setIsScrolled(window.scrollY > 10);
+		const onScroll = () => {
+			const currentScrollY = window.scrollY;
+			const scrollThreshold = 150; // Only hide after scrolling 150px down
+
+			// Set isScrolled state
+			setIsScrolled(currentScrollY > 10);
+
+			// Determine scroll direction and visibility
+			if (currentScrollY < scrollThreshold) {
+				// Near top of page, always show
+				setIsVisible(true);
+			} else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+				// Scrolling down past threshold, hide navbar
+				setIsVisible(false);
+			} else if (currentScrollY < lastScrollY) {
+				// Scrolling up, show navbar
+				setIsVisible(true);
+			}
+
+			setLastScrollY(currentScrollY);
+		};
+
 		window.addEventListener("scroll", onScroll);
 		return () => window.removeEventListener("scroll", onScroll);
-	}, []);
+	}, [lastScrollY]);
 
 	// Close dropdown when clicking outside
 	useEffect(() => {
@@ -247,7 +270,7 @@ export default function Header() {
 	/* ---------------------------------- */
 
 	return (
-		<div className="fixed inset-x-0 top-0 z-50">
+		<div className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
 			{/* Utility Bar */}
 			<motion.section initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className={`h-11 border-b transition-colors duration-500 ${isScrolled ? "bg-gradient-to-r from-brand via-brand to-emerald-600 text-white" : "bg-neutral-50/95 backdrop-blur-md"}`}>
 				<div className="container mx-auto px-4 lg:px-6 h-full flex items-center justify-between">

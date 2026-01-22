@@ -9,12 +9,16 @@ const MembershipSchema = new mongoose.Schema({
 	postalCode: { type: String, required: true },
 	dateOfBirth: { type: String, required: true },
 	gender: { type: String, required: true },
-	nepaliOrigin: { type: String },
+	province: { type: String },
+	district: { type: String },
 	profession: { type: String },
 	membershipType: { type: String, enum: ["general", "active"], required: true },
+	membershipStatus: { type: String, enum: ["blocked", "pending", "approved"], required: true },
+	nationalMembershipNo: { type: String },
 	skills: { type: String },
 	volunteerInterest: { type: [String], default: [] },
 	agreeTerms: { type: Boolean, required: true },
+	profilePhoto: { type: String },
 	createdAt: { type: Date, default: Date.now },
 });
 

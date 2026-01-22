@@ -73,8 +73,16 @@ function AuthFormContent() {
 		setSubmitting(false);
 
 		if (result?.ok) {
-			// Use window.location to force navigation and session update
-			window.location.href = `/en/dashboard`;
+			// Fetch session to check user role
+			const response = await fetch("/api/auth/session");
+			const session = await response.json();
+
+			// Redirect based on role
+			if (session?.user?.role === "admin") {
+				window.location.href = `/en/dashboard`;
+			} else {
+				window.location.href = `/en/profile`;
+			}
 		} else {
 			setError(result?.error || t("error"));
 		}

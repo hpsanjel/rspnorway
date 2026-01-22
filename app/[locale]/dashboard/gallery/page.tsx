@@ -2,7 +2,7 @@
 import React from "react";
 import GalleryForm from "@/components/GalleryForm";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
 type GalleryItem = {
@@ -25,7 +25,7 @@ export default function Page() {
 		return data.gallery || [];
 	};
 
-	const loadGallery = async () => {
+	const loadGallery = useCallback(async () => {
 		try {
 			const data = await fetchGallery();
 			setGallery(data);
@@ -37,11 +37,11 @@ export default function Page() {
 			}
 		} finally {
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		loadGallery();
-	}, []);
+	}, [loadGallery]);
 
 	const handleEdit = (item: GalleryItem) => {
 		setGalleryToEdit(item);

@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import User from "@/models/User.Model";
 import ConnectDB from "@/lib/mongodb";
 import NextAuth from "next-auth";
+
+/** @type {import('next-auth').AuthOptions} */
 export const authOptions = {
 	session: {
 		strategy: "jwt",
@@ -60,6 +62,8 @@ export const authOptions = {
 				token.isAcceptingMessages = user.isAcceptingMessages;
 				token.username = user.username;
 				token.fullName = user.fullName;
+				token.role = user.role;
+				token.phone = user.phone;
 			}
 			return token;
 		},
@@ -72,10 +76,19 @@ export const authOptions = {
 					isAcceptingMessages: token.isAcceptingMessages,
 					username: token.username,
 					fullName: token.fullName,
+					role: token.role,
+					phone: token.phone,
 				};
 			}
 
 			return session;
+		},
+		async redirect({ url, baseUrl }) {
+			// Allows relative callback URLs
+			if (url.startsWith("/")) return `${baseUrl}${url}`;
+			// Allows callback URLs on the same origin
+			else if (new URL(url).origin === baseUrl) return url;
+			return baseUrl;
 		},
 	},
 	secret: process.env.NEXTAUTH_SECRET,

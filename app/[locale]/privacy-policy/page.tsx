@@ -73,8 +73,8 @@ export default function PrivacyPolicy() {
 						<h2 className="text-2xl font-semibold text-gray-900 mb-4">Termination of the use of personal information collected from the user</h2>
 						<p className="text-gray-700 leading-relaxed">
 							The user may request the deletion of their data by sending an email to{" "}
-							<a href="mailto:info@rspnepal.org" className="text-blue-600 hover:text-blue-800 underline">
-								info@rspnepal.org
+							<a href="mailto:info@rspnorway.org" className="text-blue-600 hover:text-blue-800 underline">
+								info@rspnorway.org
 							</a>{" "}
 							and should get a response within 48 hours.
 						</p>
@@ -122,13 +122,13 @@ export default function PrivacyPolicy() {
 					<section className="border-t border-gray-200 pt-6">
 						<h3 className="text-lg font-semibold text-gray-900 mb-4">Related Documents</h3>
 						<div className="flex flex-wrap gap-3">
-							<Link href="/terms-and-conditions" className="inline-flex items-center px-4 py-2 bg-brand text-white rounded-lg hover:bg-blue-700 transition-colors">
+							<Link href="/en/terms-and-conditions" className="inline-flex items-center px-4 py-2 bg-brand text-white rounded-lg hover:bg-blue-700 transition-colors">
 								<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
 								</svg>
 								Terms and Conditions
 							</Link>
-							<Link href="mailto:info@rspnepal.org" className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+							<Link href="mailto:info@rspnorway.org" className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
 								<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
 								</svg>
